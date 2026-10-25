@@ -186,11 +186,24 @@ What's in place:
 
 ---
 
+## Languages (English, हिन्दी, ગુજરાતી)
+
+- A language switch sits in the header (desktop) and in the mobile menu. The choice is saved in the visitor's browser (`localStorage`), so the site opens in that language next time too.
+- Hindi and Gujarati come from **Google Translate**, loaded only for visitors who pick them. English visitors never download it.
+- So translations stay meaningful:
+  - Product and brand names (Powerzone, Ontop, INVICTUS…) are marked `translate="no"` and never turned into ordinary words.
+  - Menu labels and category names use hand-written Hindi/Gujarati (`src/lib/i18n.ts` → `UI`) instead of Google's literal versions. Add or correct labels there.
+  - Animated word-by-word text switches to whole sentences when translated, so Google translates complete sentences.
+  - The loader shows its stage labels in the saved language from its own built-in text.
+- Hindi/Gujarati headings get extra line height and no letter-spacing so the scripts render correctly.
+
+---
+
 ## 8. Loading on slow internet
 
 The site is built for weak connections. It loads in batches:
 
-1. **Loader:** a dawn field scene built into `index.html` (no download needed). The sun rises, sprouts break the furrows and a wheat plant grows from a splitting seed to a ripe golden ear, with a stage label (Sowing → Sprouting → Growing strong → Ready to harvest). It always shows for at least 2.5 s, never looks stuck on a slow line, and lifts once the first screen is ready.
+1. **Loader:** a botanical engraving built into `index.html` (no download needed). A wheat plant grows the way a seed really does: the soil line draws out, roots reach down, the seed splits, the shoot climbs, leaves unfurl and wash with green, and the ear ripens from ink to gold. A large counter and a four-stage stepper (Sowing → Rooting → Growing → Harvest, in the visitor's saved language) frame it. It always shows for at least 2.5 s, never looks stuck on a slow line, and on exit the screen folds into the soil line.
 2. **First screen:** the hero, with no photos.
 3. **Farm scene:** loads as soon as the loader lifts.
 4. **Lower home sections:** each section is its own small file, loaded when the visitor gets near it or the browser is idle.
@@ -287,7 +300,7 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 ## 12. Checklist before going live
 
 - [ ] Send one test enquiry and click **Activate Form** in the email FormSubmit sends to krishivamagriscience@gmail.com.
-- [ ] Add the GA4 Measurement ID to `details.ts`.
+- [x] Add the GA4 Measurement ID to `details.ts` (G-9HBHPKBVWH).
 - [ ] Confirm the office unit number and fill in `streetAddress` (and optionally `mapEmbedUrl`, `hours`, `whatsapp`, social links).
 - [ ] Confirm Floxi's cytokinin content (the pack front says 0.2%, the composition table says 0.02%) — it is not shown on the site until confirmed.
 - [ ] Add Anthos's photo and details.

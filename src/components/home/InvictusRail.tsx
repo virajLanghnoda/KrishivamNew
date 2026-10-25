@@ -1,12 +1,70 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { invictusVariants } from '../../data/site'
 
 // Left and right edge of the page container, so the rail starts and ends in line
 // with every other section.
 const edge = 'pl-5 pr-5 sm:pl-8 sm:pr-8 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:pr-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]'
+
+// A row of seedlings, tiled along the furrow the tractor leaves behind.
+const SPROUTS = `url("data:image/svg+xml,${encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='22' height='14'><path d='M11 14V7' stroke='#8fcf6a' stroke-width='1.4' stroke-linecap='round'/><path d='M11 9C8.5 5 5.5 5 4 6c1.6 2.6 4.4 3.6 7 3z' fill='#8fcf6a'/><path d='M11 8c2-4.4 5.4-5 7-4-1.2 3-4 4.4-7 4z' fill='#c5e86c'/></svg>")}")`
+const spin = { transformBox: 'fill-box' as const, transformOrigin: 'center' }
+
+/** Scroll progress as a tractor crossing a field, planting a row of seedlings behind it. */
+function TractorProgress({ progress }: { progress: MotionValue<number> }) {
+  const left = useTransform(progress, v => `calc(${v * 100}% - ${v * 58}px)`)
+  const planted = useTransform(progress, v => `inset(0 ${100 - v * 100}% 0 0)`)
+  const rear = useTransform(progress, v => v * 1600)
+  const front = useTransform(progress, v => v * 2600)
+  const bob = useTransform(progress, v => Math.sin(v * 160) * 0.8)
+  return (
+    <div className="relative h-14" aria-hidden="true">
+      {/* untouched ground ahead, then the furrow and seedlings behind */}
+      <div className="absolute inset-x-0 bottom-1 h-[3px] rounded-full bg-cream/10 [background-image:repeating-linear-gradient(90deg,rgba(245,242,234,.25)_0_6px,transparent_6px_14px)]" />
+      <motion.div style={{ clipPath: planted }} className="absolute inset-x-0 bottom-1 h-[3px] rounded-full bg-gradient-to-r from-[#5a3d26] via-forest to-lime" />
+      <motion.div style={{ clipPath: planted, backgroundImage: SPROUTS, backgroundSize: '22px 14px' }} className="absolute inset-x-0 bottom-[7px] h-[14px] bg-repeat-x" />
+      <motion.div style={{ left }} className="absolute bottom-[3px] w-[58px]">
+        <svg viewBox="0 0 64 44" className="h-auto w-full overflow-visible">
+          {/* exhaust puffs */}
+          <g fill="#f5f2ea" opacity=".35">
+            <circle className="mini-puff" cx="46" cy="4" r="2.6" />
+            <circle className="mini-puff" cx="46" cy="4" r="3.4" style={{ animationDelay: '.9s' }} />
+          </g>
+          <motion.g style={{ y: bob }}>
+            <rect x="44.5" y="6" width="3" height="11" rx="1" fill="#07130d" />
+            {/* cab */}
+            <path d="M8 6h20l3 16H8z" fill="#c5e86c" />
+            <path d="M11 9h14.5l2 10H11z" fill="#f5f2ea" opacity=".5" />
+            <rect x="6" y="4" width="24" height="3" rx="1.5" fill="#1b6b3a" />
+            {/* hood and chassis */}
+            <path d="M28 16h22c4 0 6 2.4 6 6v6H28z" fill="#c5e86c" />
+            <path d="M30 19h18" stroke="#1b6b3a" strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="55" cy="21" r="1.6" fill="#f5f2ea" />
+            <rect x="4" y="26" width="54" height="3.2" rx="1.6" fill="#07130d" />
+          </motion.g>
+          {/* wheels */}
+          <g transform="translate(17 32)">
+            <circle r="11" fill="#07130d" />
+            <circle r="9.4" fill="none" stroke="#1b6b3a" strokeWidth="1.6" strokeDasharray="2.4 2.6" />
+            <motion.g style={{ rotate: rear, ...spin }}>
+              <path d="M-7 0H7M0 -7V7M-5 -5L5 5M-5 5L5 -5" stroke="#ebe4d2" strokeOpacity=".55" strokeWidth="1.4" />
+            </motion.g>
+            <circle r="3" fill="#c5e86c" />
+          </g>
+          <g transform="translate(49 36)">
+            <circle r="7" fill="#07130d" />
+            <motion.g style={{ rotate: front, ...spin }}>
+              <path d="M-4.5 0H4.5M0 -4.5V4.5" stroke="#ebe4d2" strokeOpacity=".55" strokeWidth="1.2" />
+            </motion.g>
+            <circle r="2" fill="#c5e86c" />
+          </g>
+        </svg>
+      </motion.div>
+    </div>
+  )
+}
 
 /** Vertical scroll drives a horizontal rail of the INVICTUS formulations. */
 export default function InvictusRail() {
@@ -61,10 +119,8 @@ export default function InvictusRail() {
           ))}
         </motion.div>
 
-        <div className="container-page mt-[max(1rem,3svh)] shrink-0">
-          <div className="h-[2px] w-full overflow-hidden rounded bg-cream/15">
-            <motion.div style={{ scaleX: bar }} className="h-full origin-left bg-lime" />
-          </div>
+        <div className="container-page mt-[max(0.5rem,2svh)] shrink-0">
+          <TractorProgress progress={bar} />
         </div>
       </section>
     </div>

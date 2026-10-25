@@ -32,7 +32,8 @@ function Seal() {
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
-  const ready = useLoaderDone()
+  // Wait until the loader has slid most of the way off, so the entrance is seen.
+  const ready = useLoaderDone(450)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0])

@@ -186,7 +186,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
     <div ref={wrapRef} className={cn('relative', className)} style={{ height: `${100 + count * 62}svh` }}>
       <section aria-label={label} className="sticky top-0 h-[100svh] w-full select-none overflow-hidden">
         <div ref={stageRef} className="absolute inset-0" style={{ perspective: `${metrics.depth}px` }}>
-          <div ref={wheelRef} className={cn('absolute left-1/2 [transform-style:preserve-3d]', narrow ? 'top-[58%]' : 'top-1/2')}>
+          <div ref={wheelRef} className={cn('absolute left-1/2 [transform-style:preserve-3d]', narrow ? 'top-[60%]' : 'top-1/2')}>
             {items.map((item, i) => {
               const style = { width: metrics.cardW, height: metrics.cardH, marginLeft: -metrics.cardW / 2, marginTop: -metrics.cardH / 2 }
               const face = (
@@ -194,7 +194,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
                   className="relative block size-full overflow-hidden rounded-xl shadow-[0_24px_50px_-20px_rgba(0,0,0,.6)]"
                   style={{ background: 'radial-gradient(120% 90% at 72% 42%, rgba(197,232,108,.45), transparent 60%), linear-gradient(135deg, #f5f2ea, #ebe4d2)' }}
                 >
-                  <span className="absolute left-[6%] top-[9%] max-w-[46%] font-display text-[clamp(1rem,2.4vw,2.2rem)] font-bold leading-none text-night/85">{item.title}</span>
+                  <span translate="no" className="notranslate absolute left-[6%] top-[9%] max-w-[46%] font-display text-[clamp(1rem,2.4vw,2.2rem)] font-bold leading-none text-night/85">{item.title}</span>
                   {item.subtitle && <span className="absolute bottom-[9%] left-[6%] max-w-[46%] text-[clamp(.55rem,.8vw,.72rem)] font-bold uppercase tracking-[.18em] text-night/50">{item.subtitle}</span>}
                   <img src={item.image} alt={item.title} draggable={false} loading="lazy" decoding="async" className="absolute bottom-[6%] right-[6%] h-[88%] w-[48%] object-contain drop-shadow-[0_18px_22px_rgba(0,0,0,.28)]" />
                   {action && item.href && (
@@ -222,13 +222,15 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
           ref={titleRef}
           className={cn(
             'pointer-events-none absolute font-display leading-none tracking-tight text-cream opacity-0',
-            narrow ? 'left-0 right-0 top-[calc(76px+3svh)] text-center' : 'left-[4%] top-1/2 max-w-[22%] -translate-y-1/2',
+            // On phones the title sits in its own band at the top, over a fade, so the
+            // card turning away above the front one slips underneath it.
+            narrow ? 'left-0 right-0 top-0 z-[200] bg-[linear-gradient(to_bottom,#07130d_0%,#07130d_72%,rgba(7,19,13,0))] px-5 pb-12 pt-[calc(76px+2svh)] text-center' : 'left-[4%] top-1/2 max-w-[22%] -translate-y-1/2',
           )}
           style={{ fontSize: metrics.title }}
           aria-live="polite"
         >
-          {items[active]?.title}
-          <span className="mt-3 block font-sans text-xs font-bold uppercase tracking-[.22em] text-lime">{items[active]?.subtitle}</span>
+          <span key={active} className="block"><span translate="no" className="notranslate">{items[active]?.title}</span>
+          <span className="mt-3 block font-sans text-xs font-bold uppercase tracking-[.22em] text-lime">{items[active]?.subtitle}</span></span>
         </div>
 
         {!narrow && (
@@ -236,7 +238,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
             {items.map((item, i) => (
               <li key={item.title}>
                 <button type="button" onClick={() => goTo(i)} className={cn('cursor-pointer transition-colors hover:text-cream focus:outline-none focus-visible:text-lime', i === active && 'font-semibold text-lime')}>
-                  {String(i + 1).padStart(2, '0')} · {item.title}
+                  {String(i + 1).padStart(2, '0')} · <span translate="no" className="notranslate">{item.title}</span>
                 </button>
               </li>
             ))}

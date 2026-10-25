@@ -31,7 +31,7 @@ export const details = {
   // ── Analytics ──────────────────────────────────────────────────────────────
   // Google Analytics 4 → Admin → Data streams → your web stream → Measurement ID.
   // Looks like 'G-ABC123XYZ9'. Leave empty and no analytics code is loaded.
-  googleAnalyticsId: '',
+  googleAnalyticsId: 'G-9HBHPKBVWH',
 
   // ── Website address ────────────────────────────────────────────────────────
   // The live domain, without a trailing slash. Used for SEO (canonical links,

@@ -18,7 +18,7 @@ export default function ProductVisual({ product, className, imgClassName, eager 
         <div className="absolute -bottom-16 -left-10 h-48 w-48 rounded-full border border-white/10" />
         <div className="relative px-6 text-center">
           <Sprout className="mx-auto text-lime" size={34} strokeWidth={1.3} />
-          <p className="mt-4 font-display text-4xl font-bold leading-none">{product.name}</p>
+          <p translate="no" className="notranslate mt-4 font-display text-4xl font-bold leading-none">{product.name}</p>
           <p className="mt-3 text-[10px] font-bold uppercase tracking-[.22em] text-cream/60">{product.tagline ?? product.category}</p>
         </div>
       </div>

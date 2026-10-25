@@ -63,7 +63,7 @@ export default function Products() {
                       <ProductVisual product={p} className="h-[88%] w-full transition duration-700 group-hover:-translate-y-2 group-hover:scale-[1.03]" />
                     </div>
                     <span className="mt-5 text-[10px] font-bold uppercase tracking-[.18em] text-forest">{p.category}</span>
-                    <h3 className="mt-1 font-display text-3xl leading-none">{p.name}</h3>
+                    <h3 translate="no" className="notranslate mt-1 font-display text-3xl leading-none">{p.name}</h3>
                     {p.tagline && <p className="mt-2 text-sm text-night/55">{p.tagline}</p>}
                     <span className="mt-auto inline-flex items-center gap-1 pt-5 text-xs font-bold">View product <ArrowUpRight size={13} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
                   </Link>

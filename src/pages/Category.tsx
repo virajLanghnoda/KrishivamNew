@@ -35,7 +35,7 @@ export default function Category() {
                   <div className="flex flex-col p-8 sm:p-10">
                     <span className="font-display text-5xl font-extrabold leading-none text-night/15">0{i + 1}</span>
                     <p className="mt-10 text-[11px] font-bold uppercase tracking-[.2em] text-forest">{p.tagline ?? c.name}</p>
-                    <h3 className="mt-2 font-display text-5xl leading-none sm:text-6xl">{p.name}</h3>
+                    <h3 translate="no" className="notranslate mt-2 font-display text-5xl leading-none sm:text-6xl">{p.name}</h3>
                     <p className="mt-4 max-w-md leading-7 text-night/60">{p.positioning}</p>
                     {p.highlights && (
                       <ul className="mt-6 flex flex-wrap gap-2">

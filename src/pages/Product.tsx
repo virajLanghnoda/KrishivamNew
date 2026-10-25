@@ -34,7 +34,7 @@ export default function Product() {
               <Link to={`/products/${p.categorySlug}`} className="hover:text-cream">{p.category}</Link>
             </motion.div>
             <p className="eyebrow mt-8 !text-lime">{p.tagline ?? p.category}</p>
-            <TextReveal as="h1" text={p.name} delay={0.1} className="mt-4 font-display text-[clamp(3.2rem,15vw,9rem)] leading-[.9]" />
+            <TextReveal as="h1" text={p.name} delay={0.1} className="notranslate mt-4 font-display text-[clamp(3.2rem,15vw,9rem)] leading-[.9]" />
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }} className="mt-7 max-w-xl text-lg leading-8 text-cream/65">{p.positioning}</motion.p>
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.7 }} className="mt-9 flex flex-wrap gap-3">
               <Link to={`/contact?product=${encodeURIComponent(p.name)}`} className="btn-lime">Enquire now <ArrowUpRight size={15} /></Link>
@@ -55,7 +55,7 @@ export default function Product() {
         <section className="py-20 lg:py-28">
           <div className="container-page grid gap-14 lg:grid-cols-[.8fr_1.2fr]">
             <Reveal>
-              <p className="eyebrow">Why {p.name}</p>
+              <p className="eyebrow">Why <span translate="no" className="notranslate">{p.name}</span></p>
               <h2 className="section-title">Made to do one job well.</h2>
             </Reveal>
             <div>
@@ -104,7 +104,7 @@ export default function Product() {
         <section className="bg-sand py-20 lg:py-28">
           <div className="container-page">
             <Reveal>
-              <p className="eyebrow">The {p.name} family</p>
+              <p className="eyebrow">The <span translate="no" className="notranslate">{p.name}</span> family</p>
               <h2 className="section-title">Pick the formulation your crop needs.</h2>
             </Reveal>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -148,7 +148,7 @@ export default function Product() {
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
                 <p className="eyebrow !text-lime">Interested in this product?</p>
-                <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl">Let’s talk about {p.name}.</h2>
+                <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl">Let’s talk about <span translate="no" className="notranslate">{p.name}</span>.</h2>
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link className="btn-lime" to={`/contact?product=${encodeURIComponent(p.name)}`}>Enquire now <ArrowUpRight size={15} /></Link>

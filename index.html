@@ -66,80 +66,98 @@
     </script>
     <!--
       First-paint loader. Everything it needs is inline, so it shows before a single
-      script downloads. Dawn over a ploughed field: the sun rises, sprouts break the
-      furrows and a wheat plant grows to a ripe golden ear as the site really loads.
-      Growth is paced to at least 2.5 s, and on a slow line it keeps creeping up so
-      the screen never looks stuck. It lifts once the first screen is ready.
+      script downloads. A botanical engraving of a wheat plant grows with real
+      progress, the way a seed really does: roots first, then the shoot, the leaves
+      and finally an ear that ripens to gold. A large counter and a four-stage
+      stepper (in the visitor's saved language) frame it. It shows for at least
+      2.5 s, keeps creeping on a slow line, and on exit the whole screen folds
+      into the soil line.
     -->
     <style>
       html.kl-lock { overflow: hidden; }
-      #kl { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: #07130d; color: #f5f2ea; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; transition: transform .95s cubic-bezier(.76,0,.24,1), border-radius .95s cubic-bezier(.76,0,.24,1); }
-      #kl.kl-out { transform: translate3d(0,-100%,0); border-radius: 0 0 50% 50% / 0 0 12vh 12vh; }
-      #kl.kl-out .kl-inner { opacity: 0; transform: translate3d(0,-40px,0); }
-      .kl-inner { display: flex; flex-direction: column; align-items: center; transition: opacity .5s ease, transform .95s cubic-bezier(.76,0,.24,1); }
-      .kl-art { width: min(88vw, 440px); height: auto; overflow: visible; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); }
-      .kl-art g, .kl-art path, .kl-art circle { transform-box: view-box; }
-      .kl-stem { stroke-dasharray: 1; stroke-dashoffset: 1; }
-      .kl-word { margin-top: 10px; font-size: 13px; font-weight: 700; letter-spacing: .5em; text-indent: .5em; }
-      .kl-bar { position: relative; margin-top: 16px; width: 168px; height: 2px; border-radius: 2px; background: rgba(245,242,234,.12); overflow: hidden; }
-      .kl-bar i { position: absolute; inset: 0; background: linear-gradient(90deg, #c5e86c, #e8c25a); transform-origin: 0 50%; transform: scaleX(0); }
-      .kl-meta { margin-top: 12px; display: flex; gap: 14px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(245,242,234,.5); font-variant-numeric: tabular-nums; }
-      .kl-stage { min-width: 11em; text-align: left; }
-      @media (prefers-reduced-motion: reduce) { #kl, .kl-inner { transition-duration: .01ms; } }
+      #kl { position: fixed; inset: 0; z-index: 100; overflow: hidden; background: #07130d; color: #f5f2ea; font-family: "Manrope Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; clip-path: inset(0 0 0 0); transition: clip-path 1s cubic-bezier(.76,0,.24,1); }
+      #kl::before { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 55% at 50% 42%, rgba(27,107,58,.28), transparent 70%), radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,.55)); pointer-events: none; }
+      #kl::after { content: ''; position: absolute; inset: -50%; opacity: .07; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+      #kl.kl-out .kl-stage-wrap, #kl.kl-out .kl-corner { opacity: 0; transition: opacity .35s ease; }
+      .kl-sun { position: absolute; left: 50%; top: 8%; width: min(70vw, 620px); aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(232,194,90,.22), rgba(197,232,108,.06) 45%, transparent 70%); opacity: 0; pointer-events: none; }
+      .kl-stage-wrap { position: absolute; inset: 0; display: grid; place-items: center; }
+      .kl-art { height: min(64svh, 540px); width: auto; overflow: visible; margin-top: -4svh; }
+      .kl-art .ln { fill: none; stroke: #f5f2ea; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+      .kl-art g, .kl-art path { transform-box: view-box; }
+      .kl-art .kl-half { transform-box: fill-box; transform-origin: 50% 90%; }
+      .kl-mote { position: absolute; bottom: 30%; width: 3px; height: 3px; border-radius: 50%; background: #e8d79a; opacity: 0; animation: kl-rise linear infinite; }
+      @keyframes kl-rise { 0% { transform: translate3d(0,0,0); opacity: 0; } 15% { opacity: .55; } 100% { transform: translate3d(var(--dx), -46vh, 0); opacity: 0; } }
+      @keyframes kl-ripple { from { transform: scale(.2); opacity: .5; } to { transform: scale(1); opacity: 0; } }
+      .kl-ripple { transform-origin: 120px 250px; animation: kl-ripple 2.4s cubic-bezier(.2,.6,.3,1) infinite; }
+      .kl-corner { position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: rgba(245,242,234,.55); }
+      .kl-tl { top: 28px; left: 28px; }
+      .kl-tl b { color: #f5f2ea; font-size: 15px; font-weight: 800; letter-spacing: .42em; }
+      .kl-tr { top: 28px; right: 28px; text-align: right; }
+      .kl-bl { bottom: 24px; left: 28px; }
+      .kl-count { font-size: clamp(64px, 11vw, 148px); font-weight: 800; line-height: .82; letter-spacing: -.05em; color: #f5f2ea; font-variant-numeric: tabular-nums; text-transform: none; }
+      .kl-count sup { font-size: .26em; letter-spacing: 0; margin-left: .12em; color: #c5e86c; vertical-align: top; position: relative; top: .5em; }
+      .kl-br { bottom: 30px; right: 28px; align-items: flex-end; }
+      .kl-steps { display: flex; gap: 22px; }
+      .kl-step { display: flex; flex-direction: column; gap: 10px; width: 92px; color: rgba(245,242,234,.3); transition: color .4s ease; }
+      .kl-step i { display: block; height: 2px; border-radius: 2px; background: rgba(245,242,234,.14); overflow: hidden; }
+      .kl-step i b { display: block; height: 100%; background: linear-gradient(90deg, #c5e86c, #e8c25a); transform-origin: 0 50%; transform: scaleX(0); }
+      .kl-step.on { color: #f5f2ea; }
+      .kl-step span { font-size: 10px; letter-spacing: .24em; }
+      .kl-step small { font-size: 9px; letter-spacing: .2em; opacity: .7; }
+      @media (max-width: 640px) {
+        .kl-tl, .kl-tr { top: 20px; } .kl-tl { left: 20px; } .kl-tr { right: 20px; }
+        .kl-tr { display: none; }
+        .kl-bl { left: 20px; bottom: 20px; }
+        .kl-br { right: 20px; bottom: 26px; }
+        .kl-steps { gap: 6px; }
+        .kl-step { width: 34px; }
+        .kl-step span, .kl-step small { display: none; }
+        .kl-step.now span { display: block; position: absolute; right: 0; bottom: 16px; white-space: nowrap; color: #f5f2ea; }
+        .kl-art { height: min(56svh, 440px); margin-top: -8svh; }
+      }
+      .kl-indic .kl-tag, .kl-indic .kl-step span { letter-spacing: .02em; text-transform: none; font-size: 12px; }
+      @media (prefers-reduced-motion: reduce) { #kl { transition-duration: .01ms; } .kl-ripple, .kl-mote { animation: none; display: none; } }
     </style>
   </head>
   <body>
-    <div id="kl" role="status" aria-live="polite" aria-label="Loading Krishivam Agriscience">
-      <div class="kl-inner">
-        <svg class="kl-art" viewBox="0 0 320 260" aria-hidden="true">
+    <div id="kl" class="notranslate" translate="no" role="status" aria-live="polite" aria-label="Loading Krishivam Agriscience">
+      <div class="kl-sun"></div>
+      <div class="kl-motes" aria-hidden="true"></div>
+      <div class="kl-stage-wrap">
+        <svg class="kl-art" viewBox="0 0 240 340" aria-hidden="true">
           <defs>
-            <linearGradient id="kl-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07130d" /><stop offset="1" stop-color="#10291a" /></linearGradient>
-            <linearGradient id="kl-dawn" x1="0" y1="0" x2="0" y2="1"><stop offset=".25" stop-color="#e3a64c" stop-opacity="0" /><stop offset=".85" stop-color="#e9a94e" stop-opacity=".5" /><stop offset="1" stop-color="#f6cf7a" stop-opacity=".75" /></linearGradient>
-            <radialGradient id="kl-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff4cf" /><stop offset=".55" stop-color="#f8d27a" /><stop offset="1" stop-color="#f0a948" /></radialGradient>
-            <radialGradient id="kl-halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f8d27a" stop-opacity=".55" /><stop offset="1" stop-color="#f8d27a" stop-opacity="0" /></radialGradient>
-            <linearGradient id="kl-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f170f" /><stop offset=".5" stop-color="#33241a" /><stop offset="1" stop-color="#4a3322" /></linearGradient>
-            <linearGradient id="kl-warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b45a" stop-opacity=".35" /><stop offset="1" stop-color="#f0b45a" stop-opacity="0" /></linearGradient>
-            <linearGradient id="kl-stemc" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="80"><stop offset="0" stop-color="#2d6a2f" /><stop offset="1" stop-color="#8cc34e" /></linearGradient>
-            <linearGradient id="kl-bladeA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#23602c" /><stop offset=".6" stop-color="#4f9a3a" /><stop offset="1" stop-color="#9fcf5a" /></linearGradient>
-            <linearGradient id="kl-bladeB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b4f26" /><stop offset=".7" stop-color="#3f8a35" /><stop offset="1" stop-color="#7fb84a" /></linearGradient>
-            <linearGradient id="kl-gold" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#c9952f" /><stop offset="1" stop-color="#f3d57c" /></linearGradient>
-            <clipPath id="kl-above"><rect x="0" y="0" width="320" height="177" /></clipPath>
+            <linearGradient id="kl-soil-line" gradientUnits="userSpaceOnUse" x1="-500" y1="0" x2="740" y2="0"><stop offset="0" stop-color="#f5f2ea" stop-opacity="0" /><stop offset=".5" stop-color="#f5f2ea" stop-opacity=".55" /><stop offset="1" stop-color="#f5f2ea" stop-opacity="0" /></linearGradient>
+            <linearGradient id="kl-wash" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b6b3a" /><stop offset="1" stop-color="#8fcf6a" /></linearGradient>
+            <linearGradient id="kl-grain" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#b8862c" /><stop offset="1" stop-color="#f3d57c" /></linearGradient>
+            <linearGradient id="kl-earth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a1c" stop-opacity=".55" /><stop offset="1" stop-color="#3a2a1c" stop-opacity="0" /></linearGradient>
           </defs>
-          <!-- sky, fading stars, the dawn glow and a rising sun -->
-          <rect width="320" height="178" fill="url(#kl-sky)" />
-          <g class="kl-stars" fill="#f5f2ea"></g>
-          <rect class="kl-dawn" width="320" height="178" fill="url(#kl-dawn)" opacity="0" />
-          <g clip-path="url(#kl-above)">
-            <g class="kl-sunrise">
-              <circle cx="236" cy="176" r="62" fill="url(#kl-halo)" />
-              <circle cx="236" cy="176" r="19" fill="url(#kl-sun)" />
-            </g>
+          <!-- earth below the line, the line itself drawn outward from the seed -->
+          <rect x="-500" y="250" width="1240" height="120" fill="url(#kl-earth)" class="kl-earth" opacity="0" />
+          <path class="ln kl-soil" pathLength="1" d="M120 250 H-500" stroke="url(#kl-soil-line)" stroke-width=".9" />
+          <path class="ln kl-soil" pathLength="1" d="M120 250 H740" stroke="url(#kl-soil-line)" stroke-width=".9" />
+          <g class="kl-ripples" fill="none" stroke="#c5e86c" stroke-width=".5" stroke-opacity=".6">
+            <ellipse class="kl-ripple" cx="120" cy="250" rx="70" ry="10" />
+            <ellipse class="kl-ripple" cx="120" cy="250" rx="70" ry="10" style="animation-delay:.8s" />
+            <ellipse class="kl-ripple" cx="120" cy="250" rx="70" ry="10" style="animation-delay:1.6s" />
           </g>
-          <!-- a far treeline on the horizon -->
-          <path d="M0 178 L0 170 C10 168 16 164 24 166 C30 160 40 161 44 166 C56 165 62 168 74 167 C82 162 90 160 98 165 C112 167 126 169 140 168 C150 166 156 163 164 166 C176 168 190 167 202 168 C212 163 220 161 228 166 C242 168 258 166 270 167 C278 162 288 161 294 166 C304 167 312 166 320 168 L320 178Z" fill="#0b2014" />
-          <!-- ploughed field in perspective -->
-          <rect y="176" width="320" height="84" fill="url(#kl-soil)" />
-          <rect class="kl-warmth" y="176" width="320" height="84" fill="url(#kl-warm)" opacity="0" />
-          <g class="kl-furrows" fill="none" stroke-linecap="round"></g>
-          <g class="kl-grains" fill="#c9a77c"></g>
-          <g class="kl-sprouts"></g>
-          <!-- the seed splits where the main plant breaks the soil -->
-          <path d="M146 229 C152 224 168 224 174 229 Z" fill="#3d2a1b" />
-          <g transform="translate(160 228)">
-            <path class="kl-half kl-half-l" d="M0 -4 C-6 -5 -9 -2 -8 1 C-7 4 -3 5 0 4Z" fill="#d9c49a" />
-            <path class="kl-half kl-half-r" d="M0 -4 C6 -5 9 -2 8 1 C7 4 3 5 0 4Z" fill="#bfa77a" />
+          <!-- roots come first -->
+          <g class="kl-roots" stroke-opacity=".5"></g>
+          <!-- the seed, which splits as the shoot breaks through -->
+          <g transform="translate(120 251)">
+            <path class="kl-half kl-half-l" d="M0 -5 C-6 -5.5 -9 -2 -8 1.5 C-7 4.5 -3 5 0 4.5Z" fill="#d9c49a" />
+            <path class="kl-half kl-half-r" d="M0 -5 C6 -5.5 9 -2 8 1.5 C7 4.5 3 5 0 4.5Z" fill="#bfa77a" />
           </g>
-          <!-- the main plant: wheat, from seedling to golden ear -->
           <g class="kl-plant">
-            <path class="kl-stem" pathLength="1" d="M160 228 C158 204 163 182 160 158 C157 134 162 110 160 82" fill="none" stroke="url(#kl-stemc)" stroke-width="3" stroke-linecap="round" />
-            <g class="kl-blades"></g>
+            <path class="ln kl-stem" pathLength="1" stroke-width="1.6" d="M120 250 C118 215 123 185 120 150 C117 118 122 92 120 66" />
+            <g class="kl-leaves"></g>
             <g class="kl-ear"></g>
           </g>
         </svg>
-        <div class="kl-word">KRISHIVAM</div>
-        <div class="kl-bar"><i></i></div>
-        <div class="kl-meta"><span class="kl-pct">0%</span><span class="kl-stage">Sowing the seed</span></div>
       </div>
+      <div class="kl-corner kl-tl"><b>KRISHIVAM</b><span>Agriscience</span></div>
+      <div class="kl-corner kl-tr"><span class="kl-tag">Cultivating Tomorrow</span><span>Ahmedabad · Gujarat</span></div>
+      <div class="kl-corner kl-bl"><span class="kl-count"><span class="kl-num">00</span><sup>%</sup></span></div>
+      <div class="kl-corner kl-br"><div class="kl-steps"></div></div>
     </div>
     <script>
       (function () {
@@ -147,104 +165,117 @@
         if (!el) return;
         var NS = 'http://www.w3.org/2000/svg';
         var q = function (s) { return el.querySelector(s); };
+        var qa = function (s) { return el.querySelectorAll(s); };
         var make = function (tag, attrs, parent) {
           var n = document.createElementNS(NS, tag);
           for (var k in attrs) n.setAttribute(k, attrs[k]);
           if (parent) parent.appendChild(n);
           return n;
         };
-        var stem = q('.kl-stem'), plant = q('.kl-plant'), dawn = q('.kl-dawn'), sun = q('.kl-sunrise'), warmth = q('.kl-warmth'), stars = q('.kl-stars');
-        var halfL = q('.kl-half-l'), halfR = q('.kl-half-r'), bar = q('.kl-bar i'), pct = q('.kl-pct'), stageEl = q('.kl-stage');
-        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        // Scattered the same way every time.
-        var seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
         var span = function (v, a, b) { return Math.max(0, Math.min(1, (v - a) / (b - a))); };
         var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
-        var lerp = function (a, b, t) { return a + (b - a) * t; };
+        var inout = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        for (var s = 0; s < 22; s++) make('circle', { cx: (rnd() * 320).toFixed(1), cy: (rnd() * 120).toFixed(1), r: (0.4 + rnd() * 0.8).toFixed(2), opacity: (0.2 + rnd() * 0.5).toFixed(2) }, stars);
-
-        // Furrows run from the horizon toward the viewer; ridges catch the light.
-        var furrows = q('.kl-furrows'), VX = 160, HY = 177;
-        var row = function (d, t) { return [lerp(VX + d * 13, VX + d * 118, t), lerp(HY, 262, t)]; };
-        for (var d = -6.5; d <= 6.5; d += 1) {
-          var a = row(d, 0), b = row(d, 1);
-          make('path', { d: 'M' + a[0] + ' ' + a[1] + ' L' + b[0] + ' ' + b[1], stroke: '#0f0a06', 'stroke-opacity': '.55', 'stroke-width': '1.6' }, furrows);
-          make('path', { d: 'M' + (a[0] + 1) + ' ' + a[1] + ' L' + (b[0] + 4) + ' ' + b[1], stroke: '#a07a52', 'stroke-opacity': '.4', 'stroke-width': '.8' }, furrows);
-        }
-        var grains = q('.kl-grains');
-        for (var g = 0; g < 70; g++) {
-          var gy = 182 + Math.pow(rnd(), 0.8) * 76, depth = (gy - HY) / 85;
-          make('circle', { cx: (rnd() * 320).toFixed(1), cy: gy.toFixed(1), r: (0.3 + depth * 1.4 * rnd()).toFixed(2), opacity: (0.08 + rnd() * 0.22).toFixed(2) }, grains);
-        }
-
-        // A grass blade drawn pointing right from its joint, arching up then
-        // drooping at the tip. Mirrored for the left side.
-        var blade = function (len, lift, droop, w) {
-          return 'M0 0 C' + len * 0.3 + ' ' + -lift + ' ' + len * 0.72 + ' ' + -lift * 0.95 + ' ' + len + ' ' + droop +
-            ' C' + len * 0.7 + ' ' + -lift * 0.5 + ' ' + len * 0.32 + ' ' + -lift * 0.38 + ' 0 ' + w + 'Z';
-        };
-        var rib = function (len, lift, droop) { return 'M0 1 C' + len * 0.3 + ' ' + -lift * 0.72 + ' ' + len * 0.72 + ' ' + -lift * 0.72 + ' ' + len + ' ' + droop; };
-
-        // Sprouts along the furrows, near rows bigger. Each wakes at its own moment.
-        var sprouts = [], sproutHost = q('.kl-sprouts'), spots = [];
-        for (var sd = -5; sd <= 5; sd++) {
-          if (sd === 0) continue;
-          for (var st = 0.08; st < 1; st += 0.22) {
-            var tt = st + (rnd() - 0.5) * 0.08, at = row(sd + 0.5, tt);
-            if (at[0] < 6 || at[0] > 314 || (Math.abs(at[0] - 160) < 26 && at[1] > 210)) continue;
-            spots.push({ x: at[0], y: at[1], s: 0.5 + tt * 1.4 });
-          }
-        }
-        spots.sort(function (m, n) { return m.y - n.y; });
-        for (var si = 0; si < spots.length; si++) {
-          var sp = spots[si], grp = make('g', {}, sproutHost), parts = [];
-          for (var bi = 0; bi < 3; bi++) {
-            var side = bi === 0 ? -1 : 1, len = [11, 14, 9][bi], ang = [-62, -78, -28][bi];
-            var leaf = make('path', { d: blade(len, 4, 1, 1.6), fill: 'url(#kl-blade' + (bi % 2 ? 'A' : 'B') + ')' }, grp);
-            parts.push({ el: leaf, side: side, a: ang });
-          }
-          sprouts.push({ el: grp, x: sp.x, y: sp.y, s: sp.s, parts: parts, at: 0.12 + rnd() * 0.5, ph: rnd() * 6 });
+        // Labels in the visitor's saved language (set by the language switcher).
+        var lang = 'en';
+        try { lang = localStorage.getItem('kl-lang') || 'en'; } catch (e) {}
+        var T = {
+          en: { tag: 'Cultivating Tomorrow', steps: ['Sowing', 'Rooting', 'Growing', 'Harvest'] },
+          hi: { tag: 'खेती, कल के लिए', steps: ['बुवाई', 'जड़ें', 'बढ़त', 'फ़सल'] },
+          gu: { tag: 'ખેતી, આવતીકાલ માટે', steps: ['વાવણી', 'મૂળ', 'વૃદ્ધિ', 'લણણી'] }
+        }[lang] || null;
+        if (!T) T = { tag: 'Cultivating Tomorrow', steps: ['Sowing', 'Rooting', 'Growing', 'Harvest'] };
+        q('.kl-tag').textContent = T.tag;
+        // Devanagari and Gujarati letters join up; tracking them out breaks the shapes.
+        if (lang === 'hi' || lang === 'gu') el.classList.add('kl-indic');
+        // Stage windows on the 0-1 progress scale.
+        var bands = [[0, .16], [.16, .36], [.36, .8], [.8, 1]];
+        var stepsHost = q('.kl-steps'), steps = [];
+        for (var s = 0; s < 4; s++) {
+          var st = document.createElement('div');
+          st.className = 'kl-step';
+          st.innerHTML = '<i><b></b></i><small>0' + (s + 1) + '</small><span>' + T.steps[s] + '</span>';
+          stepsHost.appendChild(st);
+          steps.push({ el: st, bar: st.querySelector('b'), band: bands[s] });
         }
 
-        // Main plant blades, low to high. `at` is how far up the stem the joint sits.
-        var blades = [
-          { at: .08, len: 56, lift: 15, droop: 16, a: -4, side: 1, fill: 'A' },
-          { at: .16, len: 62, lift: 18, droop: 18, a: -2, side: -1, fill: 'B' },
-          { at: .32, len: 66, lift: 20, droop: 13, a: -12, side: 1, fill: 'B' },
-          { at: .45, len: 60, lift: 18, droop: 10, a: -15, side: -1, fill: 'A' },
-          { at: .6, len: 50, lift: 16, droop: 6, a: -24, side: 1, fill: 'A' },
-          { at: .73, len: 40, lift: 12, droop: 3, a: -32, side: -1, fill: 'B' },
-          { at: .85, len: 28, lift: 9, droop: 0, a: -44, side: 1, fill: 'A' },
+        // Pollen drifting up through the light.
+        var motes = q('.kl-motes'), seed = 5, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+        for (var m = 0; m < 18; m++) {
+          var d = document.createElement('i');
+          d.className = 'kl-mote';
+          d.style.left = (30 + rnd() * 40) + '%';
+          d.style.setProperty('--dx', ((rnd() - .5) * 120).toFixed(0) + 'px');
+          d.style.animationDuration = (5 + rnd() * 6).toFixed(1) + 's';
+          d.style.animationDelay = (-rnd() * 8).toFixed(1) + 's';
+          var size = (1.5 + rnd() * 2.5).toFixed(1) + 'px';
+          d.style.width = d.style.height = size;
+          motes.appendChild(d);
+        }
+
+        // Roots: a tap root and fibrous laterals, fine strokes fading with depth.
+        var rootHost = q('.kl-roots');
+        var rootPaths = [
+          ['M120 252 C121 270 118 288 121 318', 1.1, .55],
+          ['M120 258 C112 263 103 269 94 283', .9, .5],
+          ['M120 262 C129 267 139 274 146 289', .9, .5],
+          ['M119 276 C112 281 107 290 104 302', .7, .4],
+          ['M121 283 C128 288 133 296 135 308', .7, .4],
+          ['M94 283 C90 289 88 295 86 302', .5, .3],
+          ['M146 289 C150 294 152 300 152 307', .5, .3],
+          ['M120 296 C116 300 114 305 113 312', .5, .3],
+          ['M104 302 C101 306 100 310 99 314', .4, .22],
+          ['M135 308 C138 311 139 314 139 318', .4, .22]
         ];
-        var host = q('.kl-blades');
-        for (var i = 0; i < blades.length; i++) {
-          var B = blades[i], grpB = make('g', {}, host);
-          make('path', { d: blade(B.len, B.lift, B.droop, 4.2), fill: 'url(#kl-blade' + B.fill + ')' }, grpB);
-          make('path', { d: rib(B.len, B.lift, B.droop), fill: 'none', stroke: '#e8f3c8', 'stroke-opacity': '.3', 'stroke-width': '.7', 'stroke-linecap': 'round' }, grpB);
-          B.y = 228 - B.at * 146;
-          B.x = 160 + Math.sin(B.at * 6) * 1.6;
-          B.el = grpB;
+        var roots = [];
+        for (var r = 0; r < rootPaths.length; r++) roots.push(make('path', { 'class': 'ln', pathLength: 1, d: rootPaths[r][0], 'stroke-width': rootPaths[r][1], 'stroke-opacity': rootPaths[r][2] }, rootHost));
+
+        // Leaves: long grass blades, outlined in ink, then washed with green.
+        var blade = function (len, lift, droop, w) {
+          return 'M0 0 C' + len * .3 + ' ' + -lift + ' ' + len * .72 + ' ' + -lift * .95 + ' ' + len + ' ' + droop +
+            ' C' + len * .7 + ' ' + -lift * .48 + ' ' + len * .32 + ' ' + -lift * .36 + ' 0 ' + w + 'Z';
+        };
+        var vein = function (len, lift, droop) { return 'M1 1.2 C' + len * .3 + ' ' + -lift * .7 + ' ' + len * .72 + ' ' + -lift * .7 + ' ' + (len - 1) + ' ' + droop; };
+        var leafSpec = [
+          { at: .05, len: 76, lift: 20, droop: 24, a: -2, side: 1 },
+          { at: .11, len: 82, lift: 22, droop: 28, a: 0, side: -1 },
+          { at: .29, len: 84, lift: 24, droop: 17, a: -12, side: 1 },
+          { at: .43, len: 76, lift: 22, droop: 12, a: -16, side: -1 },
+          { at: .59, len: 62, lift: 18, droop: 6, a: -26, side: 1 },
+          { at: .73, len: 48, lift: 14, droop: 2, a: -35, side: -1 }
+        ];
+        var leafHost = q('.kl-leaves'), leaves = [];
+        for (var i = 0; i < leafSpec.length; i++) {
+          var L = leafSpec[i], g = make('g', {}, leafHost);
+          L.wash = make('path', { d: blade(L.len, L.lift, L.droop, 4.6), fill: 'url(#kl-wash)', opacity: 0 }, g);
+          L.edge = make('path', { 'class': 'ln', pathLength: 1, d: blade(L.len, L.lift, L.droop, 4.6), 'stroke-width': .9 }, g);
+          L.vein = make('path', { 'class': 'ln', pathLength: 1, d: vein(L.len, L.lift, L.droop), 'stroke-width': .55, 'stroke-opacity': .6 }, g);
+          L.g = g; L.y = 250 - L.at * 184; L.x = 120 + Math.sin(L.at * 6) * 1.6;
+          leaves.push(L);
         }
 
-        // The ear: paired grains climbing the stem tip, with long awns.
-        var ear = q('.kl-ear'), earGreen = make('g', { fill: '#9fcf5a' }, ear), earGold = make('g', { fill: 'url(#kl-gold)', opacity: '0' }, ear), awns = make('g', { stroke: '#d9c27a', 'stroke-width': '.6', 'stroke-linecap': 'round', fill: 'none', opacity: '0' }, ear);
-        for (var e = 0; e < 7; e++) {
-          var ey = 84 - e * 5.6, ew = 3.6 - e * 0.25;
-          for (var es = -1; es <= 1; es += 2) {
-            var tr = 'translate(' + (160 + es * 2.6) + ' ' + ey + ') rotate(' + es * 24 + ')';
-            make('ellipse', { rx: ew.toFixed(2), ry: (ew * 1.75).toFixed(2), transform: tr }, earGreen);
-            make('ellipse', { rx: ew.toFixed(2), ry: (ew * 1.75).toFixed(2), transform: tr }, earGold);
-            make('path', { d: 'M' + (160 + es * 3) + ' ' + (ey - 3) + ' L' + (160 + es * (10 + e)) + ' ' + (ey - 22 - e * 1.5) }, awns);
+        // The ear: paired grains climbing the tip, each with a long awn.
+        var earHost = q('.kl-ear'), grains = [];
+        var almond = function (s) { return 'M0 0 C' + 3.4 * s + ' ' + -3 * s + ' ' + 3.4 * s + ' ' + -9.5 * s + ' 0 ' + -12.5 * s + ' C' + -3.4 * s + ' ' + -9.5 * s + ' ' + -3.4 * s + ' ' + -3 * s + ' 0 0Z'; };
+        for (var k = 0; k < 8; k++) {
+          var gy = 66 - k * 6.4, sc = 1 - k * .055;
+          for (var side = -1; side <= 1; side += 2) {
+            var gg = make('g', { transform: 'translate(' + (120 + side * 2.4) + ' ' + gy + ') rotate(' + side * 24 + ')' }, earHost);
+            var fill = make('path', { d: almond(sc), fill: 'url(#kl-grain)', opacity: 0 }, gg);
+            var line = make('path', { 'class': 'ln', pathLength: 1, d: almond(sc), 'stroke-width': .7 }, gg);
+            var awn = make('path', { 'class': 'ln', pathLength: 1, d: 'M0 ' + (-12 * sc) + ' C' + side * 2 + ' ' + (-20 - k) + ' ' + side * 4 + ' ' + (-28 - k * 1.2) + ' ' + side * (6 + k * .4) + ' ' + (-36 - k * 1.5), 'stroke-width': .45, 'stroke-opacity': .7 }, gg);
+            grains.push({ fill: fill, line: line, awn: awn, at: k / 8 });
           }
         }
-        make('ellipse', { cx: 160, cy: 44, rx: 2.4, ry: 4.4 }, earGreen);
-        make('ellipse', { cx: 160, cy: 44, rx: 2.4, ry: 4.4 }, earGold);
-        make('path', { d: 'M160 40 L160 18' }, awns);
+        var tipFill = make('path', { d: almond(.6), fill: 'url(#kl-grain)', opacity: 0, transform: 'translate(120 14)' }, earHost);
+        var tipLine = make('path', { 'class': 'ln', pathLength: 1, d: almond(.6), 'stroke-width': .7, transform: 'translate(120 14)' }, earHost);
 
-        var stages = [[0, 'Sowing the seed'], [0.22, 'Sprouting'], [0.5, 'Growing strong'], [0.86, 'Ready to harvest']];
-        var start = performance.now(), target = 0.1, p = 0, ready = false, gone = false, shown = '';
+        var stem = q('.kl-stem'), soil = qa('.kl-soil'), earth = q('.kl-earth'), ripples = q('.kl-ripples'), sun = q('.kl-sun'), plant = q('.kl-plant');
+        var halfL = q('.kl-half-l'), halfR = q('.kl-half-r'), num = q('.kl-num'), ear = q('.kl-ear');
+        var dash = function (n, v) { n.style.strokeDashoffset = (1 - v).toFixed(4); };
+
+        var start = performance.now(), target = .1, p = 0, ready = false, gone = false, shownStep = -1;
         // Always show the loader for at least this long, even when everything is cached.
         var MIN = 2500;
 
@@ -252,83 +283,94 @@
         window.__klStage = function (v) { if (v > target) target = v; };
         // A hidden tab gets no animation frames, so skip straight to the page.
         window.__klFinish = function () { ready = true; if (document.hidden && !gone) lift(); };
-        document.addEventListener('DOMContentLoaded', function () { window.__klStage(0.3); });
+        document.addEventListener('DOMContentLoaded', function () { window.__klStage(.3); });
         // If the app never boots (blocked script, very old browser) don't trap the page.
         setTimeout(function () { ready = true; }, 15000);
 
         function draw(v, t) {
-          var alive = reduce ? 0 : span(v, 0.7, 1), wind = Math.sin(t * 1.3);
-          stars.setAttribute('opacity', (1 - span(v, 0.1, 0.7)).toFixed(3));
-          dawn.setAttribute('opacity', ease(span(v, 0.05, 0.95)).toFixed(3));
-          warmth.setAttribute('opacity', span(v, 0.3, 1).toFixed(3));
-          sun.style.transform = 'translate(0px,' + (-38 * ease(span(v, 0.05, 0.95))).toFixed(2) + 'px)';
-
-          // Seed coat opens as the shoot breaks through.
-          var open = ease(span(v, 0.04, 0.22));
-          halfL.style.transform = 'translate(' + (-3 * open) + 'px,' + (1.2 * open) + 'px) rotate(' + (-30 * open) + 'deg)';
-          halfR.style.transform = 'translate(' + (3 * open) + 'px,' + (1.2 * open) + 'px) rotate(' + (26 * open) + 'deg)';
-
-          var grow = ease(span(v, 0.08, 0.8));
-          stem.style.strokeDashoffset = 1 - grow;
-          plant.style.transformOrigin = '160px 228px';
-          plant.style.transform = 'rotate(' + (wind * 1.4 * alive).toFixed(3) + 'deg)';
-          for (var j = 0; j < blades.length; j++) {
-            var B = blades[j], k = ease(span(grow, B.at - 0.06, B.at + 0.16));
-            var rot = B.side * (B.a - (1 - k) * 58) + Math.sin(t * 2 + j * 1.3) * 2.2 * alive;
-            B.el.style.transform = 'translate(' + B.x + 'px,' + B.y + 'px) rotate(' + rot.toFixed(2) + 'deg) scale(' + (B.side * k).toFixed(3) + ',' + k.toFixed(3) + ')';
+          var alive = reduce ? 0 : span(v, .7, 1);
+          // Sowing: the soil line runs out from the seed, ripples spread.
+          for (var a = 0; a < soil.length; a++) dash(soil[a], inout(span(v, 0, .14)));
+          earth.setAttribute('opacity', (span(v, .02, .2) * 1).toFixed(3));
+          ripples.style.opacity = (1 - span(v, .2, .34)).toFixed(3);
+          // Rooting: roots reach down before anything shows above ground.
+          for (var r = 0; r < roots.length; r++) dash(roots[r], ease(span(v, .1 + r * .018, .3 + r * .018)));
+          var open = ease(span(v, .2, .34));
+          halfL.style.transform = 'translate(' + (-3.5 * open) + 'px,' + (1.4 * open) + 'px) rotate(' + (-32 * open) + 'deg)';
+          halfR.style.transform = 'translate(' + (3.5 * open) + 'px,' + (1.4 * open) + 'px) rotate(' + (28 * open) + 'deg)';
+          // Growing: the shoot climbs, leaves unfurl from their joints.
+          var grow = inout(span(v, .3, .8));
+          dash(stem, grow);
+          plant.style.transformOrigin = '120px 250px';
+          plant.style.transform = 'rotate(' + (Math.sin(t * 1.2) * 1.1 * alive).toFixed(3) + 'deg)';
+          for (var j = 0; j < leaves.length; j++) {
+            var L = leaves[j], k = ease(span(grow, L.at - .02, L.at + .2));
+            var rot = L.side * (L.a - (1 - k) * 48) + Math.sin(t * 1.9 + j * 1.4) * 1.8 * alive;
+            L.g.style.transform = 'translate(' + L.x + 'px,' + L.y + 'px) rotate(' + rot.toFixed(2) + 'deg) scale(' + L.side + ',1)';
+            dash(L.edge, k); dash(L.vein, ease(span(k, .3, 1)));
+            L.wash.setAttribute('opacity', (span(k, .55, 1) * .55).toFixed(3));
           }
+          // Harvest: the ear forms, then ripens from green ink to gold.
+          var head = span(v, .72, .9), ripe = ease(span(v, .86, 1));
+          for (var g2 = 0; g2 < grains.length; g2++) {
+            var G = grains[g2], gk = ease(span(head, G.at * .6, G.at * .6 + .4));
+            dash(G.line, gk); dash(G.awn, ease(span(head, G.at * .6 + .2, G.at * .6 + .6)));
+            G.fill.setAttribute('opacity', (ripe * .95).toFixed(3));
+          }
+          dash(tipLine, ease(span(head, .7, 1))); tipFill.setAttribute('opacity', (ripe * .95).toFixed(3));
+          ear.style.transformOrigin = '120px 68px';
+          ear.style.transform = 'rotate(' + (Math.sin(t * 1.5) * 2.2 * alive).toFixed(2) + 'deg)';
+          sun.style.opacity = (ease(span(v, .3, 1)) * (0.85 + Math.sin(t * 1.4) * .15 * alive)).toFixed(3);
 
-          var head = ease(span(v, 0.74, 0.94)), ripe = span(v, 0.86, 1);
-          ear.style.transformOrigin = '160px 86px';
-          ear.style.transform = 'scale(' + head.toFixed(3) + ') rotate(' + (Math.sin(t * 1.6) * 2.4 * alive).toFixed(2) + 'deg)';
-          earGold.setAttribute('opacity', ripe.toFixed(3));
-          awns.setAttribute('opacity', (head * 0.9).toFixed(3));
-
-          for (var m = 0; m < sprouts.length; m++) {
-            var S = sprouts[m], sk = ease(span(v, S.at, S.at + 0.2));
-            S.el.style.transform = 'translate(' + S.x.toFixed(1) + 'px,' + S.y.toFixed(1) + 'px) scale(' + (S.s * sk).toFixed(3) + ')';
-            for (var n = 0; n < S.parts.length; n++) {
-              var P = S.parts[n];
-              P.el.style.transform = 'rotate(' + (P.side === 1 ? P.a : 180 - P.a + Math.sin(t * 2 + S.ph) * 3 * alive).toFixed(2) + 'deg)' + (P.side === 1 ? '' : ' scale(1,-1)');
+          var n = Math.round(v * 100);
+          num.textContent = n < 10 ? '0' + n : String(n);
+          var now = 0;
+          for (var s = 0; s < steps.length; s++) {
+            var S = steps[s], fillv = span(v, S.band[0], S.band[1]);
+            S.bar.style.transform = 'scaleX(' + fillv.toFixed(3) + ')';
+            if (v >= S.band[0]) now = s;
+          }
+          if (now !== shownStep) {
+            for (var s2 = 0; s2 < steps.length; s2++) {
+              steps[s2].el.className = 'kl-step' + (s2 <= now ? ' on' : '') + (s2 === now ? ' now' : '');
             }
+            shownStep = now;
           }
-
-          bar.style.transform = 'scaleX(' + v + ')';
-          pct.textContent = Math.round(v * 100) + '%';
-          var label = stages[0][1];
-          for (var w = 0; w < stages.length; w++) if (v >= stages[w][0]) label = stages[w][1];
-          if (label !== shown) { stageEl.textContent = label; shown = label; }
         }
 
         var last = start;
         function tick(now) {
           if (gone) return;
-          var t = (now - start) / 1000, dt = Math.min(0.3, (now - last) / 1000), age = now - start;
+          var t = (now - start) / 1000, dt = Math.min(.3, (now - last) / 1000), age = now - start;
           last = now;
           // While waiting, creep toward 90% so a slow connection still sees growth.
-          var creep = 0.9 - (0.9 - 0.1) * Math.exp(-t / 5);
-          var goal = ready && age > MIN ? 1 : Math.min(0.94, Math.max(target, creep));
-          // Never grow faster than the minimum time allows, so the plant always has
-          // its full 2.5 s to come up even when everything is already cached.
+          var creep = .9 - (.9 - .1) * Math.exp(-t / 5);
+          var goal = ready && age > MIN ? 1 : Math.min(.94, Math.max(target, creep));
+          // Never grow faster than the minimum time allows, so the plant always gets
+          // its full 2.5 s even when everything is already cached.
           if (goal < 1) goal = Math.min(goal, age / MIN);
           // Ease by elapsed time, not per frame, so a slow device isn't held back too.
-          p += (goal - p) * (reduce ? 1 : 1 - Math.exp(-dt / (goal === 1 ? 0.18 : 0.22)));
+          p += (goal - p) * (reduce ? 1 : 1 - Math.exp(-dt / (goal === 1 ? .2 : .22)));
           draw(p, t);
-          if (goal === 1 && p > 0.995) return lift();
+          if (goal === 1 && p > .997) return lift();
           requestAnimationFrame(tick);
         }
 
         function lift() {
           gone = true;
           draw(1, (performance.now() - start) / 1000);
+          // Fold the screen into the soil line, which is where the page opens from.
+          var art = q('.kl-art').getBoundingClientRect();
+          var hy = Math.round(art.top + art.height * (250 / 340));
           setTimeout(function () {
             el.classList.add('kl-out');
+            el.style.clipPath = 'inset(' + hy + 'px 0 ' + (window.innerHeight - hy) + 'px 0)';
             document.documentElement.classList.remove('kl-lock');
             window.__klIsDone = true;
             if (performance.mark) performance.mark('kl:done');
             window.dispatchEvent(new Event('kl:done'));
-            setTimeout(function () { el.parentNode && el.parentNode.removeChild(el); }, 1000);
-          }, reduce ? 0 : 420);
+            setTimeout(function () { el.parentNode && el.parentNode.removeChild(el); }, 1050);
+          }, reduce ? 0 : 520);
         }
 
         draw(0, 0);

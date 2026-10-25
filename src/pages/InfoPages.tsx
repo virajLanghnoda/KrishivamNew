@@ -5,6 +5,7 @@ import { ArrowUpRight, BadgeCheck, Compass, Factory, FlaskConical, Handshake, Le
 import PageHero from '../components/PageHero'
 import Reveal from '../components/Reveal'
 import CategoryCard from '../components/CategoryCard'
+import { DiaText } from '../components/ui/text-dia'
 import { categories, company, products } from '../data/site'
 import { details, filled } from '../data/details'
 import mark from '../assets/mark.svg'
@@ -103,10 +104,10 @@ export function Mission() {
 function AboutIntro() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], ['12%', '-12%'])
+  const y = useTransform(scrollYProgress, [0, 1], ['6%', '-6%'])
   return (
     <section className="py-16 sm:py-20 lg:py-28">
-      <div ref={ref} className="container-page grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+      <div ref={ref} className="container-page grid items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
         <Reveal>
           <p className="eyebrow">Who we are</p>
           <h2 className="section-title">Modern agricultural inputs, thoughtfully made.</h2>
@@ -116,7 +117,7 @@ function AboutIntro() {
             {details.history.map((p, i) => <p key={i}>{p}</p>)}
           </div>
         </Reveal>
-        <div className="relative mx-auto aspect-square w-full max-w-[460px]">
+        <div className="relative mx-auto aspect-square w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[460px]">
           <div className="absolute inset-0 rounded-full bg-sand" />
           <div className="absolute inset-[12%] rounded-full border border-forest/20" />
           <motion.div style={{ y }} className="absolute inset-0 flex items-end justify-center pb-[14%]">
@@ -150,11 +151,12 @@ export function About() {
       <PageHero eyebrow="About Krishivam" title={company.name}>An agricultural input and fertilizer company focused on developing and supplying modern agricultural solutions.</PageHero>
 
       <div className="border-b border-night/10 bg-cream">
-        <dl className="container-page grid grid-cols-2 divide-night/10 py-8 sm:py-10 lg:grid-cols-4 lg:divide-x">
+        {/* Phones: the city gets its own full-width row, the numbers sit in pairs below. */}
+        <dl className={`container-page grid grid-cols-2 gap-px py-6 sm:py-10 ${['lg:grid-cols-1', 'lg:grid-cols-2', 'lg:grid-cols-3', 'lg:grid-cols-4'][Math.min(facts.length, 4) - 1]} lg:divide-x lg:divide-night/10`}>
           {facts.slice(0, 4).map((f, i) => (
-            <Reveal key={f.label} delay={i * 0.05} className="px-2 py-3 lg:px-8">
-              <dd className="font-display text-3xl font-extrabold leading-none text-night sm:text-4xl">{f.value}</dd>
-              <dt className="mt-2 text-xs font-semibold uppercase tracking-[.16em] text-night/50">{f.label}</dt>
+            <Reveal key={f.label} delay={i * 0.05} className={`py-4 lg:px-8 lg:py-3 ${f.value === 'Ahmedabad' ? 'col-span-2 border-b border-night/10 lg:col-span-1 lg:border-b-0' : 'pr-3'}`}>
+              <dd className="font-display text-[2rem] font-extrabold leading-none text-night sm:text-4xl">{f.value}</dd>
+              <dt className="mt-2 text-[11px] font-semibold uppercase tracking-[.16em] text-night/50 sm:text-xs">{f.label}</dt>
             </Reveal>
           ))}
         </dl>
@@ -166,7 +168,10 @@ export function About() {
         <div className="container-page">
           <Reveal>
             <p className="eyebrow justify-center !text-lime">Our belief</p>
-            <p className="mx-auto mt-6 max-w-4xl font-serif text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">Nature’s strength. <span className="text-lime">Science’s promise.</span></p>
+            <p className="mx-auto mt-6 max-w-4xl font-serif text-[2.6rem] leading-[1.1] sm:text-6xl lg:text-7xl">
+              <span className="block">Nature’s strength.</span>
+              <span className="block text-lime">Science’s <DiaText words={['promise.', 'precision.', 'progress.', 'care.']} className="italic" /></span>
+            </p>
           </Reveal>
         </div>
       </section>

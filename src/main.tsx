@@ -11,7 +11,25 @@ import SmoothScroll from './components/SmoothScroll'
 import PageLoader from './components/PageLoader'
 import Analytics from './components/Analytics'
 import { loaderDone } from './lib/loader'
+import { initLang } from './lib/i18n'
 import Home from './pages/Home'
+
+// Google Translate swaps text nodes for its own <font> wrappers. When React later
+// removes or moves a node Google already replaced, the browser throws and the page
+// breaks; these two guards make React skip nodes that are no longer where it left them.
+const removeChild = Node.prototype.removeChild
+Node.prototype.removeChild = function <T extends Node>(this: Node, child: T): T {
+  if (child.parentNode !== this) return child
+  return removeChild.call(this, child) as T
+}
+const insertBefore = Node.prototype.insertBefore
+Node.prototype.insertBefore = function <T extends Node>(this: Node, node: T, ref: Node | null): T {
+  if (ref && ref.parentNode !== this) return node
+  return insertBefore.call(this, node, ref) as T
+}
+// A saved Hindi or Gujarati choice is applied straight away, so the page is
+// already translated by the time the loader lifts.
+initLang()
 
 // Home ships in the main bundle; every other page is its own small chunk. Once
 // the first screen is up, the browser fetches them quietly in the background, so

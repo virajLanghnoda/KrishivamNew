@@ -14,26 +14,35 @@ function StackCard({ c, i, total, progress }: { c: Category; i: number; total: n
   const items = c.products.map(productByName).filter(p => p !== undefined)
   const shots = items.filter(p => p.image)
   return (
-    <div className="sticky h-[78svh] min-h-[min(540px,88svh)]" style={{ top: `calc(92px + ${i * 22}px)` }}>
+    <div className="sticky h-[80svh] min-h-[min(540px,88svh)] lg:h-[78svh]" style={{ top: `calc(92px + ${i * 22}px)` }}>
       <motion.article
         style={{ scale }}
         className={cn('relative grid h-full origin-top overflow-hidden rounded-[2rem] border p-7 shadow-soft sm:p-10 lg:grid-cols-[1fr_1.1fr] lg:p-14', toneClasses[c.tone])}
       >
-        <div className="relative z-10 flex flex-col">
+        <div className="relative z-10 flex min-h-0 flex-col">
           <div className="flex items-center gap-4">
-            <span className={cn('font-display text-6xl font-extrabold leading-none', dark ? 'text-cream/30' : 'text-night/20')}>0{i + 1}</span>
+            <span className={cn('font-display text-5xl font-extrabold leading-none sm:text-6xl', dark ? 'text-cream/30' : 'text-night/20')}>0{i + 1}</span>
             <span className={cn('rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[.2em]', dark ? 'border-cream/20 text-cream/70' : 'border-night/15 text-night/60')}>
               {c.products.length} {c.products.length === 1 ? 'Product' : 'Products'}
             </span>
           </div>
-          <h3 className="mt-6 font-display text-4xl leading-[.95] sm:mt-8 sm:text-6xl lg:text-7xl">{c.name}</h3>
-          <p className={cn('mt-5 max-w-md text-base leading-7', dark ? 'text-cream/65' : 'text-night/60')}>{c.description}</p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <h3 className="mt-5 font-display text-[2.1rem] leading-[.95] sm:mt-8 sm:text-6xl lg:text-7xl">{c.name}</h3>
+          <p className={cn('mt-4 line-clamp-3 max-w-md text-[15px] leading-6 sm:mt-5 sm:line-clamp-none sm:text-base sm:leading-7', dark ? 'text-cream/65' : 'text-night/60')}>{c.description}</p>
+          <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
             {items.map(p => (
-              <Link key={p.slug} to={productHref(p)} className={cn('rounded-full px-4 py-2 text-sm font-semibold transition', dark ? 'bg-cream/10 text-cream hover:bg-lime hover:text-night' : 'bg-night/5 text-night hover:bg-night hover:text-cream')}>{p.name}</Link>
+              <Link key={p.slug} to={productHref(p)} translate="no" className={cn('notranslate rounded-full px-3.5 py-1.5 text-sm font-semibold transition sm:px-4 sm:py-2', dark ? 'bg-cream/10 text-cream hover:bg-lime hover:text-night' : 'bg-night/5 text-night hover:bg-night hover:text-cream')}>{p.name}</Link>
             ))}
           </div>
-          <Link to={`/products/${c.slug}`} className={cn('mt-auto inline-flex w-fit items-center gap-2 pt-8 text-sm font-bold', dark ? 'text-lime' : 'text-forest')}>
+          {/* Phones and tablets: the packs fill the space between the copy and the link. */}
+          {shots.length > 0 && (
+            <div className="pointer-events-none relative -mx-2 flex min-h-[150px] flex-1 items-end justify-center pt-5 lg:hidden">
+              <div className={cn('absolute bottom-2 left-1/2 h-[55%] w-[80%] -translate-x-1/2 rounded-[50%] blur-2xl', dark ? 'bg-lime/10' : 'bg-forest/10')} />
+              {shots.slice(0, 3).map((p, k) => (
+                <img key={p.slug} src={p.image} alt="" loading="lazy" decoding="async" className="relative w-auto max-w-[46%] object-contain drop-shadow-[0_18px_18px_rgba(7,19,13,.3)]" style={{ height: shots.length > 1 ? `${100 - k * 12}%` : '100%', marginLeft: k ? '-7%' : 0, zIndex: 3 - k }} />
+              ))}
+            </div>
+          )}
+          <Link to={`/products/${c.slug}`} className={cn('inline-flex w-fit items-center gap-2 pt-4 text-sm font-bold lg:mt-auto lg:pt-8', dark ? 'text-lime' : 'text-forest')}>
             Explore category <ArrowUpRight size={16} />
           </Link>
         </div>
@@ -50,7 +59,6 @@ function StackCard({ c, i, total, progress }: { c: Category; i: number; total: n
             />
           ))}
         </div>
-        {shots[0] && <img src={shots[0].image} alt="" loading="lazy" className="pointer-events-none absolute right-5 top-5 h-24 w-auto object-contain sm:right-8 sm:top-8 sm:h-32 lg:hidden" />}
       </motion.article>
     </div>
   )

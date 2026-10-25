@@ -36,7 +36,7 @@ export default function Footer() {
           <div>
             <h3 className="text-[11px] font-bold uppercase tracking-[.24em] text-cream/40">Products</h3>
             <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-cream/70">
-              {products.map(p => <Link key={p.slug} to={productHref(p)} className="transition hover:text-lime">{p.name}</Link>)}
+              {products.map(p => <Link key={p.slug} to={productHref(p)} translate="no" className="notranslate transition hover:text-lime">{p.name}</Link>)}
             </div>
             <div className="mt-8 space-y-3 border-t border-cream/10 pt-6 text-sm text-cream/70">
               <a href={`tel:${company.phone}`} className="flex items-center gap-2 transition hover:text-lime"><Phone size={15} /> {company.phone}</a>

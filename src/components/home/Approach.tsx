@@ -1,49 +1,108 @@
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { motion, useMotionTemplate, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { ArrowUpRight, FlaskConical, Leaf, Sprout } from 'lucide-react'
 import Reveal from '../Reveal'
+import { products } from '../../data/site'
+import { useLang } from '../../lib/i18n'
+import mark from '../../assets/mark.svg'
 
 const statement = 'Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs — rooted in agriculture, driven by science.'
-// The statement is set in two voices: the plain sentence in bold sans, and its
-// closing promise as a large serif line in a living lime gradient.
-const lead = 'Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs —'
-const promise = ['Rooted in agriculture,', 'driven by science.']
-const accents = new Set(['Krishivam', 'Agriscience', 'fertilizer', 'crop-input', 'modern', 'farming'])
 const gradient = 'bg-[linear-gradient(100deg,#c5e86c_0%,#f1f7d2_45%,#c5e86c_70%,#8fcf6a_100%)] bg-[length:220%_auto] bg-clip-text text-transparent'
+const packOf = (slug: string) => products.find(p => p.slug === slug)?.image
 
-function Word({ children, progress, range, accent }: { children: string; progress: MotionValue<number>; range: [number, number]; accent: boolean }) {
-  const opacity = useTransform(progress, range, [0.12, 1])
-  const y = useTransform(progress, range, ['0.35em', '0em'])
-  const filter = useTransform(progress, range, ['blur(6px)', 'blur(0px)'])
-  return <motion.span style={{ opacity, y, filter }} className={`mr-[0.25em] inline-block ${accent ? gradient : ''}`}>{children}</motion.span>
+// The sentence as it is read: words fill with ink one after another, and small
+// pills (the K mark, a pack, a seedling) pop in beside the words they illustrate.
+type Token = { word: string; accent?: boolean } | { chip: 'mark' | 'sprout' | string }
+const lead: Token[] = [
+  { word: 'Krishivam', accent: true }, { word: 'Agriscience', accent: true }, { chip: 'mark' },
+  { word: 'develops' }, { word: 'and' }, { word: 'supplies' }, { word: 'agricultural' }, { word: 'fertilizer', accent: true }, { chip: 'powerzone' },
+  { word: 'and' }, { word: 'crop-input', accent: true }, { chip: 'sprout' }, { word: 'solutions' }, { word: 'designed' }, { word: 'around' },
+  { word: 'modern', accent: true }, { word: 'farming', accent: true }, { chip: 'invictus' }, { word: 'needs' }, { word: '—' },
+]
+
+/** A word in faint outline that fills with colour from left to right. */
+function Word({ word, accent, progress, range }: { word: string; accent?: boolean; progress: MotionValue<number>; range: [number, number] }) {
+  const hidden = useTransform(progress, range, [100, 0])
+  const clipPath = useMotionTemplate`inset(-0.2em ${hidden}% -0.3em -0.05em)`
+  const swipe = useTransform(progress, range, [0, 1])
+  return (
+    <span className="relative mr-[0.26em] inline-block whitespace-nowrap">
+      {accent && <motion.span style={{ scaleX: swipe }} className="absolute inset-x-[-0.08em] bottom-[0.08em] -z-10 h-[0.3em] origin-left rounded-sm bg-lime/[.13]" />}
+      <span className="text-cream/[.13]">{word}</span>
+      <motion.span style={{ clipPath }} className={`absolute inset-0 ${accent ? gradient : 'text-cream'}`}>{word}</motion.span>
+    </span>
+  )
 }
 
-/** Each word sharpens into place as the paragraph scrolls through the viewport. */
-function ScrollHighlight() {
+/** A small pill that springs open beside a word. */
+function Chip({ kind, progress, at }: { kind: string; progress: MotionValue<number>; at: number }) {
+  const scale = useTransform(progress, [at, at + 0.035], [0, 1])
+  const rotate = useTransform(progress, [at, at + 0.035], [-30, 0])
+  const pack = packOf(kind)
+  let inner: ReactNode
+  let tone = 'bg-sand'
+  if (kind === 'mark') { inner = <img src={mark} alt="" className="h-[62%] w-auto" />; tone = 'bg-lime' }
+  else if (kind === 'sprout') { inner = <Sprout className="h-[62%] w-auto text-lime" strokeWidth={2.2} />; tone = 'bg-forest' }
+  else if (pack) { inner = <img src={pack} alt="" className="h-[86%] w-auto object-contain drop-shadow-[0_3px_3px_rgba(0,0,0,.3)]" />; tone = 'bg-[radial-gradient(circle_at_50%_35%,#f5f2ea,#ebe4d2)] !w-[1.05em] !h-[1.05em] !align-[-0.18em]' }
+  return (
+    <motion.span style={{ scale, rotate }} className={`mr-[0.26em] inline-grid h-[0.86em] w-[1.7em] place-items-center overflow-hidden rounded-full align-[-0.1em] shadow-[0_6px_20px_-6px_rgba(197,232,108,.45)] ${tone}`}>
+      {inner}
+    </motion.span>
+  )
+}
+
+/** The statement, read by scrolling: ink fills the sentence, then the promise slides together. */
+function ScrollStatement() {
   const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.5'] })
-  const words = lead.split(' ')
-  // Lead words light up over the first 70% of the run, the promise over the rest.
-  const share = 0.7 / words.length
-  const promiseOpacity = useTransform(scrollYProgress, [0.68, 0.92], [0, 1])
-  const promiseY = useTransform(scrollYProgress, [0.68, 0.92], [40, 0])
-  const underline = useTransform(scrollYProgress, [0.82, 1], [0, 1])
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start 0.82', 'end 0.4'] })
+  const share = 0.6 / lead.length
+  const x1 = useTransform(p, [0.52, 0.86], ['-14%', '0%'])
+  const x2 = useTransform(p, [0.56, 0.9], ['14%', '0%'])
+  const show = useTransform(p, [0.52, 0.72], [0, 1])
+  const draw = useTransform(p, [0.84, 1], [0, 1])
+  const badge = useTransform(p, [0.6, 0.9], [-120, 0])
+  const badgeBack = useTransform(badge, v => -v)
   return (
     <div ref={ref}>
       <p className="sr-only">{statement}</p>
-      <p aria-hidden="true" className="font-display text-[1.85rem] font-semibold leading-[1.12] tracking-[-0.035em] text-cream sm:text-[2.6rem] lg:text-[3.25rem]">
-        {words.map((w, i) => <Word key={i} progress={scrollYProgress} range={[i * share, (i + 1) * share]} accent={accents.has(w)}>{w}</Word>)}
+      <p aria-hidden="true" className="relative isolate font-display text-[1.95rem] font-semibold leading-[1.1] tracking-[-0.035em] sm:text-5xl lg:text-[3.6rem]">
+        {lead.map((t, i) => 'word' in t
+          ? <Word key={i} word={t.word} accent={t.accent} progress={p} range={[i * share, (i + 1) * share]} />
+          : <Chip key={i} kind={t.chip} progress={p} at={i * share} />)}
       </p>
-      <motion.p aria-hidden="true" style={{ opacity: promiseOpacity, y: promiseY }} className="mt-6 font-serif text-[2.6rem] italic leading-[1.02] sm:text-6xl lg:text-[5.4rem]">
-        <span className={`block animate-[sheen_7s_ease-in-out_infinite_alternate] pb-1 ${gradient}`}>{promise[0]}</span>
-        <span className="relative inline-block">
-          <span className={`block animate-[sheen_7s_ease-in-out_infinite_alternate] pb-2 ${gradient}`}>{promise[1]}</span>
-          <motion.span style={{ scaleX: underline }} className="absolute -bottom-1 left-0 h-[3px] w-full origin-left rounded-full bg-gradient-to-r from-lime to-lime/0" />
-        </span>
-      </motion.p>
+      <div aria-hidden="true" className="mt-8 font-serif text-[2.55rem] italic leading-[1.02] sm:mt-10 sm:text-6xl lg:text-[5.6rem]">
+        <motion.div style={{ x: x1, opacity: show }} className="flex items-center gap-[0.25em]">
+          <motion.span style={{ rotate: badge }} className="hidden h-[0.78em] w-[0.78em] shrink-0 place-items-center rounded-full bg-lime text-night sm:grid"><Sprout className="h-1/2 w-1/2" strokeWidth={2} /></motion.span>
+          <span className={`animate-[sheen_7s_ease-in-out_infinite_alternate] pb-[0.08em] ${gradient}`}>Rooted in agriculture,</span>
+        </motion.div>
+        <motion.div style={{ x: x2, opacity: show }} className="flex items-center gap-[0.25em] sm:justify-end">
+          <span className="relative">
+            <span className={`animate-[sheen_7s_ease-in-out_infinite_alternate] pb-[0.08em] ${gradient}`}>driven by science.</span>
+            {/* a hand-drawn stroke under the promise */}
+            <svg viewBox="0 0 300 16" preserveAspectRatio="none" className="absolute -bottom-[0.12em] left-0 h-[0.2em] w-full overflow-visible">
+              <motion.path d="M3 11 C 70 3, 150 2, 297 8" fill="none" stroke="#c5e86c" strokeWidth="3.2" strokeLinecap="round" style={{ pathLength: draw }} />
+            </svg>
+          </span>
+          <motion.span style={{ rotate: badgeBack }} className="hidden h-[0.78em] w-[0.78em] shrink-0 place-items-center rounded-full border border-lime/50 text-lime sm:grid"><FlaskConical className="h-1/2 w-1/2" strokeWidth={2} /></motion.span>
+        </motion.div>
+      </div>
     </div>
   )
+}
+
+/** Translated pages get the statement as whole sentences, so Google can translate them properly. */
+function PlainStatement() {
+  return (
+    <div>
+      <p className="font-display text-[1.75rem] font-semibold leading-[1.2] tracking-[-0.03em] text-cream sm:text-4xl lg:text-5xl">Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs.</p>
+      <p className={`mt-8 font-serif text-[2.4rem] italic leading-[1.05] sm:text-6xl ${gradient}`}>Rooted in agriculture, driven by science.</p>
+    </div>
+  )
+}
+
+function Statement() {
+  return useLang() === 'en' ? <ScrollStatement /> : <PlainStatement />
 }
 
 const pillars = [
@@ -59,7 +118,7 @@ export default function Approach() {
       <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-1/3 -z-10 h-[620px] w-[620px] rounded-full bg-[radial-gradient(circle,rgba(27,107,58,.35),transparent_65%)]" />
       <div className="container-page">
         <Reveal><p className="eyebrow !text-lime">01 · The Krishivam approach</p></Reveal>
-        <div className="mt-8 max-w-6xl"><ScrollHighlight /></div>
+        <div className="mt-8 max-w-6xl"><Statement /></div>
         <div className="mt-16 grid gap-4 md:grid-cols-3">
           {pillars.map(({ icon: Icon, title, text }, i) => (
             <Reveal key={title} delay={i * 0.08}>
