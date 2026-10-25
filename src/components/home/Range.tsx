@@ -9,7 +9,7 @@ const range: WorksWheelItem[] = products
 /** The product range on the Works Wheel. */
 export default function Range() {
   return (
-    <section className="bg-night pt-10 text-cream">
+    <section data-cursor="invert" className="bg-night pt-10 text-cream">
       <div className="container-page">
         <Reveal>
           <p className="eyebrow !text-lime">02 · The range</p>

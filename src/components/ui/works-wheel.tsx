@@ -30,15 +30,15 @@ export interface WorksWheelProps {
   className?: string
 }
 
-const CARD_H = 0.38
-const CARD_MAX_W = 0.34
+const CARD_H = 0.52
+const CARD_MAX_W = 0.44
 const CARD_RATIO = 1.45
 const STEP = 40
 const DRUM = 2.22
 const LENS = 2.7
 const RING_R = 1.14
 const BOW = 1.82
-const TITLE = 0.124
+const TITLE = 0.1
 const INDEX = 0.04
 const CULL = 1.6
 const EASE = 0.14
@@ -110,7 +110,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
   const metrics = React.useMemo(() => {
     const { w, h } = stage
     // On phones the card is capped by width, so let it take most of the screen.
-    const cardW = Math.min(h * (narrow ? 0.3 : CARD_H) * CARD_RATIO, w * (narrow ? 0.8 : CARD_MAX_W))
+    const cardW = Math.min(h * (narrow ? 0.36 : CARD_H) * CARD_RATIO, w * (narrow ? 0.9 : CARD_MAX_W))
     const cardH = cardW / CARD_RATIO
     const drumR = cardH * DRUM
     const ringR = cardH * (narrow ? 1.25 : RING_R)
@@ -222,7 +222,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
           ref={titleRef}
           className={cn(
             'pointer-events-none absolute font-display leading-none tracking-tight text-cream opacity-0',
-            narrow ? 'left-0 right-0 top-[calc(76px+3svh)] text-center' : 'left-[6%] top-1/2 max-w-[26%] -translate-y-1/2',
+            narrow ? 'left-0 right-0 top-[calc(76px+3svh)] text-center' : 'left-[4%] top-1/2 max-w-[22%] -translate-y-1/2',
           )}
           style={{ fontSize: metrics.title }}
           aria-live="polite"
@@ -232,7 +232,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
         </div>
 
         {!narrow && (
-          <ol className="absolute right-[3%] top-1/2 -translate-y-1/2 text-right leading-[1.9] text-cream/40" style={{ fontSize: metrics.index }}>
+          <ol className="absolute right-[2.5%] top-1/2 -translate-y-1/2 text-right leading-[1.9] text-cream/40" style={{ fontSize: metrics.index }}>
             {items.map((item, i) => (
               <li key={item.title}>
                 <button type="button" onClick={() => goTo(i)} className={cn('cursor-pointer transition-colors hover:text-cream focus:outline-none focus-visible:text-lime', i === active && 'font-semibold text-lime')}>

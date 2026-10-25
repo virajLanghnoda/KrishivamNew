@@ -20,21 +20,32 @@ const actions = [
 ]
 
 export default function CallToAction() {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLElement>(null)
+  // A long run of scroll (the section is two screens tall and the panel pins) so
+  // the opening reads as a slow, deliberate reveal rather than a quick flick.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] })
-  // The panel opens out toward the page edges as it arrives; clip-path only repaints.
-  const clipPath = useTransform(scrollYProgress, [0, 1], ['inset(4% 4% 0% 4% round 48px)', 'inset(0% 0% 0% 0% round 28px)'])
-  const markY = useTransform(scrollYProgress, [0, 1], ['30%', '0%'])
+  const open = useTransform(scrollYProgress, [0.2, 0.85], [0, 1], { clamp: true })
+  // The panel, its words and the K mark all grow outward together; clip-path and
+  // transforms only repaint.
+  const clipPath = useTransform(open, v => {
+    const y = 14 * (1 - v), x = 10 * (1 - v)
+    return `inset(${y}% ${x}% ${y}% ${x}% round ${56 - 28 * v}px)`
+  })
+  const contentScale = useTransform(open, [0, 1], [0.78, 1])
+  const contentOpacity = useTransform(open, [0, 0.35], [0.35, 1])
+  const markScale = useTransform(open, [0, 1], [0.5, 1.15])
+  const markRotate = useTransform(open, [0, 1], [-14, 0])
 
   return (
-    <section className="bg-cream px-3 pb-3 sm:px-5 sm:pb-5">
-      <motion.div ref={ref} style={{ clipPath }} onPointerMove={track} className="group relative isolate overflow-hidden bg-night text-cream">
+    <section ref={ref} className="relative h-[200svh] bg-cream">
+      <div className="sticky top-0 flex min-h-[100svh] px-3 pb-3 pt-3 sm:px-5 sm:pb-5 sm:pt-5">
+      <motion.div style={{ clipPath }} onPointerMove={track} data-cursor="invert" className="group relative isolate flex flex-1 items-center overflow-hidden rounded-[28px] bg-night text-cream">
         {/* fine grid and a cursor-following glow */}
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-[.07] [background-image:linear-gradient(#f5f2ea_1px,transparent_1px),linear-gradient(90deg,#f5f2ea_1px,transparent_1px)] [background-size:56px_56px]" />
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ background: 'radial-gradient(420px circle at var(--x) var(--y), rgba(197,232,108,.16), transparent 70%)' }} />
-        <motion.img style={{ y: markY }} src={mark} alt="" aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-10 -z-10 h-[90%] w-auto opacity-[.07] brightness-0 invert" />
+        <motion.img style={{ scale: markScale, rotate: markRotate, transformOrigin: '100% 100%' }} src={mark} alt="" aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-10 -z-10 h-[90%] w-auto opacity-[.09] brightness-0 invert" />
 
-        <div className="container-page grid gap-14 py-20 lg:grid-cols-[1.15fr_.85fr] lg:items-end lg:py-28">
+        <motion.div style={{ scale: contentScale, opacity: contentOpacity }} className="container-page grid gap-14 py-20 lg:grid-cols-[1.15fr_.85fr] lg:items-end lg:py-28">
           <div>
             <p className="eyebrow !text-lime">Let’s talk</p>
             <TextReveal as="h2" inView text="Let’s grow something together." className="mt-6 max-w-2xl font-display text-5xl leading-[.95] sm:text-6xl lg:text-7xl" />
@@ -63,8 +74,9 @@ export default function CallToAction() {
               )
             })}
           </div>
-        </div>
+        </motion.div>
       </motion.div>
+      </div>
     </section>
   )
 }

@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import InvertCursor from './InvertCursor'
 
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation()
@@ -19,6 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </motion.main>
       </AnimatePresence>
       <Footer />
+      <InvertCursor />
     </>
   )
 }

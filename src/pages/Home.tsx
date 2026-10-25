@@ -44,7 +44,7 @@ export default function Home() {
       <Batch order={3} minHeight="200svh"><InvictusRail /></Batch>
       <Batch order={4} minHeight="100svh"><Values /></Batch>
       {details.testimonials.length > 0 && <Batch order={5} minHeight="60svh"><Testimonials /></Batch>}
-      <Batch order={5} minHeight="70svh"><CallToAction /></Batch>
+      <Batch order={5} minHeight="200svh"><CallToAction /></Batch>
     </>
   )
 }

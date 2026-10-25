@@ -29,12 +29,21 @@ const crumbs = (items: [string, string][]) => ({
 
 const page = (path: string, title: string, description: string, extra: Partial<PageSeo> = {}): PageSeo => ({ path, title, description, ...extra })
 
+/** A list of products, so search engines see each one as part of the range. */
+const itemList = (name: string, items: Product[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name,
+  numberOfItems: items.length,
+  itemListElement: items.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${SITE}/products/${p.categorySlug}/${p.slug}` })),
+})
+
 export const staticPages: PageSeo[] = [
   page('/', `${BRAND} | Organic Fertilizer, Biostimulant & Liquid Fertilizer Company in Ahmedabad`,
     `${company.name}, Ahmedabad, Gujarat — organic fertilizer, biostimulants, biofertilizer and speciality liquid fertilizers (NPK, calcium, zinc, boron) for healthier soils and stronger crops.`),
   page('/products', `Fertilizer & Biostimulant Products | ${BRAND}`,
     'Explore Krishivam’s portfolio: Powerzone organic manure, Mycosh biofertilizer, Ontop and Floxi biostimulants, and the INVICTUS, VALHALLA, Ragnar and Oden speciality liquid fertilizers.',
-    { jsonLd: [crumbs([['Home', '/'], ['Products', '/products']])] }),
+    { jsonLd: [crumbs([['Home', '/'], ['Products', '/products']]), itemList(`${BRAND} products`, products)] }),
   page('/services', `Services for Farmers & Dealers | ${BRAND}`,
     'Agricultural product solutions, dealer and distributor support, crop nutrition guidance and technical support from Krishivam Agriscience, Ahmedabad.'),
   page('/mission', `Our Mission & Values | ${BRAND}`,
@@ -50,7 +59,7 @@ export function categorySeo(c: Category): PageSeo {
   const names = c.products.join(', ')
   return page(`/products/${c.slug}`, `${c.name} — ${names} | ${BRAND}`,
     `${c.description} Krishivam ${c.name.toLowerCase()} range: ${names}. Made for Indian farming by Krishivam Agriscience, Ahmedabad.`,
-    { jsonLd: [crumbs([['Home', '/'], ['Products', '/products'], [c.name, `/products/${c.slug}`]])] })
+    { jsonLd: [crumbs([['Home', '/'], ['Products', '/products'], [c.name, `/products/${c.slug}`]]), itemList(`${BRAND} ${c.name}`, products.filter(p => p.categorySlug === c.slug))] })
 }
 
 export function productSeo(p: Product, image?: string): PageSeo {

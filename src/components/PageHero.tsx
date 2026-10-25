@@ -6,7 +6,7 @@ const ShaderAnimation = lazy(() => import('./ui/shader-animation'))
 
 export default function PageHero({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) {
   return (
-    <section className="relative isolate overflow-hidden bg-night pb-14 pt-32 text-cream sm:pb-20 sm:pt-40 lg:pb-28 lg:pt-48">
+    <section data-cursor="invert" className="relative isolate overflow-hidden bg-night pb-14 pt-32 text-cream sm:pb-20 sm:pt-40 lg:pb-28 lg:pt-48">
       <div className="absolute inset-0 -z-10 opacity-60">
         <Suspense fallback={null}><ShaderAnimation quality={0.5} /></Suspense>
       </div>

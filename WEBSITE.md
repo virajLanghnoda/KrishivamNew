@@ -169,11 +169,11 @@ What's in place:
 | Unique title and description per page | `src/data/seo.ts` (one place for all pages) |
 | A real HTML file per page (`mission.html`, `products/biostimulants/floxi.html`, …) with the right title, description, canonical URL, Open Graph and Twitter tags | Written at build time by the plugin in `vite.config.ts`, so Google and WhatsApp/Facebook previews work without JavaScript |
 | `sitemap.xml` (every page, category and product) and `robots.txt` | Generated at build time; new products are added automatically |
-| Structured data: Organization, Product, BreadcrumbList | `index.html` and `src/data/seo.ts` |
+| Structured data: Organization + LocalBusiness (with contact point and languages), WebSite, Product, ItemList (products page and each category), BreadcrumbList | `index.html` and `src/data/seo.ts` |
 | Keywords meta | `index.html` |
 | Share image (1200×630) | `public/og-image.png` |
 | Favicon (SVG K mark), Apple touch icon, web manifest | `public/` |
-| Readable fallback for browsers without JavaScript | `<noscript>` in `index.html` |
+| Readable fallback for browsers without JavaScript, with each page's own heading and summary | `<noscript>` in `index.html`, filled per page by `vite.config.ts` |
 | Semantic headings, image alt text, `lang="en-IN"`, Gujarat geo tags | Throughout |
 
 **Target keywords:** fertilizer company Ahmedabad, fertilizer manufacturer Gujarat, organic fertilizer, organic manure granules, biostimulant, humic acid seaweed biostimulant, biofertilizer, speciality liquid fertilizer, micronutrient fertilizer, boron ethanolamine, calcium nitrate with magnesium, zinc oxide suspension, NPK liquid fertilizer, floral enhancer, cytokinin, crop nutrition, soil health — plus every product and brand name.
@@ -190,7 +190,7 @@ What's in place:
 
 The site is built for weak connections. It loads in batches:
 
-1. **Loader:** a plant-growth animation built into `index.html` (no download needed). A seed splits, roots spread, the stem grows and leaves unfurl as the site really loads; once grown, the plant sways in a light breeze. It never looks stuck on a slow line and lifts as soon as the first screen is ready.
+1. **Loader:** a dawn field scene built into `index.html` (no download needed). The sun rises, sprouts break the furrows and a wheat plant grows from a splitting seed to a ripe golden ear, with a stage label (Sowing → Sprouting → Growing strong → Ready to harvest). It always shows for at least 2.5 s, never looks stuck on a slow line, and lifts once the first screen is ready.
 2. **First screen:** the hero, with no photos.
 3. **Farm scene:** loads as soon as the loader lifts.
 4. **Lower home sections:** each section is its own small file, loaded when the visitor gets near it or the browser is idle.
@@ -294,3 +294,4 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 - [ ] Fill in About details: history, founded year, certifications, team.
 - [ ] Submit the sitemap in Google Search Console.
 - [ ] Scroll through on a phone and a desktop browser once.
+- [ ] Answer the questions in `PENDING-DETAILS.txt`.

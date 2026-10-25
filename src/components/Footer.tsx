@@ -6,7 +6,7 @@ import { categories, company, productHref, products } from '../data/site'
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-night text-cream">
+    <footer data-cursor="invert" className="relative overflow-hidden bg-night text-cream">
       <div className="container-page relative pt-20 lg:pt-28">
         <div className="grid gap-14 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>

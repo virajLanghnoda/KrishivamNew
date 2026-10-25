@@ -41,7 +41,7 @@ export default function Hero() {
   const rise = { hide: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }
 
   return (
-    <section ref={ref} className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-night text-cream">
+    <section ref={ref} data-cursor="invert" className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-night text-cream">
       <div className="absolute inset-0 -z-20">
         <Suspense fallback={null}><ShaderAnimation /></Suspense>
       </div>

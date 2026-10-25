@@ -28,28 +28,48 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:image:alt" content="Krishivam Agriscience — Nurturing Nature. Enriching Lives." />
+    <meta name="twitter:image:alt" content="Krishivam Agriscience — Nurturing Nature. Enriching Lives." />
+    <meta name="format-detection" content="telephone=yes" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "@id": "https://krishivam.com/#organization",
-        "name": "Krishivam Agriscience Private Limited",
-        "alternateName": "Krishivam",
-        "url": "https://krishivam.com/",
-        "logo": "https://krishivam.com/apple-touch-icon.png",
-        "slogan": "Nurturing Nature. Enriching Lives.",
-        "email": "krishivamagriscience@gmail.com",
-        "telephone": "+91-9924489348",
-        "address": { "@type": "PostalAddress", "addressLocality": "Satellite, Ahmedabad", "addressRegion": "Gujarat", "postalCode": "380015", "addressCountry": "IN" },
-        "areaServed": "IN",
-        "knowsAbout": ["Organic fertilizer", "Biostimulants", "Biofertilizer", "Speciality liquid fertilizer", "Micronutrient fertilizer", "Crop nutrition"]
+        "@graph": [
+          {
+            "@type": ["Organization", "LocalBusiness"],
+            "@id": "https://krishivam.com/#organization",
+            "name": "Krishivam Agriscience Private Limited",
+            "alternateName": ["Krishivam", "Krishivam Agriscience"],
+            "url": "https://krishivam.com/",
+            "logo": { "@type": "ImageObject", "url": "https://krishivam.com/icon-512.png", "width": 512, "height": 512 },
+            "image": "https://krishivam.com/og-image.png",
+            "description": "Agricultural input company in Satellite, Ahmedabad, Gujarat developing organic fertilizers, biostimulants, biofertilizers and speciality liquid fertilizers for Indian farmers.",
+            "slogan": "Nurturing Nature. Enriching Lives.",
+            "email": "krishivamagriscience@gmail.com",
+            "telephone": "+91-9924489348",
+            "address": { "@type": "PostalAddress", "addressLocality": "Satellite, Ahmedabad", "addressRegion": "Gujarat", "postalCode": "380015", "addressCountry": "IN" },
+            "areaServed": { "@type": "Country", "name": "India" },
+            "contactPoint": { "@type": "ContactPoint", "telephone": "+91-9924489348", "email": "krishivamagriscience@gmail.com", "contactType": "sales", "areaServed": "IN", "availableLanguage": ["English", "Hindi", "Gujarati"] },
+            "knowsAbout": ["Organic fertilizer", "Organic manure", "Biostimulants", "Biofertilizer", "Speciality liquid fertilizer", "Micronutrient fertilizer", "NPK liquid fertilizer", "Calcium nitrate", "Boron fertilizer", "Crop nutrition", "Soil health"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://krishivam.com/#website",
+            "url": "https://krishivam.com/",
+            "name": "Krishivam Agriscience",
+            "alternateName": "Krishivam",
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://krishivam.com/#organization" }
+          }
+        ]
       }
     </script>
     <!--
       First-paint loader. Everything it needs is inline, so it shows before a single
-      script downloads. A seed germinates and grows with real progress: the page
-      parsed, the app started, the fonts arrived. On a slow line it keeps creeping
-      up so the screen never looks stuck, and it lifts once the first screen is ready.
+      script downloads. Dawn over a ploughed field: the sun rises, sprouts break the
+      furrows and a wheat plant grows to a ripe golden ear as the site really loads.
+      Growth is paced to at least 2.5 s, and on a slow line it keeps creeping up so
+      the screen never looks stuck. It lifts once the first screen is ready.
     -->
     <style>
       html.kl-lock { overflow: hidden; }
@@ -57,60 +77,68 @@
       #kl.kl-out { transform: translate3d(0,-100%,0); border-radius: 0 0 50% 50% / 0 0 12vh 12vh; }
       #kl.kl-out .kl-inner { opacity: 0; transform: translate3d(0,-40px,0); }
       .kl-inner { display: flex; flex-direction: column; align-items: center; transition: opacity .5s ease, transform .95s cubic-bezier(.76,0,.24,1); }
-      .kl-art { width: min(58vw, 240px); height: auto; overflow: visible; }
-      .kl-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
-      .kl-leaf, .kl-plant, .kl-half { transform-box: view-box; }
-      .kl-leaf { transform: scale(0); }
-      .kl-plant { transform-origin: 120px 234px; }
-      .kl-word { margin-top: 22px; font-size: 13px; font-weight: 700; letter-spacing: .5em; text-indent: .5em; }
+      .kl-art { width: min(88vw, 440px); height: auto; overflow: visible; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); }
+      .kl-art g, .kl-art path, .kl-art circle { transform-box: view-box; }
+      .kl-stem { stroke-dasharray: 1; stroke-dashoffset: 1; }
+      .kl-word { margin-top: 10px; font-size: 13px; font-weight: 700; letter-spacing: .5em; text-indent: .5em; }
       .kl-bar { position: relative; margin-top: 16px; width: 168px; height: 2px; border-radius: 2px; background: rgba(245,242,234,.12); overflow: hidden; }
-      .kl-bar i { position: absolute; inset: 0; background: #c5e86c; transform-origin: 0 50%; transform: scaleX(0); }
+      .kl-bar i { position: absolute; inset: 0; background: linear-gradient(90deg, #c5e86c, #e8c25a); transform-origin: 0 50%; transform: scaleX(0); }
       .kl-meta { margin-top: 12px; display: flex; gap: 14px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(245,242,234,.5); font-variant-numeric: tabular-nums; }
+      .kl-stage { min-width: 11em; text-align: left; }
       @media (prefers-reduced-motion: reduce) { #kl, .kl-inner { transition-duration: .01ms; } }
     </style>
   </head>
   <body>
     <div id="kl" role="status" aria-live="polite" aria-label="Loading Krishivam Agriscience">
       <div class="kl-inner">
-        <svg class="kl-art" viewBox="0 0 240 300" aria-hidden="true">
+        <svg class="kl-art" viewBox="0 0 320 260" aria-hidden="true">
           <defs>
-            <radialGradient id="kl-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#c5e86c" stop-opacity=".28" /><stop offset="1" stop-color="#c5e86c" stop-opacity="0" /></radialGradient>
-            <linearGradient id="kl-stem" gradientUnits="userSpaceOnUse" x1="0" y1="234" x2="0" y2="56"><stop offset="0" stop-color="#1b6b3a" /><stop offset="1" stop-color="#c5e86c" /></linearGradient>
-            <linearGradient id="kl-leafA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b6b3a" /><stop offset="1" stop-color="#c5e86c" /></linearGradient>
-            <linearGradient id="kl-leafB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b6b3a" /><stop offset=".85" stop-color="#1b6b3a" stop-opacity=".9" /><stop offset="1" stop-color="#c5e86c" stop-opacity=".8" /></linearGradient>
-            <linearGradient id="kl-edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0" /><stop offset=".22" stop-color="#fff" /><stop offset=".78" stop-color="#fff" /><stop offset="1" stop-color="#fff" stop-opacity="0" /></linearGradient>
-            <mask id="kl-fade" maskUnits="userSpaceOnUse" x="0" y="200" width="240" height="100"><rect x="14" y="200" width="212" height="100" fill="url(#kl-edge)" /></mask>
-            <linearGradient id="kl-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebe4d2" stop-opacity=".14" /><stop offset="1" stop-color="#ebe4d2" stop-opacity="0" /></linearGradient>
+            <linearGradient id="kl-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07130d" /><stop offset="1" stop-color="#10291a" /></linearGradient>
+            <linearGradient id="kl-dawn" x1="0" y1="0" x2="0" y2="1"><stop offset=".25" stop-color="#e3a64c" stop-opacity="0" /><stop offset=".85" stop-color="#e9a94e" stop-opacity=".5" /><stop offset="1" stop-color="#f6cf7a" stop-opacity=".75" /></linearGradient>
+            <radialGradient id="kl-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff4cf" /><stop offset=".55" stop-color="#f8d27a" /><stop offset="1" stop-color="#f0a948" /></radialGradient>
+            <radialGradient id="kl-halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f8d27a" stop-opacity=".55" /><stop offset="1" stop-color="#f8d27a" stop-opacity="0" /></radialGradient>
+            <linearGradient id="kl-soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f170f" /><stop offset=".5" stop-color="#33241a" /><stop offset="1" stop-color="#4a3322" /></linearGradient>
+            <linearGradient id="kl-warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b45a" stop-opacity=".35" /><stop offset="1" stop-color="#f0b45a" stop-opacity="0" /></linearGradient>
+            <linearGradient id="kl-stemc" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="80"><stop offset="0" stop-color="#2d6a2f" /><stop offset="1" stop-color="#8cc34e" /></linearGradient>
+            <linearGradient id="kl-bladeA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#23602c" /><stop offset=".6" stop-color="#4f9a3a" /><stop offset="1" stop-color="#9fcf5a" /></linearGradient>
+            <linearGradient id="kl-bladeB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b4f26" /><stop offset=".7" stop-color="#3f8a35" /><stop offset="1" stop-color="#7fb84a" /></linearGradient>
+            <linearGradient id="kl-gold" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#c9952f" /><stop offset="1" stop-color="#f3d57c" /></linearGradient>
+            <clipPath id="kl-above"><rect x="0" y="0" width="320" height="177" /></clipPath>
           </defs>
-          <circle class="kl-glow" cx="120" cy="140" r="118" fill="url(#kl-sun)" opacity="0" />
-          <!-- soil: a cross-section with an uneven surface and loose granules -->
-          <g mask="url(#kl-fade)">
-          <path d="M14 234 C34 230 48 236 66 233 C84 230 98 235 120 233 C142 231 156 236 176 233 C194 230 210 235 226 233 L226 300 L14 300Z" fill="url(#kl-soil)" />
-          <g class="kl-grains" fill="#ebe4d2"></g>
-          <path d="M14 234 C34 230 48 236 66 233 C84 230 98 235 120 233 C142 231 156 236 176 233 C194 230 210 235 226 233" fill="none" stroke="#ebe4d2" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round" />
+          <!-- sky, fading stars, the dawn glow and a rising sun -->
+          <rect width="320" height="178" fill="url(#kl-sky)" />
+          <g class="kl-stars" fill="#f5f2ea"></g>
+          <rect class="kl-dawn" width="320" height="178" fill="url(#kl-dawn)" opacity="0" />
+          <g clip-path="url(#kl-above)">
+            <g class="kl-sunrise">
+              <circle cx="236" cy="176" r="62" fill="url(#kl-halo)" />
+              <circle cx="236" cy="176" r="19" fill="url(#kl-sun)" />
+            </g>
           </g>
-          <!-- roots -->
-          <g fill="none" stroke="#ebe4d2" stroke-linecap="round">
-            <path class="kl-draw kl-root" pathLength="1" stroke-opacity=".5" stroke-width="1.6" d="M120 236 C121 250 118 264 121 288" />
-            <path class="kl-draw kl-root" pathLength="1" stroke-opacity=".38" stroke-width="1.1" d="M120 245 C112 249 104 253 95 264" />
-            <path class="kl-draw kl-root" pathLength="1" stroke-opacity=".38" stroke-width="1.1" d="M120 248 C129 252 138 258 145 269" />
-            <path class="kl-draw kl-root" pathLength="1" stroke-opacity=".3" stroke-width=".9" d="M119 260 C113 265 108 271 105 281" />
-            <path class="kl-draw kl-root" pathLength="1" stroke-opacity=".3" stroke-width=".9" d="M121 266 C127 270 132 276 134 286" />
+          <!-- a far treeline on the horizon -->
+          <path d="M0 178 L0 170 C10 168 16 164 24 166 C30 160 40 161 44 166 C56 165 62 168 74 167 C82 162 90 160 98 165 C112 167 126 169 140 168 C150 166 156 163 164 166 C176 168 190 167 202 168 C212 163 220 161 228 166 C242 168 258 166 270 167 C278 162 288 161 294 166 C304 167 312 166 320 168 L320 178Z" fill="#0b2014" />
+          <!-- ploughed field in perspective -->
+          <rect y="176" width="320" height="84" fill="url(#kl-soil)" />
+          <rect class="kl-warmth" y="176" width="320" height="84" fill="url(#kl-warm)" opacity="0" />
+          <g class="kl-furrows" fill="none" stroke-linecap="round"></g>
+          <g class="kl-grains" fill="#c9a77c"></g>
+          <g class="kl-sprouts"></g>
+          <!-- the seed splits where the main plant breaks the soil -->
+          <path d="M146 229 C152 224 168 224 174 229 Z" fill="#3d2a1b" />
+          <g transform="translate(160 228)">
+            <path class="kl-half kl-half-l" d="M0 -4 C-6 -5 -9 -2 -8 1 C-7 4 -3 5 0 4Z" fill="#d9c49a" />
+            <path class="kl-half kl-half-r" d="M0 -4 C6 -5 9 -2 8 1 C7 4 3 5 0 4Z" fill="#bfa77a" />
           </g>
-          <!-- the seed coat splits as the shoot breaks through -->
-          <g transform="translate(120 237)">
-            <path class="kl-half kl-half-l" d="M0 -5 C-7 -6 -11 -2 -10 2 C-9 5 -4 6 0 5Z" fill="#ebe4d2" />
-            <path class="kl-half kl-half-r" d="M0 -5 C7 -6 11 -2 10 2 C9 5 4 6 0 5Z" fill="#d9d0b8" />
-          </g>
-          <!-- shoot -->
+          <!-- the main plant: wheat, from seedling to golden ear -->
           <g class="kl-plant">
-            <path class="kl-draw kl-stem" pathLength="1" d="M120 234 C117 212 123 194 120 174 C117 152 124 132 120 110 C117 92 121 76 120 58" fill="none" stroke="url(#kl-stem)" stroke-width="3.4" stroke-linecap="round" />
-            <g class="kl-leaves"></g>
+            <path class="kl-stem" pathLength="1" d="M160 228 C158 204 163 182 160 158 C157 134 162 110 160 82" fill="none" stroke="url(#kl-stemc)" stroke-width="3" stroke-linecap="round" />
+            <g class="kl-blades"></g>
+            <g class="kl-ear"></g>
           </g>
         </svg>
         <div class="kl-word">KRISHIVAM</div>
         <div class="kl-bar"><i></i></div>
-        <div class="kl-meta"><span class="kl-pct">0%</span><span>Cultivating Tomorrow</span></div>
+        <div class="kl-meta"><span class="kl-pct">0%</span><span class="kl-stage">Sowing the seed</span></div>
       </div>
     </div>
     <script>
@@ -118,52 +146,107 @@
         var el = document.getElementById('kl');
         if (!el) return;
         var NS = 'http://www.w3.org/2000/svg';
-        var q = function (s) { return el.querySelectorAll(s); };
-        var stem = q('.kl-stem')[0], roots = q('.kl-root'), plant = q('.kl-plant')[0], glow = q('.kl-glow')[0];
-        var halfL = q('.kl-half-l')[0], halfR = q('.kl-half-r')[0], bar = q('.kl-bar i')[0], pct = q('.kl-pct')[0];
+        var q = function (s) { return el.querySelector(s); };
+        var make = function (tag, attrs, parent) {
+          var n = document.createElementNS(NS, tag);
+          for (var k in attrs) n.setAttribute(k, attrs[k]);
+          if (parent) parent.appendChild(n);
+          return n;
+        };
+        var stem = q('.kl-stem'), plant = q('.kl-plant'), dawn = q('.kl-dawn'), sun = q('.kl-sunrise'), warmth = q('.kl-warmth'), stars = q('.kl-stars');
+        var halfL = q('.kl-half-l'), halfR = q('.kl-half-r'), bar = q('.kl-bar i'), pct = q('.kl-pct'), stageEl = q('.kl-stage');
         var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Loose soil: granules of uneven size, scattered the same way every time.
-        var seed = 7, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
-        var grains = q('.kl-grains')[0];
-        for (var g = 0; g < 46; g++) {
-          var c = document.createElementNS(NS, 'circle'), gx = 22 + rnd() * 196, gy = 239 + Math.pow(rnd(), 1.4) * 54;
-          c.setAttribute('cx', gx.toFixed(1)); c.setAttribute('cy', gy.toFixed(1));
-          c.setAttribute('r', (0.6 + rnd() * 1.7).toFixed(2)); c.setAttribute('opacity', (0.12 + rnd() * 0.3).toFixed(2));
-          grains.appendChild(c);
-        }
-
-        // Leaves, low to high. Each is drawn pointing right from its joint; left
-        // ones are mirrored. `at` is how far up the stem (0-1) the joint sits.
-        var LANCE = 'M0 0 C6 -9 20 -15 34 -15 C40 -15 46 -13 51 -10 C45 -4 35 3 23 4 C13 5 5 3 0 0Z';
-        var ROUND = 'M0 0 C3 -9 15 -15 25 -12 C32 -9 31 -1 23 3 C14 7 5 5 0 0Z';
-        var RIB = 'M1 -0.6 C14 -6 30 -10 49 -10';
-        var leaves = [
-          { x: 121, y: 203, a: -18, s: .62, side: 1, shape: ROUND, at: .17, fill: 'A' },
-          { x: 119, y: 204, a: -14, s: .56, side: -1, shape: ROUND, at: .17, fill: 'B' },
-          { x: 120, y: 178, a: -30, s: .86, side: -1, shape: LANCE, at: .32, fill: 'B' },
-          { x: 121, y: 154, a: -26, s: .96, side: 1, shape: LANCE, at: .45, fill: 'A' },
-          { x: 119, y: 130, a: -38, s: .84, side: -1, shape: LANCE, at: .59, fill: 'A' },
-          { x: 120, y: 108, a: -34, s: .72, side: 1, shape: LANCE, at: .72, fill: 'B' },
-          { x: 120, y: 86, a: -44, s: .56, side: -1, shape: LANCE, at: .84, fill: 'A' },
-          { x: 120, y: 62, a: -62, s: .34, side: 1, shape: LANCE, at: .96, fill: 'A' },
-          { x: 120, y: 63, a: -56, s: .28, side: -1, shape: LANCE, at: .97, fill: 'B' },
-        ];
-        var host = q('.kl-leaves')[0];
-        for (var i = 0; i < leaves.length; i++) {
-          var L = leaves[i], grp = document.createElementNS(NS, 'g'), body = document.createElementNS(NS, 'path'), rib = document.createElementNS(NS, 'path');
-          grp.setAttribute('class', 'kl-leaf');
-          body.setAttribute('d', L.shape); body.setAttribute('fill', 'url(#kl-leaf' + L.fill + ')');
-          rib.setAttribute('d', L.shape === ROUND ? 'M1 -0.5 C9 -5 17 -8 24 -7' : RIB);
-          rib.setAttribute('fill', 'none'); rib.setAttribute('stroke', '#f5f2ea'); rib.setAttribute('stroke-opacity', '.35'); rib.setAttribute('stroke-width', '.9'); rib.setAttribute('stroke-linecap', 'round');
-          grp.appendChild(body); grp.appendChild(rib); host.appendChild(grp);
-          L.el = grp;
-        }
-
-        var start = performance.now(), target = 0.1, p = 0, ready = false, gone = false;
-        var MIN = reduce ? 300 : 1300;
+        // Scattered the same way every time.
+        var seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
         var span = function (v, a, b) { return Math.max(0, Math.min(1, (v - a) / (b - a))); };
         var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+        var lerp = function (a, b, t) { return a + (b - a) * t; };
+
+        for (var s = 0; s < 22; s++) make('circle', { cx: (rnd() * 320).toFixed(1), cy: (rnd() * 120).toFixed(1), r: (0.4 + rnd() * 0.8).toFixed(2), opacity: (0.2 + rnd() * 0.5).toFixed(2) }, stars);
+
+        // Furrows run from the horizon toward the viewer; ridges catch the light.
+        var furrows = q('.kl-furrows'), VX = 160, HY = 177;
+        var row = function (d, t) { return [lerp(VX + d * 13, VX + d * 118, t), lerp(HY, 262, t)]; };
+        for (var d = -6.5; d <= 6.5; d += 1) {
+          var a = row(d, 0), b = row(d, 1);
+          make('path', { d: 'M' + a[0] + ' ' + a[1] + ' L' + b[0] + ' ' + b[1], stroke: '#0f0a06', 'stroke-opacity': '.55', 'stroke-width': '1.6' }, furrows);
+          make('path', { d: 'M' + (a[0] + 1) + ' ' + a[1] + ' L' + (b[0] + 4) + ' ' + b[1], stroke: '#a07a52', 'stroke-opacity': '.4', 'stroke-width': '.8' }, furrows);
+        }
+        var grains = q('.kl-grains');
+        for (var g = 0; g < 70; g++) {
+          var gy = 182 + Math.pow(rnd(), 0.8) * 76, depth = (gy - HY) / 85;
+          make('circle', { cx: (rnd() * 320).toFixed(1), cy: gy.toFixed(1), r: (0.3 + depth * 1.4 * rnd()).toFixed(2), opacity: (0.08 + rnd() * 0.22).toFixed(2) }, grains);
+        }
+
+        // A grass blade drawn pointing right from its joint, arching up then
+        // drooping at the tip. Mirrored for the left side.
+        var blade = function (len, lift, droop, w) {
+          return 'M0 0 C' + len * 0.3 + ' ' + -lift + ' ' + len * 0.72 + ' ' + -lift * 0.95 + ' ' + len + ' ' + droop +
+            ' C' + len * 0.7 + ' ' + -lift * 0.5 + ' ' + len * 0.32 + ' ' + -lift * 0.38 + ' 0 ' + w + 'Z';
+        };
+        var rib = function (len, lift, droop) { return 'M0 1 C' + len * 0.3 + ' ' + -lift * 0.72 + ' ' + len * 0.72 + ' ' + -lift * 0.72 + ' ' + len + ' ' + droop; };
+
+        // Sprouts along the furrows, near rows bigger. Each wakes at its own moment.
+        var sprouts = [], sproutHost = q('.kl-sprouts'), spots = [];
+        for (var sd = -5; sd <= 5; sd++) {
+          if (sd === 0) continue;
+          for (var st = 0.08; st < 1; st += 0.22) {
+            var tt = st + (rnd() - 0.5) * 0.08, at = row(sd + 0.5, tt);
+            if (at[0] < 6 || at[0] > 314 || (Math.abs(at[0] - 160) < 26 && at[1] > 210)) continue;
+            spots.push({ x: at[0], y: at[1], s: 0.5 + tt * 1.4 });
+          }
+        }
+        spots.sort(function (m, n) { return m.y - n.y; });
+        for (var si = 0; si < spots.length; si++) {
+          var sp = spots[si], grp = make('g', {}, sproutHost), parts = [];
+          for (var bi = 0; bi < 3; bi++) {
+            var side = bi === 0 ? -1 : 1, len = [11, 14, 9][bi], ang = [-62, -78, -28][bi];
+            var leaf = make('path', { d: blade(len, 4, 1, 1.6), fill: 'url(#kl-blade' + (bi % 2 ? 'A' : 'B') + ')' }, grp);
+            parts.push({ el: leaf, side: side, a: ang });
+          }
+          sprouts.push({ el: grp, x: sp.x, y: sp.y, s: sp.s, parts: parts, at: 0.12 + rnd() * 0.5, ph: rnd() * 6 });
+        }
+
+        // Main plant blades, low to high. `at` is how far up the stem the joint sits.
+        var blades = [
+          { at: .08, len: 56, lift: 15, droop: 16, a: -4, side: 1, fill: 'A' },
+          { at: .16, len: 62, lift: 18, droop: 18, a: -2, side: -1, fill: 'B' },
+          { at: .32, len: 66, lift: 20, droop: 13, a: -12, side: 1, fill: 'B' },
+          { at: .45, len: 60, lift: 18, droop: 10, a: -15, side: -1, fill: 'A' },
+          { at: .6, len: 50, lift: 16, droop: 6, a: -24, side: 1, fill: 'A' },
+          { at: .73, len: 40, lift: 12, droop: 3, a: -32, side: -1, fill: 'B' },
+          { at: .85, len: 28, lift: 9, droop: 0, a: -44, side: 1, fill: 'A' },
+        ];
+        var host = q('.kl-blades');
+        for (var i = 0; i < blades.length; i++) {
+          var B = blades[i], grpB = make('g', {}, host);
+          make('path', { d: blade(B.len, B.lift, B.droop, 4.2), fill: 'url(#kl-blade' + B.fill + ')' }, grpB);
+          make('path', { d: rib(B.len, B.lift, B.droop), fill: 'none', stroke: '#e8f3c8', 'stroke-opacity': '.3', 'stroke-width': '.7', 'stroke-linecap': 'round' }, grpB);
+          B.y = 228 - B.at * 146;
+          B.x = 160 + Math.sin(B.at * 6) * 1.6;
+          B.el = grpB;
+        }
+
+        // The ear: paired grains climbing the stem tip, with long awns.
+        var ear = q('.kl-ear'), earGreen = make('g', { fill: '#9fcf5a' }, ear), earGold = make('g', { fill: 'url(#kl-gold)', opacity: '0' }, ear), awns = make('g', { stroke: '#d9c27a', 'stroke-width': '.6', 'stroke-linecap': 'round', fill: 'none', opacity: '0' }, ear);
+        for (var e = 0; e < 7; e++) {
+          var ey = 84 - e * 5.6, ew = 3.6 - e * 0.25;
+          for (var es = -1; es <= 1; es += 2) {
+            var tr = 'translate(' + (160 + es * 2.6) + ' ' + ey + ') rotate(' + es * 24 + ')';
+            make('ellipse', { rx: ew.toFixed(2), ry: (ew * 1.75).toFixed(2), transform: tr }, earGreen);
+            make('ellipse', { rx: ew.toFixed(2), ry: (ew * 1.75).toFixed(2), transform: tr }, earGold);
+            make('path', { d: 'M' + (160 + es * 3) + ' ' + (ey - 3) + ' L' + (160 + es * (10 + e)) + ' ' + (ey - 22 - e * 1.5) }, awns);
+          }
+        }
+        make('ellipse', { cx: 160, cy: 44, rx: 2.4, ry: 4.4 }, earGreen);
+        make('ellipse', { cx: 160, cy: 44, rx: 2.4, ry: 4.4 }, earGold);
+        make('path', { d: 'M160 40 L160 18' }, awns);
+
+        var stages = [[0, 'Sowing the seed'], [0.22, 'Sprouting'], [0.5, 'Growing strong'], [0.86, 'Ready to harvest']];
+        var start = performance.now(), target = 0.1, p = 0, ready = false, gone = false, shown = '';
+        // Always show the loader for at least this long, even when everything is cached.
+        var MIN = 2500;
 
         // The app reports milestones; it calls __klFinish once the first screen is ready.
         window.__klStage = function (v) { if (v > target) target = v; };
@@ -174,37 +257,62 @@
         setTimeout(function () { ready = true; }, 15000);
 
         function draw(v, t) {
-          var grow = ease(span(v, 0.1, 0.86));
+          var alive = reduce ? 0 : span(v, 0.7, 1), wind = Math.sin(t * 1.3);
+          stars.setAttribute('opacity', (1 - span(v, 0.1, 0.7)).toFixed(3));
+          dawn.setAttribute('opacity', ease(span(v, 0.05, 0.95)).toFixed(3));
+          warmth.setAttribute('opacity', span(v, 0.3, 1).toFixed(3));
+          sun.style.transform = 'translate(0px,' + (-38 * ease(span(v, 0.05, 0.95))).toFixed(2) + 'px)';
+
+          // Seed coat opens as the shoot breaks through.
+          var open = ease(span(v, 0.04, 0.22));
+          halfL.style.transform = 'translate(' + (-3 * open) + 'px,' + (1.2 * open) + 'px) rotate(' + (-30 * open) + 'deg)';
+          halfR.style.transform = 'translate(' + (3 * open) + 'px,' + (1.2 * open) + 'px) rotate(' + (26 * open) + 'deg)';
+
+          var grow = ease(span(v, 0.08, 0.8));
           stem.style.strokeDashoffset = 1 - grow;
-          for (var r = 0; r < roots.length; r++) roots[r].style.strokeDashoffset = 1 - ease(span(v, 0.03 + r * 0.05, 0.3 + r * 0.06));
-          // Seed coat opens and falls back as the shoot rises.
-          var open = ease(span(v, 0.06, 0.3));
-          halfL.style.transform = 'translate(' + (-3 * open) + 'px,' + (1.5 * open) + 'px) rotate(' + (-28 * open) + 'deg)';
-          halfR.style.transform = 'translate(' + (3 * open) + 'px,' + (1.5 * open) + 'px) rotate(' + (24 * open) + 'deg)';
-          halfL.style.opacity = halfR.style.opacity = 1 - 0.55 * open;
-          // Once grown, a breeze: the plant sways from its base, leaves flutter.
-          var alive = reduce ? 0 : span(v, 0.8, 1);
-          plant.style.transform = 'rotate(' + (Math.sin(t * 1.25) * 1.3 * alive) + 'deg)';
-          for (var j = 0; j < leaves.length; j++) {
-            var L = leaves[j], k = ease(span(grow, L.at - 0.04, L.at + 0.14));
-            var unfurl = (1 - k) * 34 * L.side, flutter = Math.sin(t * 2.1 + j * 1.7) * 2.4 * alive;
-            L.el.style.transform = 'translate(' + L.x + 'px,' + L.y + 'px) rotate(' + (L.a * (L.side === 1 ? 1 : -1) + unfurl + flutter) + 'deg) scale(' + (L.side * L.s * k) + ',' + (L.s * k) + ')';
+          plant.style.transformOrigin = '160px 228px';
+          plant.style.transform = 'rotate(' + (wind * 1.4 * alive).toFixed(3) + 'deg)';
+          for (var j = 0; j < blades.length; j++) {
+            var B = blades[j], k = ease(span(grow, B.at - 0.06, B.at + 0.16));
+            var rot = B.side * (B.a - (1 - k) * 58) + Math.sin(t * 2 + j * 1.3) * 2.2 * alive;
+            B.el.style.transform = 'translate(' + B.x + 'px,' + B.y + 'px) rotate(' + rot.toFixed(2) + 'deg) scale(' + (B.side * k).toFixed(3) + ',' + k.toFixed(3) + ')';
           }
-          glow.setAttribute('opacity', span(v, 0.55, 1).toFixed(3));
+
+          var head = ease(span(v, 0.74, 0.94)), ripe = span(v, 0.86, 1);
+          ear.style.transformOrigin = '160px 86px';
+          ear.style.transform = 'scale(' + head.toFixed(3) + ') rotate(' + (Math.sin(t * 1.6) * 2.4 * alive).toFixed(2) + 'deg)';
+          earGold.setAttribute('opacity', ripe.toFixed(3));
+          awns.setAttribute('opacity', (head * 0.9).toFixed(3));
+
+          for (var m = 0; m < sprouts.length; m++) {
+            var S = sprouts[m], sk = ease(span(v, S.at, S.at + 0.2));
+            S.el.style.transform = 'translate(' + S.x.toFixed(1) + 'px,' + S.y.toFixed(1) + 'px) scale(' + (S.s * sk).toFixed(3) + ')';
+            for (var n = 0; n < S.parts.length; n++) {
+              var P = S.parts[n];
+              P.el.style.transform = 'rotate(' + (P.side === 1 ? P.a : 180 - P.a + Math.sin(t * 2 + S.ph) * 3 * alive).toFixed(2) + 'deg)' + (P.side === 1 ? '' : ' scale(1,-1)');
+            }
+          }
+
           bar.style.transform = 'scaleX(' + v + ')';
           pct.textContent = Math.round(v * 100) + '%';
+          var label = stages[0][1];
+          for (var w = 0; w < stages.length; w++) if (v >= stages[w][0]) label = stages[w][1];
+          if (label !== shown) { stageEl.textContent = label; shown = label; }
         }
 
         var last = start;
         function tick(now) {
           if (gone) return;
-          var t = (now - start) / 1000, dt = Math.min(0.1, (now - last) / 1000);
+          var t = (now - start) / 1000, dt = Math.min(0.3, (now - last) / 1000), age = now - start;
           last = now;
           // While waiting, creep toward 90% so a slow connection still sees growth.
           var creep = 0.9 - (0.9 - 0.1) * Math.exp(-t / 5);
-          var goal = ready && now - start > MIN ? 1 : Math.min(0.92, Math.max(target, creep));
+          var goal = ready && age > MIN ? 1 : Math.min(0.94, Math.max(target, creep));
+          // Never grow faster than the minimum time allows, so the plant always has
+          // its full 2.5 s to come up even when everything is already cached.
+          if (goal < 1) goal = Math.min(goal, age / MIN);
           // Ease by elapsed time, not per frame, so a slow device isn't held back too.
-          p += (goal - p) * (reduce ? 1 : 1 - Math.exp(-dt / (goal === 1 ? 0.16 : 0.3)));
+          p += (goal - p) * (reduce ? 1 : 1 - Math.exp(-dt / (goal === 1 ? 0.18 : 0.22)));
           draw(p, t);
           if (goal === 1 && p > 0.995) return lift();
           requestAnimationFrame(tick);
@@ -220,9 +328,10 @@
             if (performance.mark) performance.mark('kl:done');
             window.dispatchEvent(new Event('kl:done'));
             setTimeout(function () { el.parentNode && el.parentNode.removeChild(el); }, 1000);
-          }, reduce ? 0 : 380);
+          }, reduce ? 0 : 420);
         }
 
+        draw(0, 0);
         requestAnimationFrame(tick);
       })();
     </script>

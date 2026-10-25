@@ -19,6 +19,11 @@ function headFor(html: string, p: PageSeo) {
   set(/(<meta property="og:image" content=")[^"]*(")/, OG_IMAGE)
   set(/(<meta name="twitter:title" content=")[^"]*(")/, p.title)
   set(/(<meta name="twitter:description" content=")[^"]*(")/, p.description)
+  // Crawlers and link previews that don't run JavaScript still read this page's
+  // own heading and summary in the <noscript> fallback, not the home page's.
+  if (p.path !== '/') {
+    html = html.replace('<h1>Krishivam Agriscience Private Limited</h1>', `<h1>${esc(p.title)}</h1>\n        <p>${esc(p.description)}</p>`)
+  }
   if (p.jsonLd?.length) {
     const ld = JSON.stringify(p.jsonLd.length === 1 ? p.jsonLd[0] : p.jsonLd).replace(/</g, '\\u003c')
     html = html.replace('</head>', `    <script type="application/ld+json" id="page-jsonld">${ld}</script>\n  </head>`)

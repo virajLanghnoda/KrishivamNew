@@ -53,8 +53,11 @@ export default function Navbar() {
             </button>
             <AnimatePresence>
               {mega && (
-                <motion.div initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }} transition={{ duration: 0.25 }} className="fixed left-1/2 top-[40px] w-[min(820px,calc(100vw-2rem))] -translate-x-1/2 pt-9">
-                  <div className="grid grid-cols-4 gap-2 rounded-3xl border border-night/10 bg-cream p-3 shadow-lift">
+                // Centred with Framer's own x: a Tailwind translate would be overwritten by
+                // the animated transform and push the panel off the right edge. Tall
+                // menus scroll inside the panel on short laptop screens.
+                <motion.div style={{ x: '-50%' }} initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }} transition={{ duration: 0.25 }} className="fixed left-1/2 top-[40px] w-[min(860px,calc(100vw-2rem))] pt-9">
+                  <div data-lenis-prevent className="grid max-h-[calc(100svh-96px)] grid-cols-4 gap-2 overflow-y-auto overscroll-contain rounded-3xl border border-night/10 bg-cream p-3 shadow-lift">
                     {categories.map((c, i) => (
                       <div key={c.slug} className="rounded-2xl p-4 transition-colors hover:bg-white">
                         <Link to={`/products/${c.slug}`} className="text-[10px] font-bold uppercase tracking-[.2em] text-forest hover:text-night">0{i + 1} · {c.name}</Link>

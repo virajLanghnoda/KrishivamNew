@@ -54,3 +54,6 @@ html.lenis, html.lenis body { height: auto; }
 /* Page loader sprout. */
 @keyframes sprout { 0% { stroke-dashoffset: 1; } 55%, 100% { stroke-dashoffset: 0; } }
 @keyframes leaf { 0%, 30% { transform: scale(0); } 70%, 100% { transform: scale(1); } }
+
+/* A slow sweep of light across gradient text. */
+@keyframes sheen { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
