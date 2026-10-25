@@ -1,24 +1,20 @@
-import { useRef, type ReactNode } from 'react'
+import { Fragment, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useMotionTemplate, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { ArrowUpRight, FlaskConical, Leaf, Sprout } from 'lucide-react'
 import Reveal from '../Reveal'
-import { products } from '../../data/site'
 import { useLang } from '../../lib/i18n'
-import mark from '../../assets/mark.svg'
 
 const statement = 'Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs — rooted in agriculture, driven by science.'
 const gradient = 'bg-[linear-gradient(100deg,#c5e86c_0%,#f1f7d2_45%,#c5e86c_70%,#8fcf6a_100%)] bg-[length:220%_auto] bg-clip-text text-transparent'
-const packOf = (slug: string) => products.find(p => p.slug === slug)?.image
 
-// The sentence as it is read: words fill with ink one after another, and small
-// pills (the K mark, a pack, a seedling) pop in beside the words they illustrate.
-type Token = { word: string; accent?: boolean } | { chip: 'mark' | 'sprout' | string }
-const lead: Token[] = [
-  { word: 'Krishivam', accent: true }, { word: 'Agriscience', accent: true }, { chip: 'mark' },
-  { word: 'develops' }, { word: 'and' }, { word: 'supplies' }, { word: 'agricultural' }, { word: 'fertilizer', accent: true }, { chip: 'powerzone' },
-  { word: 'and' }, { word: 'crop-input', accent: true }, { chip: 'sprout' }, { word: 'solutions' }, { word: 'designed' }, { word: 'around' },
-  { word: 'modern', accent: true }, { word: 'farming', accent: true }, { chip: 'invictus' }, { word: 'needs' }, { word: '—' },
+// The sentence as it is read: words fill with ink one after another, the key
+// words in a lime gradient with a soft highlight sweeping under them.
+const lead: { word: string; accent?: boolean }[] = [
+  { word: 'Krishivam', accent: true }, { word: 'Agriscience', accent: true },
+  { word: 'develops' }, { word: 'and' }, { word: 'supplies' }, { word: 'agricultural' }, { word: 'fertilizer', accent: true },
+  { word: 'and' }, { word: 'crop-input', accent: true }, { word: 'solutions' }, { word: 'designed' }, { word: 'around' },
+  { word: 'modern', accent: true }, { word: 'farming', accent: true }, { word: 'needs' }, { word: '—' },
 ]
 
 /** A word in faint outline that fills with colour from left to right. */
@@ -27,28 +23,12 @@ function Word({ word, accent, progress, range }: { word: string; accent?: boolea
   const clipPath = useMotionTemplate`inset(-0.2em ${hidden}% -0.3em -0.05em)`
   const swipe = useTransform(progress, range, [0, 1])
   return (
-    <span className="relative mr-[0.26em] inline-block whitespace-nowrap">
+    <span className="relative inline-block whitespace-nowrap">
       {accent && <motion.span style={{ scaleX: swipe }} className="absolute inset-x-[-0.08em] bottom-[0.08em] -z-10 h-[0.3em] origin-left rounded-sm bg-lime/[.13]" />}
       <span className="text-cream/[.13]">{word}</span>
-      <motion.span style={{ clipPath }} className={`absolute inset-0 ${accent ? gradient : 'text-cream'}`}>{word}</motion.span>
+      {/* The coloured copy can't be selected, so copied text reads once. */}
+      <motion.span style={{ clipPath }} className={`absolute inset-0 select-none ${accent ? gradient : 'text-cream'}`}>{word}</motion.span>
     </span>
-  )
-}
-
-/** A small pill that springs open beside a word. */
-function Chip({ kind, progress, at }: { kind: string; progress: MotionValue<number>; at: number }) {
-  const scale = useTransform(progress, [at, at + 0.035], [0, 1])
-  const rotate = useTransform(progress, [at, at + 0.035], [-30, 0])
-  const pack = packOf(kind)
-  let inner: ReactNode
-  let tone = 'bg-sand'
-  if (kind === 'mark') { inner = <img src={mark} alt="" className="h-[62%] w-auto" />; tone = 'bg-lime' }
-  else if (kind === 'sprout') { inner = <Sprout className="h-[62%] w-auto text-lime" strokeWidth={2.2} />; tone = 'bg-forest' }
-  else if (pack) { inner = <img src={pack} alt="" className="h-[86%] w-auto object-contain drop-shadow-[0_3px_3px_rgba(0,0,0,.3)]" />; tone = 'bg-[radial-gradient(circle_at_50%_35%,#f5f2ea,#ebe4d2)] !w-[1.05em] !h-[1.05em] !align-[-0.18em]' }
-  return (
-    <motion.span style={{ scale, rotate }} className={`mr-[0.26em] inline-grid h-[0.86em] w-[1.7em] place-items-center overflow-hidden rounded-full align-[-0.1em] shadow-[0_6px_20px_-6px_rgba(197,232,108,.45)] ${tone}`}>
-      {inner}
-    </motion.span>
   )
 }
 
@@ -67,9 +47,11 @@ function ScrollStatement() {
     <div ref={ref}>
       <p className="sr-only">{statement}</p>
       <p aria-hidden="true" className="relative isolate font-display text-[1.95rem] font-semibold leading-[1.1] tracking-[-0.035em] sm:text-5xl lg:text-[3.6rem]">
-        {lead.map((t, i) => 'word' in t
-          ? <Word key={i} word={t.word} accent={t.accent} progress={p} range={[i * share, (i + 1) * share]} />
-          : <Chip key={i} kind={t.chip} progress={p} at={i * share} />)}
+        {lead.map((t, i) => (
+          <Fragment key={i}>
+            <Word word={t.word} accent={t.accent} progress={p} range={[i * share, (i + 1) * share]} />{' '}
+          </Fragment>
+        ))}
       </p>
       <div aria-hidden="true" className="mt-8 font-serif text-[2.55rem] italic leading-[1.02] sm:mt-10 sm:text-6xl lg:text-[5.6rem]">
         <motion.div style={{ x: x1, opacity: show }} className="flex items-center gap-[0.25em]">

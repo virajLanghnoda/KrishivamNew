@@ -21,8 +21,7 @@ function TractorProgress({ progress }: { progress: MotionValue<number> }) {
   const bob = useTransform(progress, v => Math.sin(v * 160) * 0.8)
   return (
     <div className="relative h-14" aria-hidden="true">
-      {/* untouched ground ahead, then the furrow and seedlings behind */}
-      <div className="absolute inset-x-0 bottom-1 h-[3px] rounded-full bg-cream/10 [background-image:repeating-linear-gradient(90deg,rgba(245,242,234,.25)_0_6px,transparent_6px_14px)]" />
+      {/* only ground the tractor has covered is shown: the furrow and seedlings behind it */}
       <motion.div style={{ clipPath: planted }} className="absolute inset-x-0 bottom-1 h-[3px] rounded-full bg-gradient-to-r from-[#5a3d26] via-forest to-lime" />
       <motion.div style={{ clipPath: planted, backgroundImage: SPROUTS, backgroundSize: '22px 14px' }} className="absolute inset-x-0 bottom-[7px] h-[14px] bg-repeat-x" />
       <motion.div style={{ left }} className="absolute bottom-[3px] w-[58px]">
