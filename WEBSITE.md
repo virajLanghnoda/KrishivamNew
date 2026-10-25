@@ -307,4 +307,4 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 - [ ] Fill in About details: history, founded year, certifications, team.
 - [ ] Submit the sitemap in Google Search Console.
 - [ ] Scroll through on a phone and a desktop browser once.
-- [ ] Answer the questions in `PENDING-DETAILS.txt`.
+- [ ] Answer the questions in `PENDING-DETAILS.md`.
