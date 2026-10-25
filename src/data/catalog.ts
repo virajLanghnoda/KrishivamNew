@@ -42,7 +42,7 @@ export const categories: Category[] = [
   { slug: 'organic-fertilizer', name: 'Organic Fertilizer', description: 'Natural-origin agricultural nutrition that builds soil health season after season.', products: ['Powerzone'], icon: 'sprout', tone: 'sand' },
   { slug: 'biofertilizer', name: 'Biofertilizer', description: 'Biological agricultural inputs for stronger roots and healthier plants.', products: ['Mycosh'], icon: 'leaf', tone: 'white' },
   { slug: 'biostimulants', name: 'Biostimulants', description: 'Solutions focused on supporting modern crop management, vigour and flowering.', products: ['Ontop', 'Anthos', 'Floxi'], icon: 'activity', tone: 'forest' },
-  { slug: 'speciality-liquid-fertilizer', name: 'Speciality Liquid Fertilizer', description: 'Precisely formulated liquid nutrition — macro, secondary and micronutrients.', products: ['INVICTUS', 'VALHALLA', 'Ragnar', 'Oden'], icon: 'flask', tone: 'night' },
+  { slug: 'speciality-liquid-fertilizer', name: 'Speciality Liquid Fertilizer', description: 'Precisely formulated liquid nutrition - macro, secondary and micronutrients.', products: ['INVICTUS', 'VALHALLA', 'Ragnar', 'Oden'], icon: 'flask', tone: 'night' },
 ]
 
 export const invictusVariants: Variant[] = [
@@ -52,7 +52,7 @@ export const invictusVariants: Variant[] = [
   { id: 'zinc', name: 'Zinc 39.5%', detail: 'Zinc oxide suspension concentrate', type: 'Micronutrient' },
   { id: 'calcium', name: 'Calcium 11%', detail: 'Concentrated liquid calcium, 100% water soluble', type: 'Liquid Fertilizer' },
   { id: 'boron', name: 'Boron Ethanolamine', detail: 'Micronutrient fertilizer', type: 'Micronutrient' },
-  { id: 'boron-teal', name: 'Boron Ethanolamine', detail: 'Micronutrient fertilizer — teal edition', type: 'Micronutrient' },
+  { id: 'boron-teal', name: 'Boron Ethanolamine', detail: 'Micronutrient fertilizer - teal edition', type: 'Micronutrient' },
 ]
 
 export const products: Product[] = [
@@ -75,7 +75,7 @@ export const products: Product[] = [
     tagline: 'Premium Triple-Action Biostimulant',
     highlights: ['Triple-action formulation', 'Humic acid base', 'Seaweed enriched', 'Protein hydrolysate'],
     composition: [{ label: 'Humic acid', value: 50 }, { label: 'Seaweed', value: 30 }, { label: 'Protein hydrolysate', value: 20 }],
-    specs: [{ label: 'Dosage (field)', value: '300–350 g per acre' }, { label: 'Dosage (spray)', value: '20–30 g per 15 L pump' }, { label: 'Pack size', value: '500 g' }],
+    specs: [{ label: 'Dosage (field)', value: '300-350 g per acre' }, { label: 'Dosage (spray)', value: '20-30 g per 15 L pump' }, { label: 'Pack size', value: '500 g' }],
   },
   {
     slug: 'anthos', name: 'Anthos', category: 'Biostimulants', categorySlug: 'biostimulants',
@@ -85,12 +85,12 @@ export const products: Product[] = [
     slug: 'floxi', name: 'Floxi', category: 'Biostimulants', categorySlug: 'biostimulants', aliases: ['floki'],
     positioning: 'A cytokinin-based floral enhancer that supports flower bud development, flowering and fruit formation.',
     tagline: 'Floral Enhancer',
-    highlights: ['Reduces pre-harvest flower drop', 'Reduces pre-harvest fruit drop', 'Stimulates flower generation by about 20–30%', 'Provides additional energy for better yield', 'Fixes nutrient imbalance', 'Eco-friendly and cost-effective'],
-    specs: [{ label: 'Active', value: 'Cytokinin (source: Zea mays kernel)' }, { label: 'Application', value: 'Foliar spray' }, { label: 'Dose', value: '1–1.5 ml per 1 L water' }, { label: 'Pack size', value: '15 ml' }],
+    highlights: ['Reduces pre-harvest flower drop', 'Reduces pre-harvest fruit drop', 'Stimulates flower generation by about 20-30%', 'Provides additional energy for better yield', 'Fixes nutrient imbalance', 'Eco-friendly and cost-effective'],
+    specs: [{ label: 'Active', value: 'Cytokinin (source: Zea mays kernel)' }, { label: 'Application', value: 'Foliar spray' }, { label: 'Dose', value: '1-1.5 ml per 1 L water' }, { label: 'Pack size', value: '15 ml' }],
   },
   {
     slug: 'invictus', name: 'INVICTUS', category: 'Speciality Liquid Fertilizer', categorySlug: 'speciality-liquid-fertilizer',
-    positioning: 'One name, a family of precise liquid formulations — from balanced NPK to targeted micronutrients.',
+    positioning: 'One name, a family of precise liquid formulations - from balanced NPK to targeted micronutrients.',
     tagline: 'Speciality Liquid Fertilizer Range',
     highlights: ['NPK, NP and NK liquids', 'Calcium, Zinc and Boron', 'Suspension formulations', '100% water-soluble options'],
     variants: invictusVariants,

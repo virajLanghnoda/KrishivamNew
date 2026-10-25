@@ -5,7 +5,7 @@ import { ArrowUpRight, FlaskConical, Leaf, Sprout } from 'lucide-react'
 import Reveal from '../Reveal'
 import { useLang } from '../../lib/i18n'
 
-const statement = 'Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs — rooted in agriculture, driven by science.'
+const statement = 'Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs - rooted in agriculture, driven by science.'
 const gradient = 'bg-[linear-gradient(100deg,#c5e86c_0%,#f1f7d2_45%,#c5e86c_70%,#8fcf6a_100%)] bg-[length:220%_auto] bg-clip-text text-transparent'
 
 // The sentence as it is read: words fill with ink one after another, the key
@@ -14,7 +14,7 @@ const lead: { word: string; accent?: boolean }[] = [
   { word: 'Krishivam', accent: true }, { word: 'Agriscience', accent: true },
   { word: 'develops' }, { word: 'and' }, { word: 'supplies' }, { word: 'agricultural' }, { word: 'fertilizer', accent: true },
   { word: 'and' }, { word: 'crop-input', accent: true }, { word: 'solutions' }, { word: 'designed' }, { word: 'around' },
-  { word: 'modern', accent: true }, { word: 'farming', accent: true }, { word: 'needs' }, { word: '—' },
+  { word: 'modern', accent: true }, { word: 'farming', accent: true }, { word: 'needs' }, { word: '-' },
 ]
 
 /** A word in faint outline that fills with colour from left to right. */

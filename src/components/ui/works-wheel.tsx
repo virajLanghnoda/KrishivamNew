@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useScroll } from 'framer-motion'
 import { cn } from '../../lib/utils'
-import { scrollToY, useLenis } from '../SmoothScroll'
 
 // Adapted from crafterui's "Works Wheel" (21st.dev).
 //
@@ -39,7 +38,6 @@ const LENS = 2.7
 const RING_R = 1.14
 const BOW = 1.82
 const TITLE = 0.1
-const INDEX = 0.04
 const CULL = 1.6
 const EASE = 0.14
 /** Share of the pinned scroll spent opening the ring into the drum. */
@@ -76,7 +74,6 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
   const cardRefs = React.useRef<(HTMLElement | null)[]>([])
   const labelRef = React.useRef<HTMLDivElement>(null)
   const titleRef = React.useRef<HTMLDivElement>(null)
-  const lenis = useLenis()
 
   const turn = React.useRef(0)
   const [active, setActive] = React.useState(0)
@@ -113,14 +110,14 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
     const cardW = Math.min(h * (narrow ? 0.36 : CARD_H) * CARD_RATIO, w * (narrow ? 0.9 : CARD_MAX_W))
     const cardH = cardW / CARD_RATIO
     const drumR = cardH * DRUM
-    const ringR = cardH * (narrow ? 1.25 : RING_R)
+    // At rest the whole ring has to fit on screen, or its top cards are cut off.
+    const ringR = Math.min(cardH * (narrow ? 1.25 : RING_R), h * 0.3, w * 0.38)
     const ringScale = count ? clamp((((2 * Math.PI * ringR) / count) * 0.82) / (cardW || 1), 0.16, 1) : 1
     return {
       cardW, cardH, ringR, ringScale, drumR,
       bow: cardH * (narrow ? 0.9 : BOW),
       depth: cardH * LENS,
       title: Math.max(cardH * TITLE, narrow ? 30 : 0),
-      index: Math.max(cardH * INDEX, 12),
     }
   }, [stage, count, narrow])
 
@@ -172,19 +169,12 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
     return () => { running = false; cancelAnimationFrame(frame); io.disconnect() }
   }, [metrics, stage.h, count, last, reduced, scrollYProgress])
 
-  // Index buttons scroll the page to where that item rests at the front.
-  const goTo = (i: number) => {
-    const wrap = wrapRef.current
-    if (!wrap) return
-    const top = wrap.getBoundingClientRect().top + window.scrollY
-    const span = wrap.offsetHeight - window.innerHeight
-    const p = OPEN + (last ? i / last : 0) * (1 - OPEN)
-    scrollToY(lenis, top + p * span + 2)
-  }
-
   return (
-    <div ref={wrapRef} className={cn('relative', className)} style={{ height: `${100 + count * 62}svh` }}>
+    <div ref={wrapRef} className={cn('relative', className)} style={{ height: `${100 + count * 40}svh` }}>
       <section aria-label={label} className="sticky top-0 h-[100svh] w-full select-none overflow-hidden">
+        {/* Soft edges: the section melts into the ones above and below instead of a hard line. */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-[150] h-28 bg-gradient-to-b from-night via-night/70 to-transparent" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[150] h-24 bg-gradient-to-t from-night to-transparent" />
         <div ref={stageRef} className="absolute inset-0" style={{ perspective: `${metrics.depth}px` }}>
           <div ref={wheelRef} className={cn('absolute left-1/2 [transform-style:preserve-3d]', narrow ? 'top-[60%]' : 'top-1/2')}>
             {items.map((item, i) => {
@@ -205,7 +195,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
                 </span>
               )
               return item.href ? (
-                <Link key={item.title} to={item.href} tabIndex={i === active ? 0 : -1} ref={(n: HTMLAnchorElement | null) => { cardRefs.current[i] = n }} className="group absolute [backface-visibility:hidden] focus:outline-none focus-visible:ring-2 focus-visible:ring-lime" style={style} aria-label={`${item.title} — ${item.subtitle ?? ''}`}>
+                <Link key={item.title} to={item.href} tabIndex={i === active ? 0 : -1} ref={(n: HTMLAnchorElement | null) => { cardRefs.current[i] = n }} className="group absolute [backface-visibility:hidden] focus:outline-none focus-visible:ring-2 focus-visible:ring-lime" style={style} aria-label={`${item.title} - ${item.subtitle ?? ''}`}>
                   {face}
                 </Link>
               ) : (
@@ -233,17 +223,6 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
           <span className="mt-3 block font-sans text-xs font-bold uppercase tracking-[.22em] text-lime">{items[active]?.subtitle}</span></span>
         </div>
 
-        {!narrow && (
-          <ol className="absolute right-[2.5%] top-1/2 -translate-y-1/2 text-right leading-[1.9] text-cream/40" style={{ fontSize: metrics.index }}>
-            {items.map((item, i) => (
-              <li key={item.title}>
-                <button type="button" onClick={() => goTo(i)} className={cn('cursor-pointer transition-colors hover:text-cream focus:outline-none focus-visible:text-lime', i === active && 'font-semibold text-lime')}>
-                  {String(i + 1).padStart(2, '0')} · <span translate="no" className="notranslate">{item.title}</span>
-                </button>
-              </li>
-            ))}
-          </ol>
-        )}
       </section>
     </div>
   )

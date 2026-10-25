@@ -113,7 +113,7 @@ function AboutIntro() {
           <h2 className="section-title">Modern agricultural inputs, thoughtfully made.</h2>
           <div className="mt-7 space-y-5 text-base leading-8 text-night/65 sm:text-lg">
             <p>{company.name} works across fertilizer and crop-input categories including organic fertilizers, biostimulants, biofertilizers and speciality liquid fertilizers.</p>
-            <p>Our brand philosophy combines agriculture, science, quality, sustainability and professionalism in one cohesive direction — so every pack is clear about what it contains and what it is for.</p>
+            <p>Our brand philosophy combines agriculture, science, quality, sustainability and professionalism in one cohesive direction - so every pack is clear about what it contains and what it is for.</p>
             {details.history.map((p, i) => <p key={i}>{p}</p>)}
           </div>
         </Reveal>
@@ -272,7 +272,7 @@ export function Services() {
           <Reveal>
             <p className="eyebrow">Behind every service</p>
             <h2 className="section-title">A portfolio built to be explained.</h2>
-            <p className="mt-5 max-w-md text-base leading-7 text-night/60">Every Krishivam product states what it contains on the pack — which makes guidance straightforward and honest.</p>
+            <p className="mt-5 max-w-md text-base leading-7 text-night/60">Every Krishivam product states what it contains on the pack - which makes guidance straightforward and honest.</p>
             <Link to="/products" className="btn-primary mt-8">Browse products <ArrowUpRight size={15} /></Link>
           </Reveal>
           <div className="grid grid-cols-2 gap-3">

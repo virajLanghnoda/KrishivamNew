@@ -40,14 +40,14 @@ const itemList = (name: string, items: Product[]) => ({
 
 export const staticPages: PageSeo[] = [
   page('/', `${BRAND} | Organic Fertilizer, Biostimulant & Liquid Fertilizer Company in Ahmedabad`,
-    `${company.name}, Ahmedabad, Gujarat — organic fertilizer, biostimulants, biofertilizer and speciality liquid fertilizers (NPK, calcium, zinc, boron) for healthier soils and stronger crops.`),
+    `${company.name}, Ahmedabad, Gujarat - organic fertilizer, biostimulants, biofertilizer and speciality liquid fertilizers (NPK, calcium, zinc, boron) for healthier soils and stronger crops.`),
   page('/products', `Fertilizer & Biostimulant Products | ${BRAND}`,
     'Explore Krishivam’s portfolio: Powerzone organic manure, Mycosh biofertilizer, Ontop and Floxi biostimulants, and the INVICTUS, VALHALLA, Ragnar and Oden speciality liquid fertilizers.',
     { jsonLd: [crumbs([['Home', '/'], ['Products', '/products']]), itemList(`${BRAND} products`, products)] }),
   page('/services', `Services for Farmers & Dealers | ${BRAND}`,
     'Agricultural product solutions, dealer and distributor support, crop nutrition guidance and technical support from Krishivam Agriscience, Ahmedabad.'),
   page('/mission', `Our Mission & Values | ${BRAND}`,
-    'Krishivam’s vision, mission and values — innovation, sustainability, partnership and farmer-focused agricultural solutions.'),
+    'Krishivam’s vision, mission and values - innovation, sustainability, partnership and farmer-focused agricultural solutions.'),
   page('/about', `About Us | ${company.name}`,
     `${company.name} is an agricultural input and fertilizer company in Satellite, Ahmedabad, developing organic fertilizers, biostimulants, biofertilizers and speciality liquid fertilizers.`),
   page('/contact', `Contact Us | ${BRAND}, Ahmedabad`,
@@ -57,7 +57,7 @@ export const staticPages: PageSeo[] = [
 
 export function categorySeo(c: Category): PageSeo {
   const names = c.products.join(', ')
-  return page(`/products/${c.slug}`, `${c.name} — ${names} | ${BRAND}`,
+  return page(`/products/${c.slug}`, `${c.name} - ${names} | ${BRAND}`,
     `${c.description} Krishivam ${c.name.toLowerCase()} range: ${names}. Made for Indian farming by Krishivam Agriscience, Ahmedabad.`,
     { jsonLd: [crumbs([['Home', '/'], ['Products', '/products'], [c.name, `/products/${c.slug}`]]), itemList(`${BRAND} ${c.name}`, products.filter(p => p.categorySlug === c.slug))] })
 }
@@ -65,7 +65,7 @@ export function categorySeo(c: Category): PageSeo {
 export function productSeo(p: Product, image?: string): PageSeo {
   const path = `/products/${p.categorySlug}/${p.slug}`
   const kind = p.tagline ?? p.category
-  return page(path, `${p.name} — ${kind} | ${BRAND}`, `${p.name} by Krishivam Agriscience: ${p.positioning}`, {
+  return page(path, `${p.name} - ${kind} | ${BRAND}`, `${p.name} by Krishivam Agriscience: ${p.positioning}`, {
     jsonLd: [
       {
         '@context': 'https://schema.org',

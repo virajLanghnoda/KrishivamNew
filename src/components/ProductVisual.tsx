@@ -7,7 +7,7 @@ export default function ProductVisual({ product, className, imgClassName, eager 
   if (product.image) {
     return (
       <div className={cn('relative flex items-center justify-center', className)}>
-        <img src={product.image} alt={`${product.name} — ${product.tagline ?? product.category}`} loading={eager ? 'eager' : 'lazy'} decoding="async" className={cn('h-auto max-h-full w-auto max-w-full object-contain drop-shadow-[0_30px_35px_rgba(7,19,13,.28)]', imgClassName)} />
+        <img src={product.image} alt={`${product.name} - ${product.tagline ?? product.category}`} loading={eager ? 'eager' : 'lazy'} decoding="async" className={cn('h-auto max-h-full w-auto max-w-full object-contain drop-shadow-[0_30px_35px_rgba(7,19,13,.28)]', imgClassName)} />
       </div>
     )
   }

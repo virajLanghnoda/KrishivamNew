@@ -20,7 +20,7 @@ const ENDPOINT = `https://formsubmit.co/ajax/${company.email}`
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 type Errors = Partial<Record<'name' | 'phone' | 'email' | 'message', string>>
 
-const productOptions = categories.flatMap(c => c.products.map(name => `${c.name} — ${productByName(name)?.name ?? name}`))
+const productOptions = categories.flatMap(c => c.products.map(name => `${c.name} - ${productByName(name)?.name ?? name}`))
 
 function validate(f: FormData): Errors {
   const e: Errors = {}
@@ -78,10 +78,10 @@ export default function Contact() {
         body: JSON.stringify({
           Name: data.get('name'),
           Phone: data.get('phone'),
-          Email: data.get('email') || '—',
-          Product: data.get('product') || '—',
+          Email: data.get('email') || '-',
+          Product: data.get('product') || '-',
           Message: data.get('message'),
-          _subject: `New enquiry from ${data.get('name')} — krishivam.com`,
+          _subject: `New enquiry from ${data.get('name')} - krishivam.com`,
           _template: 'table',
           _captcha: 'false',
           ...(data.get('email') ? { _replyto: data.get('email') } : {}),
@@ -115,7 +115,7 @@ export default function Contact() {
           <Reveal>
             <p className="eyebrow">Contact details</p>
             <h2 className="section-title">We’re easy to reach.</h2>
-            <p className="mt-5 max-w-md text-base leading-7 text-night/60">Call, write or send the form — the Krishivam team usually replies within one working day.</p>
+            <p className="mt-5 max-w-md text-base leading-7 text-night/60">Call, write or send the form - the Krishivam team usually replies within one working day.</p>
             <ul className="mt-10 space-y-3">
               {contacts.map(({ icon: Icon, label, value, href }) => {
                 const inner = (
@@ -145,7 +145,7 @@ export default function Contact() {
                   <motion.div key="sent" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid min-h-[420px] place-items-center text-center" role="status">
                     <div>
                       <CheckCircle2 className="mx-auto text-forest" size={52} strokeWidth={1.5} />
-                      <h3 className="mt-6 text-3xl">Thank you — enquiry received.</h3>
+                      <h3 className="mt-6 text-3xl">Thank you - enquiry received.</h3>
                       <p className="mx-auto mt-3 max-w-sm text-night/60">The Krishivam team will get back to you shortly. For anything urgent, call <a className="font-semibold text-forest" href={`tel:${company.phone}`}>{company.phone}</a>.</p>
                       <button type="button" onClick={() => setStatus('idle')} className="btn-secondary mt-8">Send another enquiry</button>
                     </div>
@@ -161,7 +161,7 @@ export default function Contact() {
                       <Field label="Mobile *" name="phone" error={errors.phone}>
                         <input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="98765 43210" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'phone-error' : undefined} className={inputCls(errors.phone)} />
                       </Field>
-                      <Field label="Email" name="email" error={errors.email} hint="Optional — for a written reply.">
+                      <Field label="Email" name="email" error={errors.email} hint="Optional - for a written reply.">
                         <input id="email" name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@example.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? 'email-error' : undefined} className={inputCls(errors.email)} />
                       </Field>
                       <Field label="Product / Category" name="product">
@@ -181,7 +181,7 @@ export default function Contact() {
                     <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
                     {status === 'error' && (
                       <p role="alert" className="mt-5 rounded-xl bg-sand px-4 py-3 text-sm text-night/75">
-                        {/activat/i.test(note) ? 'The enquiry form is being activated — please try again in a few minutes, or ' : 'Your enquiry couldn’t be sent just now. Please try again, or '}
+                        {/activat/i.test(note) ? 'The enquiry form is being activated - please try again in a few minutes, or ' : 'Your enquiry couldn’t be sent just now. Please try again, or '}
                         call <a className="font-semibold text-forest" href={`tel:${company.phone}`}>{company.phone}</a> / email <a className="font-semibold text-forest" href={`mailto:${company.email}`}>{company.email}</a>.
                       </p>
                     )}

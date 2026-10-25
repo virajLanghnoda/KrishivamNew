@@ -9,9 +9,9 @@ import { useLoaderDone } from '../../lib/loader'
 const ShaderAnimation = lazy(() => import('../ui/shader-animation'))
 
 const stats = [
-  ['4', 'Product categories'],
+  ['4', 'Categories'],
   ['9', 'Product lines'],
-  ['6', 'INVICTUS formulations'],
+  ['6', 'Formulations'],
 ] as const
 
 /** Brand seal: the K mark inside a slowly turning ring of text. */
@@ -35,7 +35,8 @@ export default function Hero() {
   // Wait until the loader has slid most of the way off, so the entrance is seen.
   const ready = useLoaderDone(450)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  // A gentle drift only: a bigger one pushed the stats out of the hero's bottom edge.
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '10%'])
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   const sealRotate = useTransform(scrollYProgress, [0, 1], [0, 90])
   const show = ready ? 'show' : 'hide'
@@ -68,12 +69,13 @@ export default function Hero() {
           <Link className="btn-ghost-light" to="/contact">Contact Us</Link>
         </motion.div>
 
-        <motion.dl variants={{ hide: { opacity: 0 }, show: { opacity: 1 } }} initial="hide" animate={show} transition={{ duration: 1, delay: 1 }} className="mt-14 grid max-w-xl grid-cols-3 gap-6 border-t border-cream/15 pt-6">
+        {/* One compact strip, three equal cells, so it stays on a single line even on phones. */}
+        <motion.dl variants={{ hide: { opacity: 0 }, show: { opacity: 1 } }} initial="hide" animate={show} transition={{ duration: 1, delay: 1 }} className="mt-10 grid w-full max-w-lg grid-cols-3 divide-x divide-cream/15 rounded-2xl border border-cream/15 bg-cream/[.04] backdrop-blur-sm sm:mt-12">
           {stats.map(([n, l]) => (
-            <div key={l}>
+            <div key={l} className="flex flex-col items-center gap-1 px-2 py-3 text-center sm:flex-row sm:justify-center sm:gap-3 sm:px-4 sm:py-4 sm:text-left">
               <dt className="sr-only">{l}</dt>
-              <dd className="font-display text-4xl font-extrabold leading-none text-cream sm:text-5xl">{n}</dd>
-              <dd className="mt-2 text-[11px] font-semibold uppercase tracking-[.16em] text-cream/50">{l}</dd>
+              <dd className="font-display text-2xl font-extrabold leading-none text-lime sm:text-3xl">{n}</dd>
+              <dd className="text-[10px] font-semibold uppercase leading-tight tracking-[.14em] text-cream/60 sm:text-[11px]">{l}</dd>
             </div>
           ))}
         </motion.dl>

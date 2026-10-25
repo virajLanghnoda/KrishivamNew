@@ -4,10 +4,6 @@ import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'fr
 import { ArrowUpRight } from 'lucide-react'
 import { invictusVariants } from '../../data/site'
 
-// Left and right edge of the page container, so the rail starts and ends in line
-// with every other section.
-const edge = 'pl-5 pr-5 sm:pl-8 sm:pr-8 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:pr-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]'
-
 // A row of seedlings, tiled along the furrow the tractor leaves behind.
 const SPROUTS = `url("data:image/svg+xml,${encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='22' height='14'><path d='M11 14V7' stroke='#8fcf6a' stroke-width='1.4' stroke-linecap='round'/><path d='M11 9C8.5 5 5.5 5 4 6c1.6 2.6 4.4 3.6 7 3z' fill='#8fcf6a'/><path d='M11 8c2-4.4 5.4-5 7-4-1.2 3-4 4.4-7 4z' fill='#c5e86c'/></svg>")}")`
 const spin = { transformBox: 'fill-box' as const, transformOrigin: 'center' }
@@ -94,13 +90,18 @@ export default function InvictusRail() {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(110%_85%_at_85%_10%,#1b6b3a_0%,#0e3a20_45%,#07130d_100%)]" />
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-[.06] [background-image:linear-gradient(#f5f2ea_1px,transparent_1px),linear-gradient(90deg,#f5f2ea_1px,transparent_1px)] [background-size:64px_64px]" />
 
-        <motion.div ref={trackRef} style={{ x }} className={`flex min-h-0 w-max flex-1 items-center gap-6 will-change-transform ${edge}`}>
-          <div className="flex w-[80vw] max-w-[400px] shrink-0 flex-col justify-center pr-4 sm:w-[380px] sm:pr-10">
+        {/* --edge lines the rail up with the page container at every width. */}
+        <div className="relative flex min-h-0 flex-1 flex-col [--edge:1.25rem] sm:[--edge:2rem] lg:[--edge:max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
+          {/* The intro stays put. On phones it sits above the rail; on wider screens it is
+              frozen on the left and the bottles slide in underneath a fade. */}
+          <div className="relative z-10 shrink-0 px-[var(--edge)] pb-4 lg:absolute lg:inset-y-0 lg:left-0 lg:flex lg:w-[calc(var(--edge)+480px)] lg:flex-col lg:justify-center lg:bg-[linear-gradient(90deg,#07130d_0%,rgba(8,26,16,.97)_58%,rgba(9,30,18,.75)_80%,transparent_100%)] lg:pb-0 lg:pr-20">
             <p className="eyebrow !text-lime">04 · Speciality liquids</p>
-            <h2 className="mt-4 font-display text-5xl leading-[.9] sm:text-6xl">INVICTUS<span className="mt-3 block font-serif text-2xl font-medium italic leading-tight tracking-normal text-lime sm:text-[1.75rem]">one name, six precise formulations.</span></h2>
-            <p className="mt-6 max-w-sm text-base leading-7 text-cream/65">Balanced NPK, targeted NP and NK liquids, and micronutrient concentrates — each colour-coded on the pack so the right one is easy to pick.</p>
-            <Link to="/products/speciality-liquid-fertilizer/invictus" className="btn-lime mt-8 w-fit">Explore INVICTUS <ArrowUpRight size={15} /></Link>
+            <h2 className="mt-3 font-display text-4xl leading-[.9] sm:mt-4 sm:text-6xl">INVICTUS<span className="mt-2 block font-serif text-xl font-medium italic leading-tight tracking-normal text-lime sm:mt-3 sm:text-[1.75rem]">one name, six precise formulations.</span></h2>
+            <p className="mt-6 hidden max-w-sm text-base leading-7 text-cream/65 sm:block">Balanced NPK, targeted NP and NK liquids, and micronutrient concentrates - each colour-coded on the pack so the right one is easy to pick.</p>
+            <Link to="/products/speciality-liquid-fertilizer/invictus" className="btn-lime mt-4 w-fit !min-h-[42px] !py-2.5 sm:mt-8 sm:!min-h-[48px] sm:!py-3.5">Explore INVICTUS <ArrowUpRight size={15} /></Link>
           </div>
+
+          <motion.div ref={trackRef} style={{ x }} className="flex min-h-0 w-max flex-1 items-center gap-6 pl-[var(--edge)] pr-[var(--edge)] will-change-transform lg:pl-[calc(var(--edge)+500px)]">
           {invictusVariants.map((v, i) => (
             <article key={v.name + i} className="group relative flex h-full max-h-[600px] w-[72vw] max-w-[340px] shrink-0 flex-col overflow-hidden rounded-[2rem] bg-cream p-6 text-night shadow-[0_30px_60px_-25px_rgba(0,0,0,.6)] sm:w-[300px]">
               <div className="absolute inset-x-0 top-0 h-1.5 bg-lime" />
@@ -116,7 +117,8 @@ export default function InvictusRail() {
               <p className="mt-2 text-sm leading-6 text-night/60">{v.detail}</p>
             </article>
           ))}
-        </motion.div>
+          </motion.div>
+        </div>
 
         <div className="container-page mt-[max(0.5rem,2svh)] shrink-0">
           <TractorProgress progress={bar} />

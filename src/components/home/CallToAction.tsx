@@ -49,7 +49,7 @@ export default function CallToAction() {
           <div>
             <p className="eyebrow !text-lime">Let’s talk</p>
             <TextReveal as="h2" inView text="Let’s grow something together." className="mt-6 max-w-2xl font-display text-5xl leading-[.95] sm:text-6xl lg:text-7xl" />
-            <p className="mt-6 max-w-md text-base leading-7 text-cream/60">Product enquiries, dealership conversations or a question about a crop — the Krishivam team is a call away.</p>
+            <p className="mt-6 max-w-md text-base leading-7 text-cream/60">Product enquiries, dealership conversations or a question about a crop - the Krishivam team is a call away.</p>
           </div>
 
           <div className="space-y-3">

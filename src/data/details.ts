@@ -1,12 +1,12 @@
 /*
  * ════════════════════════════════════════════════════════════════════════════
- *   KRISHIVAM — DETAILS FOR YOU TO FILL IN
+ *   KRISHIVAM - DETAILS FOR YOU TO FILL IN
  * ════════════════════════════════════════════════════════════════════════════
  *
  *   This is the one file for company facts that only you can supply.
  *
  *   • Every field is optional. Leave it empty ('' or []) and the website simply
- *     hides that part — visitors never see a blank or a "[to be added]" note.
+ *     hides that part - visitors never see a blank or a "[to be added]" note.
  *   • Fill a field in and it appears on the site automatically, in the right
  *     place and in the right style. Nothing else needs editing.
  *   • After editing, run `npm run build` (or push to GitHub and let Vercel build).
@@ -49,7 +49,7 @@ export const details = {
   // Google Maps → search the office → Share → Embed a map → copy only the
   // https://www.google.com/maps/embed?... link from inside src="...".
   mapEmbedUrl: '',
-  // Office hours, e.g. 'Mon–Sat, 10:00–18:30'.
+  // Office hours, e.g. 'Mon-Sat, 10:00-18:30'.
   hours: '',
 
   // ── Contact extras ─────────────────────────────────────────────────────────
