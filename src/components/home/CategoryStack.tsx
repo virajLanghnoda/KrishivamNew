@@ -16,7 +16,7 @@ function StackCard({ c, i, total, progress }: { c: Category; i: number; total: n
     <div className="sticky h-[80svh] min-h-[min(540px,88svh)] lg:h-[78svh]" style={{ top: `calc(92px + ${i * 22}px)` }}>
       <motion.article
         style={{ scale }}
-        className={cn('relative grid h-full origin-top overflow-hidden rounded-[2rem] border p-7 shadow-soft sm:p-10 lg:grid-cols-[1fr_1.1fr] lg:p-14', cardSurface(i))}
+        className={cn('relative grid h-full origin-top overflow-hidden rounded-[2rem] border p-7 pb-8 shadow-soft sm:p-10 lg:grid-cols-[1fr_1.1fr] lg:p-14', cardSurface(i))}
       >
         <div className="relative z-10 flex min-h-0 flex-col">
           <div className="flex items-center gap-4">
@@ -27,21 +27,21 @@ function StackCard({ c, i, total, progress }: { c: Category; i: number; total: n
           </div>
           <h3 className="mt-5 font-display text-[2.1rem] leading-[.95] sm:mt-8 sm:text-6xl lg:text-7xl">{c.name}</h3>
           <p className="mt-4 line-clamp-3 max-w-md text-[15px] leading-6 sm:mt-5 sm:line-clamp-none sm:text-base sm:leading-7 text-night/60">{c.description}</p>
-          <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
+          <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6">
             {items.map(p => (
               <Link key={p.slug} to={productHref(p)} translate="no" className="notranslate rounded-full px-3.5 py-1.5 text-sm font-semibold transition sm:px-4 sm:py-2 bg-night/5 text-night hover:bg-night hover:text-cream">{p.name}</Link>
             ))}
           </div>
           {/* Phones and tablets: the packs fill the space between the copy and the link. */}
           {shots.length > 0 && (
-            <div className="pointer-events-none relative -mx-2 flex min-h-[150px] flex-1 items-end justify-center pt-5 lg:hidden">
+            <div className="pointer-events-none relative -mx-2 flex min-h-[140px] flex-1 items-end justify-center overflow-hidden pt-5 lg:hidden">
               <div className="absolute bottom-2 left-1/2 h-[55%] w-[80%] -translate-x-1/2 rounded-[50%] blur-2xl bg-forest/10" />
               {shots.slice(0, 3).map((p, k) => (
                 <img key={p.slug} src={p.image} alt="" loading="lazy" decoding="async" className="relative w-auto max-w-[46%] object-contain drop-shadow-[0_18px_18px_rgba(7,19,13,.3)]" style={{ height: shots.length > 1 ? `${100 - k * 12}%` : '100%', marginLeft: k ? '-7%' : 0, zIndex: 3 - k }} />
               ))}
             </div>
           )}
-          <Link to={`/products/${c.slug}`} className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-forest/25 px-5 py-2.5 text-sm font-bold text-forest transition hover:border-forest hover:bg-forest hover:text-cream lg:mt-auto">
+          <Link to={`/products/${c.slug}`} className="relative z-10 mt-5 inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-forest/25 bg-white/70 px-5 py-2.5 text-sm font-bold text-forest backdrop-blur-sm transition hover:border-forest hover:bg-forest hover:text-cream lg:mt-auto">
             Explore category <ArrowUpRight size={16} />
           </Link>
         </div>
@@ -74,7 +74,9 @@ export default function CategoryStack() {
           <h2 className="section-title">Four categories. One standard of care.</h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-night/60">A focused portfolio across organic fertilizers, biostimulants, biofertilizers and speciality liquid fertilizers.</p>
         </Reveal>
-        <div ref={ref} className="mt-14 space-y-[12svh] pb-[4svh]">
+        {/* The gap between cards is how long each one rests, fully visible, before the
+            next slides over it - long enough to read it down to its Explore button. */}
+        <div ref={ref} className="mt-14 space-y-[38svh] pb-[10svh]">
           {categories.map((c, i) => <StackCard key={c.slug} c={c} i={i} total={categories.length} progress={scrollYProgress} />)}
         </div>
       </div>

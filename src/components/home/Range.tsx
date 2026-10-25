@@ -17,7 +17,7 @@ export default function Range() {
           <p className="mt-5 max-w-xl text-lg leading-8 text-cream/60">Keep scrolling to turn the wheel through the Krishivam range.</p>
         </Reveal>
       </div>
-      <WorksWheel items={range} label="The Krishivam Range" action="View product" />
+      <WorksWheel items={range} label="Top Products" showLabel={false} action="View product" />
     </section>
   )
 }

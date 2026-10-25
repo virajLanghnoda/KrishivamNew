@@ -25,6 +25,8 @@ export interface WorksWheelItem {
 export interface WorksWheelProps {
   items: WorksWheelItem[]
   label?: string
+  /** Show the label in the middle of the ring at rest (it always names the section for screen readers). */
+  showLabel?: boolean
   action?: string
   className?: string
 }
@@ -67,7 +69,7 @@ function turnFor(p: number, last: number) {
   return 1 + Math.min(last, n + smooth(clamp((f - 0.25) / 0.5, 0, 1)))
 }
 
-export function WorksWheel({ items, label = 'The Range', action = 'View', className }: WorksWheelProps) {
+export function WorksWheel({ items, label = 'The Range', showLabel = true, action = 'View', className }: WorksWheelProps) {
   const wrapRef = React.useRef<HTMLDivElement>(null)
   const stageRef = React.useRef<HTMLDivElement>(null)
   const wheelRef = React.useRef<HTMLDivElement>(null)
@@ -205,9 +207,9 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
           </div>
         </div>
 
-        <div ref={labelRef} className="pointer-events-none absolute inset-0 grid place-items-center text-center font-display font-extrabold leading-none tracking-tight text-cream" style={{ fontSize: metrics.title }}>
+        {showLabel && <div ref={labelRef} className="pointer-events-none absolute inset-0 grid place-items-center text-center font-display font-extrabold leading-none tracking-tight text-cream" style={{ fontSize: metrics.title }}>
           {label}
-        </div>
+        </div>}
         <div
           ref={titleRef}
           className={cn(

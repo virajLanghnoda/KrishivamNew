@@ -50,8 +50,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p aria-hidden="true" className="pointer-events-none mt-12 select-none whitespace-nowrap text-center font-display text-[19vw] font-extrabold leading-[.8] text-cream/[.05]">Krishivam</p>
-      <div className="container-page relative flex flex-col gap-3 border-t border-cream/10 py-6 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">
+      <div className="container-page relative mt-14 flex flex-col gap-3 border-t border-cream/10 py-6 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">
         <span>© {new Date().getFullYear()} {company.name}. All Rights Reserved.</span>
         <span className="font-serif text-base italic text-cream/60">{company.promise}</span>
       </div>

@@ -94,7 +94,7 @@ export default function InvictusRail() {
         <div className="relative flex min-h-0 flex-1 flex-col [--edge:1.25rem] sm:[--edge:2rem] lg:[--edge:max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
           {/* The intro stays put. On phones it sits above the rail; on wider screens it is
               frozen on the left and the bottles slide in underneath a fade. */}
-          <div className="relative z-10 shrink-0 px-[var(--edge)] pb-4 lg:absolute lg:inset-y-0 lg:left-0 lg:flex lg:w-[calc(var(--edge)+480px)] lg:flex-col lg:justify-center lg:bg-[linear-gradient(90deg,#07130d_0%,rgba(8,26,16,.97)_58%,rgba(9,30,18,.75)_80%,transparent_100%)] lg:pb-0 lg:pr-20">
+          <div className="relative z-10 shrink-0 px-[var(--edge)] pb-4 lg:absolute lg:inset-y-0 lg:left-0 lg:flex lg:w-[calc(var(--edge)+480px)] lg:flex-col lg:justify-center lg:bg-[linear-gradient(90deg,rgba(7,19,13,.94)_70%,transparent)] lg:pb-0 lg:pr-20">
             <p className="eyebrow !text-lime">04 · Speciality liquids</p>
             <h2 className="mt-3 font-display text-4xl leading-[.9] sm:mt-4 sm:text-6xl">INVICTUS<span className="mt-2 block font-serif text-xl font-medium italic leading-tight tracking-normal text-lime sm:mt-3 sm:text-[1.75rem]">one name, six precise formulations.</span></h2>
             <p className="mt-6 hidden max-w-sm text-base leading-7 text-cream/65 sm:block">Balanced NPK, targeted NP and NK liquids, and micronutrient concentrates - each colour-coded on the pack so the right one is easy to pick.</p>
