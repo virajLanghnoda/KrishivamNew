@@ -13,7 +13,7 @@ PART 1 — MUST-HAVE BEFORE GOING LIVE
 Q1. What is your Google Analytics 4 Measurement ID?
     (analytics.google.com → Admin → Data streams → Web → your stream.
     Looks like G-ABC123XYZ9.)                     [details.ts → googleAnalyticsId]
-A: G-9HBHPKBVWH  — DONE, added to the site.
+A: G-H4BFHN1H6N  — DONE, added to the site.
 
 Q2. Is the live website address https://krishivam.com ? If not, what is it?
                                                   [details.ts → siteUrl]

@@ -300,7 +300,7 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 ## 12. Checklist before going live
 
 - [ ] Send one test enquiry and click **Activate Form** in the email FormSubmit sends to krishivamagriscience@gmail.com.
-- [x] Add the GA4 Measurement ID to `details.ts` (G-9HBHPKBVWH).
+- [x] Add the GA4 Measurement ID to `details.ts` (G-H4BFHN1H6N).
 - [ ] Confirm the office unit number and fill in `streetAddress` (and optionally `mapEmbedUrl`, `hours`, `whatsapp`, social links).
 - [ ] Confirm Floxi's cytokinin content (the pack front says 0.2%, the composition table says 0.02%) — it is not shown on the site until confirmed.
 - [ ] Add Anthos's photo and details.
