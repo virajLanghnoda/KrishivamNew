@@ -2,10 +2,11 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '../lib/utils'
 
 /** Words slide up out of a mask, one after another. */
-export default function TextReveal({ text, className, delay = 0, as: Tag = 'span', inView = false }: { text: string; className?: string; delay?: number; as?: 'span' | 'h1' | 'h2' | 'p'; inView?: boolean }) {
+/** `play` holds the reveal back (e.g. until the loader lifts); `inView` waits for scroll instead. */
+export default function TextReveal({ text, className, delay = 0, as: Tag = 'span', inView = false, play = true }: { text: string; className?: string; delay?: number; as?: 'span' | 'h1' | 'h2' | 'p'; inView?: boolean; play?: boolean }) {
   const reduce = useReducedMotion()
   const words = text.split(' ')
-  const trigger = inView ? { whileInView: 'show', viewport: { once: true, margin: '-60px' } } : { animate: 'show' }
+  const trigger = inView ? { whileInView: 'show', viewport: { once: true, margin: '-60px' } } : { animate: play ? 'show' : 'hide' }
   return (
     <Tag className={cn('block', className)} aria-label={text}>
       <motion.span initial={reduce ? 'show' : 'hide'} {...trigger} transition={{ staggerChildren: 0.07, delayChildren: delay }} className="block" aria-hidden="true">

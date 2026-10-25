@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom'
 import { productByName, type Category } from '../data/site'
 import Reveal from './Reveal'
 import { cn } from '../lib/utils'
+import { isDark, toneClasses } from '../lib/tone'
 
 export default function CategoryCard({ category, index }: { category: Category; index: number }) {
-  const dark = category.tone === 'dark'
+  const dark = isDark(category.tone)
   const shots = category.products.map(productByName).filter(p => p?.image).slice(0, 2)
   return (
     <Reveal delay={index * 0.06} className="h-full">
       <Link
         to={`/products/${category.slug}`}
-        className={cn('group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-[2rem] border p-7 transition duration-500 hover:-translate-y-1 hover:shadow-lift', dark ? 'border-white/10 text-cream' : 'border-ink/10 text-ink')}
-        style={{ background: dark ? `linear-gradient(140deg, ${category.accent}, #07130d)` : `linear-gradient(140deg, #fbf9f3, ${category.accent}26)` }}
+        className={cn('group relative flex h-full min-h-[340px] flex-col overflow-hidden rounded-[2rem] border p-7 transition duration-500 hover:-translate-y-1 hover:shadow-lift', toneClasses[category.tone])}
       >
         <div className="flex items-start justify-between">
-          <span className={cn('font-display text-5xl leading-none', dark ? 'text-cream/30' : 'text-ink/20')}>0{index + 1}</span>
-          <span className={cn('grid h-11 w-11 place-items-center rounded-full transition duration-500 group-hover:rotate-45', dark ? 'bg-cream/10 group-hover:bg-lime group-hover:text-night' : 'bg-ink/5 group-hover:bg-ink group-hover:text-cream')}><ArrowUpRight size={18} /></span>
+          <span className={cn('font-display text-5xl font-extrabold leading-none', dark ? 'text-cream/30' : 'text-night/20')}>0{index + 1}</span>
+          <span className={cn('grid h-11 w-11 place-items-center rounded-full transition duration-500 group-hover:rotate-45', dark ? 'bg-cream/10 group-hover:bg-lime group-hover:text-night' : 'bg-night/5 group-hover:bg-night group-hover:text-cream')}><ArrowUpRight size={18} /></span>
         </div>
         <div className="pointer-events-none absolute bottom-0 right-4 flex h-[62%] items-end">
           {shots.map((p, k) => <img key={p!.slug} src={p!.image} alt="" loading="lazy" className="h-full w-auto object-contain drop-shadow-[0_20px_20px_rgba(0,0,0,.25)] transition duration-700 group-hover:-translate-y-2" style={{ height: `${100 - k * 14}%`, marginLeft: k ? '-14%' : 0 }} />)}
@@ -24,7 +24,7 @@ export default function CategoryCard({ category, index }: { category: Category; 
         <div className="relative mt-auto max-w-[58%] pt-24">
           <p className={cn('text-[10px] font-bold uppercase tracking-[.2em]', dark ? 'text-lime' : 'text-forest')}>{category.products.length} {category.products.length === 1 ? 'Product' : 'Products'}</p>
           <h3 className="mt-2 font-display text-4xl leading-none">{category.name}</h3>
-          <p className={cn('mt-3 text-sm leading-6', dark ? 'text-cream/60' : 'text-ink/60')}>{category.description}</p>
+          <p className={cn('mt-3 text-sm leading-6', dark ? 'text-cream/60' : 'text-night/60')}>{category.description}</p>
         </div>
       </Link>
     </Reveal>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
+import { loaderDone } from '../lib/loader'
 
 const LenisContext = createContext<Lenis | null>(null)
 
@@ -21,7 +22,10 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const instance = new Lenis({ lerp: 0.1, wheelMultiplier: 1, autoRaf: true })
     setLenis(instance)
-    return () => { instance.destroy(); setLenis(null) }
+    // Hold the page still while the loader is up.
+    const release = () => instance.start()
+    if (!loaderDone()) { instance.stop(); window.addEventListener('kl:done', release, { once: true }) }
+    return () => { window.removeEventListener('kl:done', release); instance.destroy(); setLenis(null) }
   }, [])
 
   // A new route always starts at the top.

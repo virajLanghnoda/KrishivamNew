@@ -9,7 +9,7 @@ import { scrollToY, useLenis } from '../SmoothScroll'
 // At rest the work sits in a ring around a title, each card tangent to the circle.
 // Scrolling blows the ring open into a vertical drum: the card at the front lies
 // flat and full size, the ones above and below rotate away into hard perspective.
-// Keep scrolling and the drum carries the next piece round to the front.
+// Keep scrolling and the drum brings the next piece up from below to the front.
 //
 // The original turns on wheel/drag inside its own box, which fights page scroll
 // (and Lenis). Here the section pins and page scroll *is* the turn, with a short
@@ -20,8 +20,6 @@ export interface WorksWheelItem {
   title: string
   image: string
   href?: string
-  /** Card background tint behind the cut-out product shot. */
-  accent?: string
   subtitle?: string
 }
 
@@ -150,7 +148,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
         const d = i - pos
         const card = cardRefs.current[i]
         if (!card) continue
-        card.style.transform = place(d * (360 / count), d * STEP, ringR, drumR, bow, m)
+        card.style.transform = place(d * (360 / count), -d * STEP, ringR, drumR, bow, m)
         const hidden = m > 0.5 && Math.abs(d) > CULL
         card.style.opacity = hidden ? '0' : '1'
         card.style.visibility = hidden ? 'hidden' : 'visible'
@@ -194,13 +192,13 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
               const face = (
                 <span
                   className="relative block size-full overflow-hidden rounded-xl shadow-[0_24px_50px_-20px_rgba(0,0,0,.6)]"
-                  style={{ background: `radial-gradient(120% 90% at 70% 40%, ${item.accent ?? '#1b6b3a'}55, transparent 60%), linear-gradient(135deg, #f5f2ea, #e6dfcc)` }}
+                  style={{ background: 'radial-gradient(120% 90% at 72% 42%, rgba(197,232,108,.45), transparent 60%), linear-gradient(135deg, #f5f2ea, #ebe4d2)' }}
                 >
-                  <span className="absolute left-[6%] top-[9%] max-w-[46%] font-display text-[clamp(1rem,2.4vw,2.2rem)] leading-none text-ink/85">{item.title}</span>
-                  {item.subtitle && <span className="absolute bottom-[9%] left-[6%] max-w-[46%] text-[clamp(.55rem,.8vw,.72rem)] font-bold uppercase tracking-[.18em] text-ink/50">{item.subtitle}</span>}
+                  <span className="absolute left-[6%] top-[9%] max-w-[46%] font-display text-[clamp(1rem,2.4vw,2.2rem)] font-bold leading-none text-night/85">{item.title}</span>
+                  {item.subtitle && <span className="absolute bottom-[9%] left-[6%] max-w-[46%] text-[clamp(.55rem,.8vw,.72rem)] font-bold uppercase tracking-[.18em] text-night/50">{item.subtitle}</span>}
                   <img src={item.image} alt={item.title} draggable={false} loading="lazy" decoding="async" className="absolute bottom-[6%] right-[6%] h-[88%] w-[48%] object-contain drop-shadow-[0_18px_22px_rgba(0,0,0,.28)]" />
                   {action && item.href && (
-                    <span className="pointer-events-none absolute bottom-3 left-1/2 flex -translate-x-1/2 translate-y-1 items-center gap-1 rounded-full bg-ink/85 px-3 py-1 text-[0.7rem] font-semibold text-cream opacity-0 backdrop-blur-sm transition group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="pointer-events-none absolute bottom-3 left-1/2 flex -translate-x-1/2 translate-y-1 items-center gap-1 rounded-full bg-night/85 px-3 py-1 text-[0.7rem] font-semibold text-cream opacity-0 backdrop-blur-sm transition group-hover:translate-y-0 group-hover:opacity-100">
                       {action} →
                     </span>
                   )}
@@ -217,7 +215,7 @@ export function WorksWheel({ items, label = 'The Range', action = 'View', classN
           </div>
         </div>
 
-        <div ref={labelRef} className="pointer-events-none absolute inset-0 grid place-items-center text-center font-display leading-none tracking-tight text-cream" style={{ fontSize: metrics.title }}>
+        <div ref={labelRef} className="pointer-events-none absolute inset-0 grid place-items-center text-center font-display font-extrabold leading-none tracking-tight text-cream" style={{ fontSize: metrics.title }}>
           {label}
         </div>
         <div

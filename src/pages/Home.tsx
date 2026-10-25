@@ -1,57 +1,50 @@
+import { lazy, Suspense, type ReactNode } from 'react'
 import Hero from '../components/home/Hero'
-import Approach from '../components/home/Approach'
-import CategoryStack from '../components/home/CategoryStack'
-import InvictusRail from '../components/home/InvictusRail'
-import Science from '../components/home/Science'
-import Values from '../components/home/Values'
-import CallToAction from '../components/home/CallToAction'
 import Marquee from '../components/Marquee'
-import Reveal from '../components/Reveal'
-import TextReveal from '../components/TextReveal'
-import { ParallaxScrolling } from '../components/ui/parallax-scrolling'
-import { WorksWheel, type WorksWheelItem } from '../components/ui/works-wheel'
-import { categories, company, productHref, products } from '../data/site'
+import Deferred from '../components/Deferred'
+import { categories, company } from '../data/site'
+import { details } from '../data/details'
+import { seoFor } from '../data/seo'
+import { useSeo } from '../lib/useSeo'
 
-const range: WorksWheelItem[] = products
-  .filter(p => p.image)
-  .map(p => ({ title: p.name, image: p.image!, href: productHref(p), accent: p.accent, subtitle: p.tagline ?? p.category }))
+// The page arrives in batches so a slow connection gets something useful first:
+//   1. the loader and the hero (main bundle, no photos)
+//   2. the parallax farm scene, as soon as the loader lifts
+//   3. everything below, one section at a time, when the reader nears it or the
+//      browser is idle - each with its own code chunk and lazy-loaded images.
+const FarmScene = lazy(() => import('../components/home/FarmScene'))
+const Range = lazy(() => import('../components/home/Range'))
+const CategoryStack = lazy(() => import('../components/home/CategoryStack'))
+const InvictusRail = lazy(() => import('../components/home/InvictusRail'))
+const Values = lazy(() => import('../components/home/Values'))
+const Testimonials = lazy(() => import('../components/home/Testimonials'))
+const CallToAction = lazy(() => import('../components/home/CallToAction'))
+
+function Batch({ order, minHeight, children }: { order: number; minHeight: string; children: ReactNode }) {
+  return (
+    <Deferred order={order} minHeight={minHeight}>
+      <Suspense fallback={<div style={{ minHeight }} aria-hidden="true" />}>{children}</Suspense>
+    </Deferred>
+  )
+}
 
 export default function Home() {
+  useSeo(seoFor('/'))
   return (
     <>
       <Hero />
 
-      <div className="border-y border-cream/10 bg-night py-6 font-display text-4xl text-cream sm:text-5xl">
+      <div className="border-y border-cream/10 bg-night py-4 font-display text-lg font-bold text-cream/90 sm:text-xl">
         <Marquee items={[...categories.map(c => c.name), company.promise]} />
       </div>
 
-      <ParallaxScrolling
-        title={
-          <div className="px-5 text-center">
-            <p className="eyebrow justify-center">Our promise</p>
-            <TextReveal as="h2" inView text={company.promise} className="mt-4 font-display text-[16vw] leading-[.85] text-ink sm:text-[12vw] lg:text-[10rem]" />
-          </div>
-        }
-      >
-        <Approach />
-      </ParallaxScrolling>
-
-      <section className="bg-ink pt-10 text-cream">
-        <div className="container-page">
-          <Reveal>
-            <p className="eyebrow !text-lime">02 · The range</p>
-            <h2 className="mt-4 max-w-3xl font-display text-5xl leading-[.95] sm:text-6xl lg:text-7xl">Every pack, <span className="italic text-lime">one turn at a time.</span></h2>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-cream/60">Keep scrolling to turn the wheel through the Krishivam range.</p>
-          </Reveal>
-        </div>
-        <WorksWheel items={range} label="The Krishivam Range" action="View product" />
-      </section>
-
-      <CategoryStack />
-      <InvictusRail />
-      <Science />
-      <Values />
-      <CallToAction />
+      <Batch order={0} minHeight="230svh"><FarmScene /></Batch>
+      <Batch order={1} minHeight="600svh"><Range /></Batch>
+      <Batch order={2} minHeight="380svh"><CategoryStack /></Batch>
+      <Batch order={3} minHeight="200svh"><InvictusRail /></Batch>
+      <Batch order={4} minHeight="100svh"><Values /></Batch>
+      {details.testimonials.length > 0 && <Batch order={5} minHeight="60svh"><Testimonials /></Batch>}
+      <Batch order={5} minHeight="70svh"><CallToAction /></Batch>
     </>
   )
 }

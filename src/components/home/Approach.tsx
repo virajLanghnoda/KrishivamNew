@@ -17,7 +17,7 @@ function ScrollHighlight({ text }: { text: string }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.45'] })
   const words = text.split(' ')
   return (
-    <p ref={ref} className="font-display text-[2.1rem] leading-[1.08] text-cream sm:text-5xl lg:text-6xl" aria-label={text}>
+    <p ref={ref} className="font-serif text-[2rem] leading-[1.15] text-cream sm:text-5xl lg:text-[3.6rem]" aria-label={text}>
       {words.map((w, i) => <Word key={i} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]}>{w}</Word>)}
     </p>
   )
@@ -31,7 +31,7 @@ const pillars = [
 
 export default function Approach() {
   return (
-    <section className="relative bg-ink pb-24 pt-10 text-cream lg:pb-36">
+    <section className="relative bg-night pb-24 pt-10 text-cream lg:pb-36">
       <div className="container-page">
         <Reveal><p className="eyebrow !text-lime">01 · The Krishivam approach</p></Reveal>
         <div className="mt-8 max-w-5xl"><ScrollHighlight text={statement} /></div>

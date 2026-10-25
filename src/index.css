@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; background: #f5f2ea; color: #0e1f16; -webkit-font-smoothing: antialiased; }
+:root { color-scheme: light; font-family: "Inter Variable", ui-sans-serif, system-ui, sans-serif; background: #f5f2ea; color: #07130d; -webkit-font-smoothing: antialiased; }
 body { margin: 0; min-width: 320px; background: #f5f2ea; }
 * { box-sizing: border-box; }
 ::selection { background: #c5e86c; color: #07130d; }
-/* Instrument Serif ships a single weight; never let the browser fake a bold. */
-.font-display { font-weight: 400 !important; font-synthesis: none; letter-spacing: -0.01em; }
+/* Manrope has no italic; accent words get colour instead of a fake slant. */
+.font-display .italic, .font-display.italic { font-style: normal; }
 img { -webkit-user-drag: none; }
 
 /* Lenis */
@@ -16,18 +16,41 @@ html.lenis, html.lenis body { height: auto; }
 .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
+/* Type scale. Utilities still win where a component sets its own weight. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 { font-family: "Manrope Variable", ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.03em; }
+  h1 { font-weight: 800; }
+  h2, h3 { font-weight: 700; }
+  h4, h5 { font-weight: 600; }
+  button { font-family: "Manrope Variable", ui-sans-serif, system-ui, sans-serif; }
+}
+
 @layer components {
+  .font-display { letter-spacing: -0.03em; }
+  .font-serif { font-weight: 500; letter-spacing: -0.01em; }
   .container-page { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10; }
-  .eyebrow { @apply inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.26em] text-forest; }
+  .eyebrow { @apply inline-flex items-center gap-2 font-sans text-[11px] font-semibold uppercase tracking-[0.26em] text-forest; }
   .eyebrow::before { content: ''; @apply h-1.5 w-1.5 rounded-full bg-current; }
-  .section-title { @apply mt-4 max-w-3xl font-display text-5xl leading-[.95] text-ink sm:text-6xl lg:text-7xl; }
-  .btn-primary { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-cream transition duration-300 hover:-translate-y-0.5 hover:bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest/50 focus-visible:ring-offset-2; }
-  .btn-secondary { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full border border-ink/15 bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-forest/40 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-forest/40; }
-  .btn-lime { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full bg-lime px-6 py-3.5 text-sm font-bold text-night transition duration-300 hover:-translate-y-0.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/60 focus-visible:ring-offset-2 focus-visible:ring-offset-night; }
-  .btn-ghost-light { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-6 py-3.5 text-sm font-semibold text-cream backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-cream/50 hover:bg-cream/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cream/50; }
+  .section-title { @apply mt-4 max-w-3xl font-display text-[2.5rem] leading-[1] text-night sm:text-6xl sm:leading-[.95] lg:text-7xl; }
+  .btn-primary { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full font-display bg-night px-6 py-3.5 text-sm font-bold text-cream transition duration-300 hover:-translate-y-0.5 hover:bg-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest/50 focus-visible:ring-offset-2; }
+  .btn-secondary { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full font-display border border-night/15 bg-white/60 px-6 py-3.5 text-sm font-bold text-night backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-forest/40 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-forest/40; }
+  .btn-lime { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full font-display bg-lime px-6 py-3.5 text-sm font-bold text-night transition duration-300 hover:-translate-y-0.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/60 focus-visible:ring-offset-2 focus-visible:ring-offset-night; }
+  .btn-ghost-light { @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center gap-2 rounded-full font-display border border-cream/20 bg-cream/5 px-6 py-3.5 text-sm font-bold text-cream backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-cream/50 hover:bg-cream/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cream/50; }
   .grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Tractor dust and exhaust in the parallax scene. */
+@keyframes tractor-puff { 0% { transform: translate(0, 0) scale(.4); opacity: .75; } 100% { transform: translate(-70px, -26px) scale(1.7); opacity: 0; } }
+@keyframes tractor-smoke { 0% { transform: translate(0, 0) scale(.5); opacity: .35; } 100% { transform: translate(-30px, -50px) scale(1.8); opacity: 0; } }
+.tractor-puff, .tractor-smoke { transform-box: fill-box; transform-origin: center; }
+.tractor-puff { animation: tractor-puff 1.5s linear infinite; }
+.tractor-smoke { animation: tractor-smoke 1.8s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .tractor-puff, .tractor-smoke { animation: none; opacity: 0; } }
+
+/* Page loader sprout. */
+@keyframes sprout { 0% { stroke-dashoffset: 1; } 55%, 100% { stroke-dashoffset: 0; } }
+@keyframes leaf { 0%, 30% { transform: scale(0); } 70%, 100% { transform: scale(1); } }

@@ -1,24 +1,22 @@
-# Krishivam Agriscience — Premium React Website
+# Krishivam Agriscience — Website
 
-Modern-classic, minimalist React/TypeScript/Vite website for Krishivam Agriscience Private Limited.
+Scroll-animated React website for Krishivam Agriscience Private Limited (https://krishivam.com).
 
-## Stack
-- React + TypeScript + Vite
-- Tailwind CSS
-- React Router
-- Framer Motion
-- Lucide React
+**The full guide is in [WEBSITE.md](WEBSITE.md)**: pages, editing content, adding products, the enquiry form, Google Analytics, SEO, deployment and the go-live checklist.
+
+**Company details still to supply** go in [`src/data/details.ts`](src/data/details.ts). Anything left empty there is hidden on the site.
 
 ## Run
+
 ```bash
 npm install
-npm run dev
+npm run dev       # http://localhost:5173
+npm run build     # production build → dist/
+npm run preview   # serve the production build
 ```
 
-Build with `npm run build`.
+Requires Node.js 20.19+ or 22.12+.
 
-## Content notes
-Product technical fields intentionally remain editable placeholders where verified source information was not supplied. The supplied logo is included at `src/assets/krishivam-logo.jpg` and is used without recoloring or distortion.
+## Stack
 
-## Routes
-Home, Products, category pages, all supplied product pages, Services, Our Mission, About, Contact, Coming Soon and 404.
+React 19 · TypeScript · Vite · Tailwind CSS · React Router · Framer Motion · Lenis · Lucide

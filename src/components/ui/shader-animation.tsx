@@ -35,7 +35,7 @@ void main(void) {
   gl_FragColor = vec4(base + glow * (1.0 - base), 1.0);
 }`
 
-const DEFAULT_TINTS: [string, string, string] = ['#c5e86c', '#4f9a3a', '#d4a23c']
+const DEFAULT_TINTS: [string, string, string] = ['#c5e86c', '#1b6b3a', '#1b6b3a']
 
 const hex = (h: string) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255) as [number, number, number]
 
@@ -51,7 +51,7 @@ export interface ShaderAnimationProps {
   intensity?: number
 }
 
-export function ShaderAnimation({ className, base = '#07130d', tints = DEFAULT_TINTS, quality = 0.75, intensity = 2.4 }: ShaderAnimationProps) {
+export function ShaderAnimation({ className, base = '#07130d', tints = DEFAULT_TINTS, quality = 0.75, intensity = 1.5 }: ShaderAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
