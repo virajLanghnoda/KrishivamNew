@@ -1,2 +1,76 @@
-import { useState } from 'react'; import { ArrowUpRight, Search } from 'lucide-react'; import { Link } from 'react-router-dom'; import PageHero from '../components/PageHero'; import CategoryCard from '../components/CategoryCard'; import Reveal from '../components/Reveal'; import { categories, products } from '../data/site';
-export default function Products(){const [q,setQ]=useState(''); const filtered=products.filter(p=>`${p.name} ${p.category}`.toLowerCase().includes(q.toLowerCase())); return <><PageHero eyebrow="Portfolio / 02" title="Agricultural Solutions, Thoughtfully Developed.">Explore Krishivam’s current product architecture across four focused agricultural-input categories.</PageHero><section className="py-20 lg:py-28"><div className="container-page"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="eyebrow">Browse by category</p><h2 className="section-title">A focused portfolio.</h2></div><label className="flex max-w-sm items-center gap-3 rounded-full border border-ink/10 bg-white px-5 py-3 text-sm"><Search size={16}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products" className="w-full bg-transparent outline-none"/></label></div><div className="mt-12 grid gap-5 md:grid-cols-2">{categories.map((c,i)=><CategoryCard key={c.slug} category={c} index={i}/>)}</div><div className="mt-20 border-t border-ink/10 pt-12"><p className="eyebrow">All products</p><div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{filtered.map((p,i)=><Reveal key={p.slug} delay={i*.03}><Link to={`/products/${p.categorySlug}/${p.slug}`} className="group rounded-2xl border border-ink/10 bg-white p-5 transition hover:-translate-y-1 hover:border-forest/20"><span className="text-[10px] font-bold uppercase tracking-[.16em] text-brandBlue">{p.category}</span><h3 className="mt-3 font-display text-2xl font-semibold">{p.name}</h3><span className="mt-5 inline-flex items-center gap-1 text-xs font-semibold">View product <ArrowUpRight size={13} className="transition group-hover:translate-x-1 group-hover:-translate-y-1"/></span></Link></Reveal>)}</div></div></div></section></>}
+import { useState } from 'react'
+import { ArrowUpRight, Search } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import PageHero from '../components/PageHero'
+import CategoryCard from '../components/CategoryCard'
+import ProductVisual from '../components/ProductVisual'
+import Reveal from '../components/Reveal'
+import { categories, productHref, products } from '../data/site'
+import { cn } from '../lib/utils'
+
+export default function Products() {
+  const [q, setQ] = useState('')
+  const [cat, setCat] = useState<string | null>(null)
+  const filtered = products.filter(p => (!cat || p.categorySlug === cat) && `${p.name} ${p.category} ${p.tagline ?? ''}`.toLowerCase().includes(q.toLowerCase()))
+
+  return (
+    <>
+      <PageHero eyebrow="Portfolio" title="Agricultural solutions, thoughtfully developed.">Explore Krishivam’s product architecture across four focused agricultural-input categories.</PageHero>
+
+      <section className="py-20 lg:py-28">
+        <div className="container-page">
+          <Reveal>
+            <p className="eyebrow">Browse by category</p>
+            <h2 className="section-title">A focused portfolio.</h2>
+          </Reveal>
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            {categories.map((c, i) => <CategoryCard key={c.slug} category={c} index={i} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-sand py-20 lg:py-28">
+        <div className="container-page">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <Reveal>
+              <p className="eyebrow">All products</p>
+              <h2 className="section-title">Find the right product.</h2>
+            </Reveal>
+            <label className="flex w-full max-w-sm items-center gap-3 rounded-full border border-ink/10 bg-cream px-5 py-3.5 text-sm focus-within:border-forest">
+              <Search size={16} className="text-ink/40" aria-hidden="true" />
+              <span className="sr-only">Search products</span>
+              <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search products" className="w-full bg-transparent outline-none placeholder:text-ink/40" />
+            </label>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+            {[{ slug: null, name: 'All' }, ...categories].map(c => (
+              <button key={c.name} type="button" aria-pressed={cat === c.slug} onClick={() => setCat(c.slug)} className={cn('min-h-[40px] cursor-pointer rounded-full px-4 text-sm font-semibold transition', cat === c.slug ? 'bg-ink text-cream' : 'bg-cream text-ink/70 hover:text-ink')}>
+                {c.name}
+              </button>
+            ))}
+          </div>
+
+          <motion.div layout className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {filtered.map(p => (
+                <motion.div key={p.slug} layout initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.35 }}>
+                  <Link to={productHref(p)} className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-cream p-6 transition duration-500 hover:-translate-y-1 hover:shadow-lift">
+                    <div className="relative flex h-64 items-center justify-center overflow-hidden rounded-2xl" style={{ background: `radial-gradient(70% 70% at 50% 60%, ${p.accent}33, transparent 70%)` }}>
+                      <ProductVisual product={p} className="h-[88%] w-full transition duration-700 group-hover:-translate-y-2 group-hover:scale-[1.03]" />
+                    </div>
+                    <span className="mt-5 text-[10px] font-bold uppercase tracking-[.18em] text-forest">{p.category}</span>
+                    <h3 className="mt-1 font-display text-3xl leading-none">{p.name}</h3>
+                    {p.tagline && <p className="mt-2 text-sm text-ink/55">{p.tagline}</p>}
+                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-xs font-bold">View product <ArrowUpRight size={13} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
+                  </Link>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+          {!filtered.length && <p className="mt-10 text-ink/60">No products match “{q}”. Try another name or category.</p>}
+        </div>
+      </section>
+    </>
+  )
+}

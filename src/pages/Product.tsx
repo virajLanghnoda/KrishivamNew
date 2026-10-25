@@ -1,164 +1,171 @@
-import { Link, useParams } from "react-router-dom";
-import { ArrowUpRight, Check, FileText, Package, Sprout } from "lucide-react";
-import { motion } from "framer-motion";
-import PageHero from "../components/PageHero";
-import Reveal from "../components/Reveal";
-import { products } from "../data/site";
-import NotFound from "./NotFound";
+import { useRef } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowUpRight, Check, Phone } from 'lucide-react'
+import ProductVisual from '../components/ProductVisual'
+import Reveal from '../components/Reveal'
+import TextReveal from '../components/TextReveal'
+import { company, productHref, products } from '../data/site'
+import NotFound from './NotFound'
+
 export default function Product() {
-  const { categorySlug, productSlug } = useParams();
-  const p = products.find(
-    (x) => x.categorySlug === categorySlug && x.slug === productSlug,
-  );
-  if (!p) return <NotFound />;
+  const { categorySlug, productSlug } = useParams()
+  const p = products.find(x => x.categorySlug === categorySlug && x.slug === productSlug)
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const packY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
+  const packRotate = useTransform(scrollYProgress, [0, 1], [0, -6])
+  const ringScale = useTransform(scrollYProgress, [0, 1], [1, 1.25])
+  if (!p) return <NotFound />
+  const related = products.filter(x => x.categorySlug === p.categorySlug && x.slug !== p.slug).concat(products.filter(x => x.categorySlug !== p.categorySlug)).slice(0, 3)
+  const maxShare = Math.max(...(p.composition?.map(c => c.value) ?? [1]))
+
   return (
     <>
-      <section className="relative overflow-hidden bg-ink pt-36 pb-20 text-white">
-        <div className="absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(circle_at_60%_40%,rgba(75,141,44,.38),transparent_40%)]" />
-        <div className="container-page relative grid gap-12 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
-          <Reveal>
-            <p className="eyebrow !text-[#82b85b]">{p.category}</p>
-            <h1 className="mt-4 font-display text-7xl font-semibold leading-[.85] sm:text-8xl">
-              {p.name}
-            </h1>
-            <p className="mt-7 max-w-xl text-lg leading-8 text-white/60">
-              {p.positioning}
-            </p>
-          </Reveal>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative mx-auto grid aspect-square w-full max-w-[420px] place-items-center rounded-[3rem] border border-white/10 bg-white/[.035]"
-          >
-            <div className="absolute h-56 w-56 rounded-full border border-white/10" />
-            <div className="absolute h-36 w-36 rounded-full border border-[#82b85b]/30" />
-            <Sprout size={90} strokeWidth={0.8} className="text-[#82b85b]" />
-          </motion.div>
+      <section ref={heroRef} className="relative isolate overflow-hidden bg-night pb-16 pt-32 text-cream lg:min-h-[100svh] lg:pb-0 lg:pt-0">
+        <div className="absolute inset-0 -z-10" style={{ background: `radial-gradient(60% 60% at 72% 50%, ${p.accent}88, transparent 70%), radial-gradient(40% 40% at 10% 90%, rgba(197,232,108,.12), transparent 70%)` }} />
+        <div className="container-page grid gap-10 lg:min-h-[100svh] lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div className="lg:pt-24">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-center gap-2 text-xs font-semibold text-cream/50">
+              <Link to="/products" className="hover:text-cream">Products</Link><span>/</span>
+              <Link to={`/products/${p.categorySlug}`} className="hover:text-cream">{p.category}</Link>
+            </motion.div>
+            <p className="eyebrow mt-8 !text-lime">{p.tagline ?? p.category}</p>
+            <TextReveal as="h1" text={p.name} delay={0.1} className="mt-4 font-display text-7xl leading-[.85] sm:text-8xl lg:text-[9rem]" />
+            <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }} className="mt-7 max-w-xl text-lg leading-8 text-cream/65">{p.positioning}</motion.p>
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.7 }} className="mt-9 flex flex-wrap gap-3">
+              <Link to="/contact" className="btn-lime">Enquire now <ArrowUpRight size={15} /></Link>
+              <a href={`tel:${company.phone}`} className="btn-ghost-light"><Phone size={15} /> Call {company.phone}</a>
+            </motion.div>
+          </div>
+          <div className="relative flex h-[420px] items-center justify-center sm:h-[520px] lg:h-[80svh]">
+            <motion.div style={{ scale: ringScale }} className="absolute aspect-square w-[80%] max-w-[520px] rounded-full border border-cream/10" />
+            <motion.div style={{ scale: ringScale }} className="absolute aspect-square w-[55%] max-w-[360px] rounded-full border border-lime/20" />
+            <motion.div style={{ y: packY, rotate: packRotate }} initial={{ opacity: 0, y: 60, scale: 0.92 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }} className="relative h-[85%] w-full">
+              <ProductVisual product={p} eager className="h-full w-full" />
+            </motion.div>
+          </div>
         </div>
       </section>
-      <section className="py-20 lg:py-28">
-        <div className="container-page grid gap-16 lg:grid-cols-[.8fr_1.2fr]">
-          <Reveal>
-            <p className="eyebrow">Product overview</p>
-            <h2 className="section-title">
-              A clear foundation for the product story.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.08}>
+
+      {(p.highlights || p.composition) && (
+        <section className="py-20 lg:py-28">
+          <div className="container-page grid gap-14 lg:grid-cols-[.8fr_1.2fr]">
+            <Reveal>
+              <p className="eyebrow">Why {p.name}</p>
+              <h2 className="section-title">Made to do one job well.</h2>
+            </Reveal>
             <div>
-              <p className="text-lg leading-8 text-ink/65">
-                [Add product description]
-              </p>
-              <div className="mt-10 grid gap-3 sm:grid-cols-2">
-                {[
-                  "Advanced formulation",
-                  "Easy application",
-                  "Modern crop nutrition",
-                  "Designed for agricultural use",
-                ].map((x) => (
-                  <div
-                    key={x}
-                    className="flex items-center gap-3 rounded-2xl bg-mist p-5"
-                  >
-                    <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-forest">
-                      <Check size={15} />
-                    </span>
-                    <span className="text-sm font-semibold">{x}</span>
+              {p.highlights && (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {p.highlights.map((h, i) => (
+                    <Reveal key={h} delay={i * 0.05}>
+                      <div className="flex items-center gap-3 rounded-2xl border border-ink/10 bg-white p-5">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lime text-night"><Check size={16} strokeWidth={2.5} /></span>
+                        <span className="text-sm font-semibold">{h}</span>
+                      </div>
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+              {p.composition && (
+                <Reveal delay={0.1}>
+                  <div className="mt-6 rounded-[2rem] bg-ink p-7 text-cream sm:p-9">
+                    <p className="text-[11px] font-bold uppercase tracking-[.22em] text-lime">Composition, as labelled</p>
+                    <div className="mt-6 space-y-5">
+                      {p.composition.map((c, i) => (
+                        <div key={c.label}>
+                          <div className="flex items-baseline justify-between"><span className="text-sm font-semibold text-cream/80">{c.label}</span><span className="font-display text-3xl">{c.value}%</span></div>
+                          <div className="mt-2 h-2 overflow-hidden rounded-full bg-cream/10">
+                            <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: Math.max(c.value / maxShare, 0.015) }} viewport={{ once: true }} transition={{ duration: 1.3, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }} className="h-full origin-left rounded-full bg-gradient-to-r from-leaf to-lime" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {p.variants && (
+        <section className="bg-sand py-20 lg:py-28">
+          <div className="container-page">
+            <Reveal>
+              <p className="eyebrow">The {p.name} family</p>
+              <h2 className="section-title">Pick the formulation your crop needs.</h2>
+            </Reveal>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {p.variants.map((v, i) => (
+                <Reveal key={v.name + i} delay={(i % 4) * 0.05}>
+                  <div className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-cream p-6">
+                    <div className="absolute inset-x-0 top-0 h-1.5" style={{ background: v.accent }} />
+                    <div className="flex h-60 items-center justify-center"><img src={v.image} alt={`${p.name} ${v.name}`} loading="lazy" className="h-full w-auto object-contain drop-shadow-[0_20px_20px_rgba(0,0,0,.18)] transition duration-700 group-hover:-translate-y-2" /></div>
+                    <p className="mt-4 text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">{v.type}</p>
+                    <h3 className="mt-1 font-display text-3xl leading-none" style={{ color: v.accent }}>{v.name}</h3>
+                    <p className="mt-2 text-sm leading-6 text-ink/60">{v.detail}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="py-20 lg:py-28">
+        <div className="container-page">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
+            <Reveal>
+              <p className="eyebrow">Product information</p>
+              <h2 className="section-title">At a glance.</h2>
+              <p className="mt-5 max-w-sm leading-7 text-ink/60">Full technical details, crop recommendations and dosage guidance are available from the Krishivam team on request.</p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <dl className="divide-y divide-ink/10 rounded-[2rem] border border-ink/10 bg-white px-7">
+                {[{ label: 'Category', value: p.category }, ...(p.tagline ? [{ label: 'Type', value: p.tagline }] : []), ...(p.specs ?? [])].map(s => (
+                  <div key={s.label} className="grid gap-1 py-5 sm:grid-cols-[200px_1fr]">
+                    <dt className="text-[11px] font-bold uppercase tracking-[.18em] text-ink/40">{s.label}</dt>
+                    <dd className="text-sm font-semibold text-ink/80">{s.value}</dd>
                   </div>
                 ))}
+              </dl>
+            </Reveal>
+          </div>
+
+          <div className="mt-20 overflow-hidden rounded-[2.5rem] bg-forest p-8 text-cream sm:p-12 lg:p-16">
+            <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div>
+                <p className="eyebrow !text-lime">Interested in this product?</p>
+                <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl">Let’s talk about {p.name}.</h2>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link className="btn-lime" to="/contact">Enquire now <ArrowUpRight size={15} /></Link>
+                <a className="btn-ghost-light" href={`tel:${company.phone}`}><Phone size={15} /> {company.phone}</a>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
-      <section className="bg-[#edf1eb] py-20 lg:py-28">
+
+      <section className="bg-sand py-20">
         <div className="container-page">
-          <Reveal>
-            <p className="eyebrow">Product information</p>
-            <h2 className="section-title">
-              Specifications, ready to complete.
-            </h2>
-          </Reveal>
-          <div className="mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                label: "Composition",
-                value: "[Add composition]",
-                icon: FileText,
-              },
-              {
-                label: "Formulation",
-                value: "[Add formulation]",
-                icon: Sprout,
-              },
-              {
-                label: "Recommended crops",
-                value: "[Add recommended crops]",
-                icon: Sprout,
-              },
-              {
-                label: "Application method",
-                value: "[Add application details]",
-                icon: Sprout,
-              },
-              {
-                label: "Dosage",
-                value: "[Add dosage/application details]",
-                icon: FileText,
-              },
-              {
-                label: "Packaging",
-                value: "[Add packaging information]",
-                icon: Package,
-              },
-            ].map(({ label, value, icon: Icon }) => (
-              <div
-                key={label}
-                className="rounded-2xl border border-ink/10 bg-white p-6"
-              >
-                <Icon size={19} className="text-forest" />
-
-                <p className="mt-8 text-xs font-bold uppercase tracking-[.16em] text-ink/35">
-                  {label}
-                </p>
-
-                <p className="mt-2 text-sm font-semibold text-ink/70">
-                  {value}
-                </p>
-              </div>
+          <p className="eyebrow">You may also like</p>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {related.map(r => (
+              <Link key={r.slug} to={productHref(r)} className="group flex items-center gap-5 rounded-[1.75rem] bg-cream p-5 transition hover:-translate-y-1 hover:shadow-lift">
+                <ProductVisual product={r} className="h-28 w-24 shrink-0" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[.18em] text-forest">{r.category}</p>
+                  <p className="mt-1 font-display text-3xl leading-none">{r.name}</p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold">View <ArrowUpRight size={13} /></span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
-      <section className="py-20 lg:py-28">
-        <div className="container-page rounded-[2.5rem] bg-forest p-8 text-white sm:p-12 lg:p-16">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="eyebrow !text-[#a9d18b]">
-                Interested in this product?
-              </p>
-              <h2 className="mt-3 font-display text-5xl font-semibold leading-none sm:text-6xl">
-                Let’s talk about {p.name}.
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                className="btn-primary !bg-white !text-forest"
-                to="/contact"
-              >
-                Enquire Now <ArrowUpRight size={15} />
-              </Link>
-              <Link
-                className="btn-secondary !border-white/20 !bg-transparent !text-white"
-                to="/contact"
-              >
-                Contact Krishivam
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
-  );
+  )
 }

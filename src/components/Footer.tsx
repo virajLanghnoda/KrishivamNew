@@ -1,5 +1,47 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Phone } from 'lucide-react'
+import { ArrowUpRight, MapPin, Phone } from 'lucide-react'
 import Logo from './Logo'
-import { categories, products } from '../data/site'
-export default function Footer(){ return <footer className="bg-ink text-white"><div className="container-page py-16 lg:py-20"><div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"> <div><div className="inline-block rounded-xl bg-black p-2"><Logo/></div><p className="mt-6 max-w-sm text-sm leading-7 text-white/60">Nurturing Nature. Enriching Lives.<br/>Science-driven agricultural solutions for modern farming needs.</p><Link to="/contact" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-white">Start a conversation <ArrowUpRight size={15}/></Link></div><div><h3 className="text-xs font-bold uppercase tracking-[.2em] text-white/45">Company</h3><div className="mt-5 space-y-3 text-sm text-white/70"><Link className="block hover:text-white" to="/about">About Us</Link><Link className="block hover:text-white" to="/mission">Our Mission</Link><Link className="block hover:text-white" to="/services">Services</Link><Link className="block hover:text-white" to="/contact">Contact</Link></div></div><div><h3 className="text-xs font-bold uppercase tracking-[.2em] text-white/45">Products</h3><div className="mt-5 space-y-3 text-sm text-white/70">{categories.map(c=><Link key={c.slug} className="block hover:text-white" to={`/products/${c.slug}`}>{c.name}</Link>)}</div></div><div><h3 className="text-xs font-bold uppercase tracking-[.2em] text-white/45">Featured</h3><div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-white/70">{products.map(p=><Link key={p.slug} to={`/products/${p.categorySlug}/${p.slug}`} className="hover:text-white">{p.name}</Link>)}</div><div className="mt-7 border-t border-white/10 pt-6 text-sm text-white/70"><div className="flex items-center gap-2"><Phone size={15}/> 9924489348</div><p className="mt-2">Satellite, Ahmedabad, Gujarat</p></div></div></div><div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Krishivam Agriscience Private Limited. All Rights Reserved.</span><span>Nurturing Nature. Enriching Lives.</span></div></div></footer> }
+import { categories, company, productHref, products } from '../data/site'
+
+export default function Footer() {
+  return (
+    <footer className="relative overflow-hidden bg-night text-cream">
+      <div className="container-page relative pt-20 lg:pt-28">
+        <div className="grid gap-14 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <Logo light className="h-16" />
+            <p className="mt-6 max-w-sm text-sm leading-7 text-cream/60">{company.tagline}<br />Science-driven agricultural solutions for modern farming needs.</p>
+            <Link to="/contact" className="btn-lime mt-8">Start a conversation <ArrowUpRight size={15} /></Link>
+          </div>
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-[.24em] text-cream/40">Company</h3>
+            <div className="mt-5 space-y-3 text-sm text-cream/70">
+              {[['About Us', '/about'], ['Our Mission', '/mission'], ['Services', '/services'], ['Contact', '/contact']].map(([l, to]) => <Link key={to} className="block transition hover:text-lime" to={to}>{l}</Link>)}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-[.24em] text-cream/40">Categories</h3>
+            <div className="mt-5 space-y-3 text-sm text-cream/70">
+              {categories.map(c => <Link key={c.slug} className="block transition hover:text-lime" to={`/products/${c.slug}`}>{c.name}</Link>)}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-[11px] font-bold uppercase tracking-[.24em] text-cream/40">Products</h3>
+            <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-cream/70">
+              {products.map(p => <Link key={p.slug} to={productHref(p)} className="transition hover:text-lime">{p.name}</Link>)}
+            </div>
+            <div className="mt-8 space-y-3 border-t border-cream/10 pt-6 text-sm text-cream/70">
+              <a href={`tel:${company.phone}`} className="flex items-center gap-2 transition hover:text-lime"><Phone size={15} /> {company.phone}</a>
+              <p className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0" /> {company.location}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p aria-hidden="true" className="pointer-events-none mt-16 select-none whitespace-nowrap text-center font-display text-[19vw] leading-[.8] text-cream/[.05]">Krishivam</p>
+      <div className="container-page relative flex flex-col gap-3 border-t border-cream/10 py-6 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">
+        <span>© {new Date().getFullYear()} {company.name}. All Rights Reserved.</span>
+        <span className="font-display text-base italic text-cream/60">{company.promise}</span>
+      </div>
+    </footer>
+  )
+}

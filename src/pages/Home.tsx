@@ -1,7 +1,57 @@
-import { ArrowDown, ArrowUpRight, FlaskConical, Leaf, Microscope, Sprout } from 'lucide-react'; import { Link } from 'react-router-dom'; import { motion } from 'framer-motion'; import Logo from '../components/Logo'; import Reveal from '../components/Reveal'; import CategoryCard from '../components/CategoryCard'; import { categories } from '../data/site';
-export default function Home(){return <div>
-<section className="relative flex min-h-[760px] items-end overflow-hidden bg-ink text-white lg:min-h-screen"><div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_28%,rgba(75,141,44,.35),transparent_30%),linear-gradient(120deg,#07120b,#101711_55%,#07111b)]"/><div className="absolute -right-24 top-24 h-[520px] w-[520px] rounded-full border border-white/10 opacity-50"/><div className="absolute right-16 top-48 h-[360px] w-[360px] rounded-full border border-white/10 opacity-30"/><motion.div animate={{y:[0,-12,0],rotate:[0,1,-1,0]}} transition={{duration:9,repeat:Infinity,ease:'easeInOut'}} className="absolute right-[10%] top-[18%] hidden opacity-40 lg:block"><Sprout size={290} strokeWidth={.55}/></motion.div><div className="container-page relative z-10 pb-20 pt-40 lg:pb-24"><Reveal><div className="mb-10 rounded-xl bg-black/70 p-2 w-fit"><Logo/></div><p className="eyebrow !text-[#8fc26a]">Agriscience / Agricultural Inputs</p><h1 className="mt-5 max-w-5xl font-display text-[4.2rem] font-semibold leading-[.82] tracking-[-.03em] sm:text-7xl lg:text-[7.7rem]">Nurturing Nature.<br/><span className="text-[#82b85b]">Enriching Lives.</span></h1><p className="mt-7 max-w-xl text-base leading-7 text-white/65 sm:text-lg">Science-driven agricultural solutions for healthier soils, stronger crops and more abundant harvests.</p><div className="mt-9 flex flex-wrap gap-3"><Link className="btn-primary !bg-white !text-forest hover:!bg-white/90" to="/products">Explore Products <ArrowUpRight size={16}/></Link><Link className="btn-secondary !border-white/20 !bg-white/5 !text-white" to="/contact">Contact Us</Link></div></Reveal></div><div className="container-page relative z-10 flex items-center gap-3 pb-8 text-xs uppercase tracking-[.18em] text-white/40"><ArrowDown size={14}/> Scroll to explore</div></section>
-<section className="py-24 lg:py-32"><div className="container-page grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-center"><Reveal><p className="eyebrow">01 / The Krishivam approach</p><h2 className="section-title">Rooted in Agriculture. Driven by Science.</h2></Reveal><Reveal delay={.08}><div><p className="max-w-2xl text-lg leading-8 text-ink/65">Krishivam Agriscience develops and supplies agricultural fertilizer and crop-input solutions designed around modern farming needs.</p><div className="mt-9 grid grid-cols-3 gap-3"><div className="rounded-2xl bg-mist p-5"><Sprout className="text-forest"/><p className="mt-10 text-sm font-semibold">Nature-led</p></div><div className="rounded-2xl bg-white p-5 shadow-soft/30"><Microscope className="text-brandBlue"/><p className="mt-10 text-sm font-semibold">Science-minded</p></div><div className="rounded-2xl bg-ink p-5 text-white"><Leaf/><p className="mt-10 text-sm font-semibold">Future-focused</p></div></div><Link to="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-forest">Discover Krishivam <ArrowUpRight size={15}/></Link></div></Reveal></div></section>
-<section className="bg-[#edf1eb] py-24 lg:py-32"><div className="container-page"><Reveal><p className="eyebrow">02 / Portfolio</p><h2 className="section-title">Our Product Solutions</h2><p className="mt-5 max-w-2xl text-ink/60">A focused portfolio across organic fertilizers, biostimulants, biofertilizers and speciality liquid fertilizers.</p></Reveal><div className="mt-12 grid gap-5 md:grid-cols-2">{categories.map((c,i)=><CategoryCard key={c.slug} category={c} index={i}/>)}</div></div></section>
-<section className="bg-ink py-24 text-white lg:py-32"><div className="container-page grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-end"><Reveal><p className="eyebrow !text-[#82b85b]">03 / A growing portfolio</p><h2 className="mt-3 max-w-3xl font-display text-5xl font-semibold leading-none sm:text-6xl">Agriculture deserves better-designed solutions.</h2></Reveal><Reveal delay={.1}><div className="lg:justify-self-end"><p className="max-w-md leading-7 text-white/55">Explore the current portfolio and discover the category that fits your agricultural-input needs.</p><Link className="mt-7 inline-flex items-center gap-2 font-semibold text-white" to="/products">View the portfolio <ArrowUpRight size={16}/></Link></div></Reveal></div></section>
-</div>}
+import Hero from '../components/home/Hero'
+import Approach from '../components/home/Approach'
+import CategoryStack from '../components/home/CategoryStack'
+import InvictusRail from '../components/home/InvictusRail'
+import Science from '../components/home/Science'
+import Values from '../components/home/Values'
+import CallToAction from '../components/home/CallToAction'
+import Marquee from '../components/Marquee'
+import Reveal from '../components/Reveal'
+import TextReveal from '../components/TextReveal'
+import { ParallaxScrolling } from '../components/ui/parallax-scrolling'
+import { WorksWheel, type WorksWheelItem } from '../components/ui/works-wheel'
+import { categories, company, productHref, products } from '../data/site'
+
+const range: WorksWheelItem[] = products
+  .filter(p => p.image)
+  .map(p => ({ title: p.name, image: p.image!, href: productHref(p), accent: p.accent, subtitle: p.tagline ?? p.category }))
+
+export default function Home() {
+  return (
+    <>
+      <Hero />
+
+      <div className="border-y border-cream/10 bg-night py-6 font-display text-4xl text-cream sm:text-5xl">
+        <Marquee items={[...categories.map(c => c.name), company.promise]} />
+      </div>
+
+      <ParallaxScrolling
+        title={
+          <div className="px-5 text-center">
+            <p className="eyebrow justify-center">Our promise</p>
+            <TextReveal as="h2" inView text={company.promise} className="mt-4 font-display text-[16vw] leading-[.85] text-ink sm:text-[12vw] lg:text-[10rem]" />
+          </div>
+        }
+      >
+        <Approach />
+      </ParallaxScrolling>
+
+      <section className="bg-ink pt-10 text-cream">
+        <div className="container-page">
+          <Reveal>
+            <p className="eyebrow !text-lime">02 · The range</p>
+            <h2 className="mt-4 max-w-3xl font-display text-5xl leading-[.95] sm:text-6xl lg:text-7xl">Every pack, <span className="italic text-lime">one turn at a time.</span></h2>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-cream/60">Keep scrolling to turn the wheel through the Krishivam range.</p>
+          </Reveal>
+        </div>
+        <WorksWheel items={range} label="The Krishivam Range" action="View product" />
+      </section>
+
+      <CategoryStack />
+      <InvictusRail />
+      <Science />
+      <Values />
+      <CallToAction />
+    </>
+  )
+}
