@@ -203,7 +203,7 @@ What's in place:
 
 The site is built for weak connections. It loads in batches:
 
-1. **Loader:** a botanical engraving built into `index.html` (no download needed). A wheat plant grows the way a seed really does: the soil line draws out, roots reach down, the seed splits, the shoot climbs, leaves unfurl and wash with green, and the ear ripens from ink to gold. A large counter and a four-stage stepper (Sowing → Rooting → Growing → Harvest, in the visitor's saved language) frame it. It always shows for at least 2.5 s, never looks stuck on a slow line, and on exit the screen folds into the soil line.
+1. **Loader:** a small, minimal plant-growth animation built into `index.html` (no download needed). A seed splits, roots spread, the stem grows and leaves unfurl as the site really loads; once grown, the plant sways in a light breeze. It always shows for at least 2.5 s (growth is paced across that time), never looks stuck on a slow line, and its tagline follows the saved language.
 2. **First screen:** the hero, with no photos.
 3. **Farm scene:** loads as soon as the loader lifts.
 4. **Lower home sections:** each section is its own small file, loaded when the visitor gets near it or the browser is idle.
