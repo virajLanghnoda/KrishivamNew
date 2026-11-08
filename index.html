@@ -192,9 +192,14 @@
         var start = performance.now(), target = 0.1, p = 0, ready = false, gone = false;
         // Always show the loader for at least this long, even when everything is cached.
         var MIN = 2500;
-        // The tagline in the visitor's saved language (set by the language switcher).
+        // The tagline in the visitor's saved language (set by the language switcher),
+        // else the device language; the same rule as src/lib/i18n.ts.
         try {
-          var lang = localStorage.getItem('kl-lang');
+          var lang = null;
+          try { lang = localStorage.getItem('kl-lang'); } catch (e) {}
+          if (lang !== 'en' && lang !== 'hi' && lang !== 'gu') {
+            lang = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase().split(/[-_]/)[0];
+          }
           var tag = { hi: 'खेती, कल के लिए', gu: 'ખેતી, આવતીકાલ માટે' }[lang];
           if (tag) { var tagEl = q('.kl-tag')[0]; tagEl.textContent = tag; tagEl.style.letterSpacing = '.02em'; tagEl.style.textTransform = 'none'; }
         } catch (e) {}

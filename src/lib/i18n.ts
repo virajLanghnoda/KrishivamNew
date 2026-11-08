@@ -23,13 +23,27 @@ export const LANGS: { code: Lang; label: string; short: string }[] = [
 const KEY = 'kl-lang'
 const EVENT = 'kl:lang'
 
-function stored(): Lang {
+/**
+ * The device's own language (phone or browser settings, on iOS and Android alike).
+ * Only Hindi and Gujarati are picked up; anything else, or nothing, means English.
+ */
+function detected(): Lang {
   try {
-    const v = localStorage.getItem(KEY)
-    return v === 'hi' || v === 'gu' ? v : 'en'
+    const first = (navigator.languages?.[0] || navigator.language || '').toLowerCase()
+    const base = first.split(/[-_]/)[0]
+    return base === 'hi' || base === 'gu' ? base : 'en'
   } catch {
     return 'en'
   }
+}
+
+/** The visitor's own pick from the switcher, else the device language. */
+function stored(): Lang {
+  try {
+    const v = localStorage.getItem(KEY)
+    if (v === 'en' || v === 'hi' || v === 'gu') return v
+  } catch { /* private mode: fall through to the device language */ }
+  return detected()
 }
 
 export const currentLang = stored
@@ -95,7 +109,7 @@ export function setLang(lang: Lang) {
   }
 }
 
-/** Apply the saved language on start-up (called once from main.tsx). */
+/** Apply the saved (or device) language on start-up (called once from main.tsx). */
 export function initLang() {
   const lang = stored()
   if (lang === 'en') { setCookie(null); return }
