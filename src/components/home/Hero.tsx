@@ -11,7 +11,7 @@ const ShaderAnimation = lazy(() => import('../ui/shader-animation'))
 const stats = [
   ['4', 'Categories'],
   ['9', 'Product lines'],
-  ['6', 'Formulations'],
+  ['5', 'Formulations'],
 ] as const
 
 /** Brand seal: the K mark inside a slowly turning ring of text. */

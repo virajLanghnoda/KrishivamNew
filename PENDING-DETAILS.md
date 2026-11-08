@@ -164,7 +164,7 @@ A:
 | Mycosh | |
 | Ontop | |
 | Floxi | |
-| INVICTUS (each of the 7 variants if possible) | |
+| INVICTUS (each of the 5 variants if possible) | |
 | VALHALLA | |
 | Ragnar | |
 | Oden | |

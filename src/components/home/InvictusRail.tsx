@@ -96,7 +96,7 @@ export default function InvictusRail() {
               frozen on the left and the bottles slide in underneath a fade. */}
           <div className="relative z-10 shrink-0 px-[var(--edge)] pb-4 lg:absolute lg:inset-y-0 lg:left-0 lg:flex lg:w-[calc(var(--edge)+480px)] lg:flex-col lg:justify-center lg:bg-[linear-gradient(90deg,rgba(7,19,13,.94)_70%,transparent)] lg:pb-0 lg:pr-20">
             <p className="eyebrow !text-lime">04 · Speciality liquids</p>
-            <h2 className="mt-3 font-display text-4xl leading-[.9] sm:mt-4 sm:text-6xl">INVICTUS<span className="mt-2 block font-serif text-xl font-medium italic leading-tight tracking-normal text-lime sm:mt-3 sm:text-[1.75rem]">one name, six precise formulations.</span></h2>
+            <h2 className="mt-3 font-display text-4xl leading-[.9] sm:mt-4 sm:text-6xl">INVICTUS<span className="mt-2 block font-serif text-xl font-medium italic leading-tight tracking-normal text-lime sm:mt-3 sm:text-[1.75rem]">one name, five precise formulations.</span></h2>
             <p className="mt-6 hidden max-w-sm text-base leading-7 text-cream/65 sm:block">Balanced NPK, targeted NP and NK liquids, and micronutrient concentrates - each colour-coded on the pack so the right one is easy to pick.</p>
             <Link to="/products/speciality-liquid-fertilizer/invictus" className="btn-lime mt-4 w-fit !min-h-[42px] !py-2.5 sm:mt-8 sm:!min-h-[48px] sm:!py-3.5">Explore INVICTUS <ArrowUpRight size={15} /></Link>
           </div>

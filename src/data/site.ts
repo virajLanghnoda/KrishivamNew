@@ -4,8 +4,6 @@ import mycosh from '../assets/products/mycosh.webp'
 import valhalla from '../assets/products/valhalla.webp'
 import ragnar from '../assets/products/ragnar.webp'
 import oden from '../assets/products/oden.webp'
-import invictusBoron from '../assets/products/invictus-boron.webp'
-import invictusBoronTeal from '../assets/products/invictus-boron-teal.webp'
 import invictusNpk from '../assets/products/invictus-npk.webp'
 import invictusNp from '../assets/products/invictus-np.webp'
 import invictusNk from '../assets/products/invictus-nk.webp'
@@ -23,7 +21,7 @@ export type Product = Omit<catalog.Product, 'variants'> & { image?: string; vari
 
 const productImages: Record<string, string> = { powerzone, mycosh, ontop, anthos, floxi, invictus: invictusNpk, valhalla, ragnar, oden }
 const variantImages: Record<string, string> = {
-  npk: invictusNpk, np: invictusNp, nk: invictusNk, zinc: invictusZinc, calcium: invictusCalcium, boron: invictusBoron, 'boron-teal': invictusBoronTeal,
+  npk: invictusNpk, np: invictusNp, nk: invictusNk, zinc: invictusZinc, calcium: invictusCalcium,
 }
 
 export const invictusVariants: Variant[] = catalog.invictusVariants.map(v => ({ ...v, image: variantImages[v.id] }))

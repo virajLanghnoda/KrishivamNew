@@ -51,8 +51,6 @@ export const invictusVariants: Variant[] = [
   { id: 'nk', name: 'NK 06:00:18', detail: 'Fortified with Calcium, Magnesium & Boron', type: 'Liquid Fertilizer' },
   { id: 'zinc', name: 'Zinc 39.5%', detail: 'Zinc oxide suspension concentrate', type: 'Micronutrient' },
   { id: 'calcium', name: 'Calcium 11%', detail: 'Concentrated liquid calcium, 100% water soluble', type: 'Liquid Fertilizer' },
-  { id: 'boron', name: 'Boron Ethanolamine', detail: 'Micronutrient fertilizer', type: 'Micronutrient' },
-  { id: 'boron-teal', name: 'Boron Ethanolamine', detail: 'Micronutrient fertilizer - teal edition', type: 'Micronutrient' },
 ]
 
 export const products: Product[] = [
