@@ -303,7 +303,8 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 - [x] Add the Google tag (GTM-MJ79J2MJ) to `index.html` and `details.ts`.
 - [ ] Confirm the office unit number and fill in `streetAddress` (and optionally `mapEmbedUrl`, `hours`, `whatsapp`, social links).
 - [ ] Confirm Floxi's cytokinin content (the pack front says 0.2%, the composition table says 0.02%) — it is not shown on the site until confirmed.
-- [ ] Add Anthos's photo and details.
+- [x] Add Anthos's photo.
+- [ ] Add Anthos's details.
 - [ ] Fill in About details: history, founded year, certifications, team.
 - [ ] Submit the sitemap in Google Search Console.
 - [ ] Scroll through on a phone and a desktop browser once.

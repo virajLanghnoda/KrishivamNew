@@ -12,6 +12,7 @@ import invictusNk from '../assets/products/invictus-nk.webp'
 import invictusZinc from '../assets/products/invictus-zinc.webp'
 import invictusCalcium from '../assets/products/invictus-calcium.webp'
 import floxi from '../assets/products/floxi.webp'
+import anthos from '../assets/products/anthos.webp'
 import { details } from './details'
 import * as catalog from './catalog'
 
@@ -20,7 +21,7 @@ export type { Tone, Category, Spec } from './catalog'
 export type Variant = catalog.Variant & { image: string }
 export type Product = Omit<catalog.Product, 'variants'> & { image?: string; variants?: Variant[] }
 
-const productImages: Record<string, string> = { powerzone, mycosh, ontop, floxi, invictus: invictusNpk, valhalla, ragnar, oden }
+const productImages: Record<string, string> = { powerzone, mycosh, ontop, anthos, floxi, invictus: invictusNpk, valhalla, ragnar, oden }
 const variantImages: Record<string, string> = {
   npk: invictusNpk, np: invictusNp, nk: invictusNk, zinc: invictusZinc, calcium: invictusCalcium, boron: invictusBoron, 'boron-teal': invictusBoronTeal,
 }

@@ -146,7 +146,7 @@ A:
 
 ## Part 5 - Products
 
-**Q22. Anthos: send a cut-out pack photo** (transparent background, about 900 px tall) **and its details:** what it is, composition, dosage, crops, benefits.
+**Q22. Anthos: send its details** (pack photo is now on the site): what it is, composition, dosage, crops, benefits.
 
 A:
 

@@ -100,8 +100,7 @@ export const details = {
 
   // ── Extra product information ──────────────────────────────────────────────
   // Keyed by product slug: powerzone, mycosh, ontop, anthos, floxi, invictus,
-  // valhalla, ragnar, oden. Anthos has no pack photo or details yet; the
-  // photo goes in src/assets/products/ (see WEBSITE.md).
+  // valhalla, ragnar, oden. Anthos has its pack photo but no details yet.
   productDetails: {
     // anthos: {
     //   description: '...',
