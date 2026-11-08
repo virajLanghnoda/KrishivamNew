@@ -7,7 +7,7 @@ interface Window {
   __klStage?: (progress: number) => void
   /** Tell the inline loader the first screen is ready. */
   __klFinish?: () => void
-  /** Google Analytics (gtag.js), present once analytics has started. */
+  /** Google tag (gtag), present once analytics has started. */
   dataLayer?: unknown[]
   gtag?: (...args: unknown[]) => void
 }

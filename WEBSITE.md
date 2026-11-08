@@ -83,7 +83,7 @@ There are three data files. Change them, rebuild, done.
 
 | Field | Appears on |
 | --- | --- |
-| `googleAnalyticsId` | Turns on Google Analytics (see §6) |
+| `googleTagId` | Google tag container ID for events (see §6) |
 | `siteUrl` | SEO: canonical links, sitemap, share previews |
 | `streetAddress`, `postalCode`, `mapEmbedUrl`, `hours` | Contact page (address line, Google Map, hours) |
 | `whatsapp`, `social.*` | Contact page and footer |
@@ -146,17 +146,17 @@ Product pages link to the form with that product pre-selected (`/contact?product
 
 ## 6. Google Analytics
 
-1. Create a GA4 property at https://analytics.google.com → Admin → Data streams → **Web** → enter `https://krishivam.com`.
-2. Copy the **Measurement ID** (`G-XXXXXXXXXX`).
-3. Paste it into `googleAnalyticsId` in `src/data/details.ts` and redeploy.
+The site uses the Google tag container **GTM-MJ79J2MJ**, pasted first in `<head>` of `index.html`.
 
-What it does (`src/components/Analytics.tsx`):
+1. To change it, replace the ID in `index.html` **and** `googleTagId` in `src/data/details.ts`, then redeploy.
+2. Page views, including menu navigation inside the site, come from the container itself: in GA4 keep **Enhanced measurement → Page views → "Page changes based on browser history events"** switched on.
 
-- Loads Google's tag **only after the first screen is ready**, so it never slows slow connections.
-- Sends a `page_view` for every page, including menu navigation inside the site.
+What `src/components/Analytics.tsx` does:
+
+- Loads the tag itself if it is ever missing from `index.html`.
 - Sends a `generate_lead` event whenever an enquiry is sent (mark it as a **key event** in GA to count enquiries).
 
-With no ID, no analytics code loads at all.
+With an empty `googleTagId`, no events are sent.
 
 ---
 
@@ -300,7 +300,7 @@ Key libraries: React 19, React Router 7, Framer Motion (animation), Lenis (smoot
 ## 12. Checklist before going live
 
 - [ ] Send one test enquiry and click **Activate Form** in the email FormSubmit sends to krishivamagriscience@gmail.com.
-- [x] Add the GA4 Measurement ID to `details.ts` (G-H4BFHN1H6N).
+- [x] Add the Google tag (GTM-MJ79J2MJ) to `index.html` and `details.ts`.
 - [ ] Confirm the office unit number and fill in `streetAddress` (and optionally `mapEmbedUrl`, `hours`, `whatsapp`, social links).
 - [ ] Confirm Floxi's cytokinin content (the pack front says 0.2%, the composition table says 0.02%) — it is not shown on the site until confirmed.
 - [ ] Add Anthos's photo and details.

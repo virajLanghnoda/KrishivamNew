@@ -29,9 +29,9 @@ export type ProductExtra = {
 
 export const details = {
   // ── Analytics ──────────────────────────────────────────────────────────────
-  // Google Analytics 4 → Admin → Data streams → your web stream → Measurement ID.
-  // Looks like 'G-ABC123XYZ9'. Leave empty and no analytics code is loaded.
-  googleAnalyticsId: 'G-H4BFHN1H6N',
+  // Google tag container ID (Google tag / Tag Manager → Install). Looks like
+  // 'GTM-ABC1234'. Must match the tag in index.html. Leave empty to turn off events.
+  googleTagId: 'GTM-MJ79J2MJ',
 
   // ── Website address ────────────────────────────────────────────────────────
   // The live domain, without a trailing slash. Used for SEO (canonical links,

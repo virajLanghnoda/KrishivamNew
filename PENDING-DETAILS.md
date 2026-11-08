@@ -9,7 +9,7 @@ Write your answer under each question (after **A:**) and send this file back.
 
 | Item | Status |
 | --- | --- |
-| Google Analytics 4 Measurement ID | **G-H4BFHN1H6N** - live on every page |
+| Google tag (container) ID | **GTM-MJ79J2MJ** - live on every page |
 | Hindi and Gujarati versions | Done - language switch in the header and mobile menu (Google Translate) |
 | Sitemap, robots.txt, search-engine tags | Done - generated on every build |
 
