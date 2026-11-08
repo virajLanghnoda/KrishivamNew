@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { cn } from '../../lib/utils'
+import { loaderDone } from '../../lib/loader'
 
 // Port of designali-in's "Shader Animation" (21st.dev): concentric rings of light
 // rippling outward, sliced by a diagonal modulo. The original drags in Three.js for
@@ -34,6 +35,9 @@ void main(void) {
   vec3 glow = 1.0 - exp(-tinted * 1.6);
   gl_FragColor = vec4(base + glow * (1.0 - base), 1.0);
 }`
+
+/** Shader time at which a new ring appears at the centre. */
+const RING_BIRTH = 18.8
 
 const DEFAULT_TINTS: [string, string, string] = ['#c5e86c', '#1b6b3a', '#1b6b3a']
 
@@ -101,12 +105,18 @@ export function ShaderAnimation({ className, base = '#07130d', tints = DEFAULT_T
 
     // The original advanced time by 0.05 a frame; this keeps that speed at 60fps
     // but ties it to the clock, so slow devices don't slow the ripple down.
+    // The ripple runs in a ~6.7 s cycle: a bright ring is born at the centre, sweeps
+    // out over ~2 s, then the screen stays dark for ~3.5 s. The clock starts at that
+    // birth, and holds there while the page loader is up, so the bright ring grows
+    // out as the loader slides away instead of the reveal landing in the dark stretch.
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let frame = 0
     let visible = true
-    const start = performance.now()
+    let start = loaderDone() ? performance.now() : Infinity
+    const onLoaderDone = () => { start = performance.now() }
+    if (start === Infinity) window.addEventListener('kl:done', onLoaderDone, { once: true })
     const draw = (now: number) => {
-      gl.uniform1f(uTime, 2 + ((now - start) / 1000) * 3)
+      gl.uniform1f(uTime, RING_BIRTH + (Math.max(0, now - start) / 1000) * 3)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
       if (!reduced && visible) frame = requestAnimationFrame(draw)
     }
@@ -131,6 +141,7 @@ export function ShaderAnimation({ className, base = '#07130d', tints = DEFAULT_T
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('kl:done', onLoaderDone)
       // Free the GL objects but keep the context: the same canvas may be set up
       // again straight away (prop change, StrictMode), and a lost context can't be reused.
       gl.deleteBuffer(buf)
