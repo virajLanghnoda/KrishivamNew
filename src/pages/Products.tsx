@@ -6,6 +6,7 @@ import PageHero from '../components/PageHero'
 import CategoryCard from '../components/CategoryCard'
 import ProductVisual from '../components/ProductVisual'
 import Reveal from '../components/Reveal'
+import Fill from '../components/Fill'
 import { categories, productHref, products } from '../data/site'
 import { cn } from '../lib/utils'
 import { seoFor } from '../data/seo'
@@ -71,7 +72,7 @@ export default function Products() {
               ))}
             </AnimatePresence>
           </motion.div>
-          {!filtered.length && <p className="mt-10 text-night/60">No products match “{q}”. Try another name or category.</p>}
+          {!filtered.length && <p className="mt-10 text-night/60"><Fill text="No products match “{name}”. Try another name or category." name={q} /></p>}
         </div>
       </section>
     </>

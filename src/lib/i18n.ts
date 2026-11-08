@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
+import { DICT, PATTERNS } from './translations'
+import { categories, invictusVariants, products } from '../data/catalog'
 
 /*
- * English, Hindi and Gujarati through Google Translate.
+ * English, Hindi and Gujarati, translated by hand.
  *
  * The site is written in English. Picking another language stores the choice in
- * localStorage, sets Google's `googtrans` cookie and loads Google's translate
- * script, which rewrites the page text in place. English visitors never download
- * the script. Brand and product names carry translate="no" so "Ontop" or
- * "INVICTUS" are never turned into ordinary words, and the word-by-word text
- * animations render as whole sentences when translated, so Google sees (and
- * translates) complete, meaningful sentences.
+ * localStorage, and a small translator swaps every piece of visible English text
+ * (and placeholders, labels, alt text and the tab title) for its hand-written
+ * Hindi or Gujarati version from translations.ts, as the page renders and changes.
+ * Product names, formulation names, the brand, numbers, phone and email stay in
+ * English. Anything without a translation also stays in English (in development
+ * it is listed in `window.__klMissing`, so new copy is easy to spot and add).
+ * Elements marked translate="no" are left alone; the header and menus use their
+ * own labels through useT().
  */
 
 export type Lang = 'en' | 'hi' | 'gu'
@@ -48,90 +52,167 @@ function stored(): Lang {
 
 export const currentLang = stored
 
-function setCookie(value: string | null) {
+// ── The translator ───────────────────────────────────────────────────────────
+
+// Names that are never translated, so a label like "Biostimulants - Floxi" can be
+// translated part by part.
+const KEEP = new Set([
+  'Krishivam', 'Krishivam Agriscience', 'Krishivam Agriscience Private Limited', 'Instagram', 'Facebook',
+  ...products.map(p => p.name), ...invictusVariants.flatMap(v => [v.name, `INVICTUS ${v.name}`]),
+])
+// Emails and pack sizes ("20 kg", "1 L", "15 ml") read the same in every language.
+const AS_IS = /@|^[\d.,\s-]+\s?(kg|g|L|ml)$/
+const SEPARATORS = [' | ', ' · ', ' - ']
+const ATTRS = ['placeholder', 'aria-label', 'title', 'alt'] as const
+const SKIP = 'script,style,noscript,#kl,[translate="no"],.notranslate'
+
+let lang: Lang = 'en'
+const missing = new Set<string>()
+
+function lookup(text: string, l: Exclude<Lang, 'en'>): string | undefined {
+  const key = text.replace(/\s+/g, ' ').trim()
+  const hit = DICT[key]
+  if (hit) return hit[l]
+  for (const [re, make] of PATTERNS) {
+    const m = key.match(re)
+    if (m) return make(m, l)
+  }
+  // A list of names: "Ontop, Anthos, Floxi"
+  if (key.split(', ').every(p => KEEP.has(p))) return key
+  // "Organic Fertilizer - Powerzone", "02 · The range", "Page | Krishivam Agriscience"
+  for (const sep of SEPARATORS) {
+    if (!key.includes(sep)) continue
+    const parts = key.split(sep)
+    const out = parts.map(p => (KEEP.has(p) || !/[A-Za-z]/.test(p) ? p : lookup(p, l)))
+    if (out.every(Boolean) && out.some((o, i) => o !== parts[i])) return out.join(sep)
+  }
+  return undefined
+}
+
+function translate(text: string): string {
+  if (lang === 'en' || !/[A-Za-z]/.test(text)) return text
+  const out = lookup(text, lang)
+  if (out !== undefined) {
+    // Keep the node's own leading and trailing spaces.
+    const lead = text.match(/^\s*/)![0]
+    const trail = text.match(/\s*$/)![0]
+    return lead + out + trail
+  }
+  const key = text.replace(/\s+/g, ' ').trim()
+  if (import.meta.env.DEV && !KEEP.has(key) && !AS_IS.test(key) && !missing.has(key)) {
+    missing.add(key)
+    ;(window as Window & { __klMissing?: string[] }).__klMissing = [...missing]
+  }
+  return text
+}
+
+// The English each node or attribute had, and what it was last set to.
+const textEn = new WeakMap<Text, string>()
+const textOut = new WeakMap<Text, string>()
+const attrEn = new WeakMap<Element, Record<string, string>>()
+const attrOut = new WeakMap<Element, Record<string, string>>()
+
+const skipped = (el: Element | null) => !el || !!el.closest(SKIP)
+
+function doText(node: Text) {
+  if (skipped(node.parentElement)) return
+  const now = node.nodeValue ?? ''
+  // A value we did not write is new English from React.
+  if (textOut.get(node) !== now) textEn.set(node, now)
+  const out = translate(textEn.get(node)!)
+  textOut.set(node, out)
+  if (out !== now) node.nodeValue = out
+}
+
+function doAttr(el: Element, name: string) {
+  if (skipped(el)) return
+  const now = el.getAttribute(name)
+  if (now == null) return
+  const en = attrEn.get(el) ?? {}
+  const done = attrOut.get(el) ?? {}
+  if (done[name] !== now) en[name] = now
+  const out = translate(en[name])
+  done[name] = out
+  attrEn.set(el, en)
+  attrOut.set(el, done)
+  if (out !== now) el.setAttribute(name, out)
+}
+
+function doTree(root: Node) {
+  if (root.nodeType === Node.TEXT_NODE) return doText(root as Text)
+  if (root.nodeType !== Node.ELEMENT_NODE) return
+  const el = root as Element
+  if (skipped(el)) return
+  for (const a of ATTRS) if (el.hasAttribute(a)) doAttr(el, a)
+  el.querySelectorAll(ATTRS.map(a => `[${a}]`).join(',')).forEach(e => ATTRS.forEach(a => e.hasAttribute(a) && doAttr(e, a)))
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) doText(n as Text)
+}
+
+let titleEn = ''
+let titleOut = ''
+function doTitle() {
+  if (document.title !== titleOut) titleEn = document.title
+  titleOut = translate(titleEn)
+  if (document.title !== titleOut) document.title = titleOut
+}
+
+let watching = false
+function watch() {
+  if (watching) return
+  watching = true
+  new MutationObserver(records => {
+    for (const r of records) {
+      if (r.type === 'characterData') doText(r.target as Text)
+      else if (r.type === 'attributes') doAttr(r.target as Element, r.attributeName!)
+      else r.addedNodes.forEach(doTree)
+    }
+  }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: [...ATTRS] })
+  new MutationObserver(doTitle).observe(document.head, { subtree: true, childList: true, characterData: true })
+}
+
+function apply(next: Lang) {
+  lang = next
+  document.documentElement.lang = next === 'en' ? 'en-IN' : `${next}-IN`
+  doTree(document.body)
+  doTitle()
+  watch()
+}
+
+// Older visits may carry Google Translate's cookie from before; clear it so it
+// can never kick in again.
+function clearGoogleCookie() {
   const host = window.location.hostname
-  const domains = ['', `; domain=${host}`, host.includes('.') ? `; domain=.${host.split('.').slice(-2).join('.')}` : '']
-  for (const d of domains) {
-    document.cookie = value ? `googtrans=${value}; path=/${d}` : `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d}`
+  for (const d of ['', `; domain=${host}`, host.includes('.') ? `; domain=.${host.split('.').slice(-2).join('.')}` : '']) {
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d}`
   }
 }
 
-declare global {
-  interface Window {
-    google?: { translate?: { TranslateElement: new (opts: Record<string, unknown>, id: string) => unknown } }
-    klTranslateInit?: () => void
-  }
-}
-
-let loading = false
-
-/** Load Google's translate script once; the cookie tells it which language to show. */
-function loadGoogle() {
-  if (loading) return
-  loading = true
-  let host = document.getElementById('google_translate_element')
-  if (!host) {
-    host = document.createElement('div')
-    host.id = 'google_translate_element'
-    host.setAttribute('aria-hidden', 'true')
-    host.style.display = 'none'
-    document.body.appendChild(host)
-  }
-  window.klTranslateInit = () => {
-    const T = window.google?.translate?.TranslateElement
-    if (T) new T({ pageLanguage: 'en', includedLanguages: 'en,hi,gu', autoDisplay: false }, 'google_translate_element')
-  }
-  const s = document.createElement('script')
-  s.src = 'https://translate.google.com/translate_a/element.js?cb=klTranslateInit'
-  s.async = true
-  document.body.appendChild(s)
-}
-
-/** Switch language. Back to English reloads, which is the only clean way to undo Google's rewrite. */
-export function setLang(lang: Lang) {
-  const prev = stored()
-  try { localStorage.setItem(KEY, lang) } catch { /* private mode: the cookie still carries it */ }
-  document.documentElement.lang = lang === 'en' ? 'en-IN' : `${lang}-IN`
-  if (lang === 'en') {
-    setCookie(null)
-    if (prev !== 'en') window.location.reload()
-    return
-  }
-  setCookie(`/en/${lang}`)
+/** Switch language in place. */
+export function setLang(next: Lang) {
+  try { localStorage.setItem(KEY, next) } catch { /* private mode: lasts for this visit */ }
+  apply(next)
   window.dispatchEvent(new Event(EVENT))
-  // Already loaded: drive Google's own (hidden) language menu; otherwise load it.
-  const combo = document.querySelector<HTMLSelectElement>('.goog-te-combo')
-  if (combo) {
-    combo.value = lang
-    combo.dispatchEvent(new Event('change'))
-  } else {
-    loadGoogle()
-  }
 }
 
 /** Apply the saved (or device) language on start-up (called once from main.tsx). */
 export function initLang() {
-  const lang = stored()
-  if (lang === 'en') { setCookie(null); return }
-  document.documentElement.lang = `${lang}-IN`
-  setCookie(`/en/${lang}`)
-  loadGoogle()
+  if (document.cookie.includes('googtrans')) clearGoogleCookie()
+  apply(stored())
 }
 
 /** The language on screen; re-renders when it changes. */
 export function useLang() {
-  const [lang, set] = useState<Lang>(stored)
+  const [l, set] = useState<Lang>(stored)
   useEffect(() => {
     const on = () => set(stored())
     window.addEventListener(EVENT, on)
     return () => window.removeEventListener(EVENT, on)
   }, [])
-  return lang
+  return l
 }
 
-// Google translates short menu labels too literally ("Our Mission" comes back as
-// "our special work"), so the site's own chrome uses these hand-written labels
-// and is marked translate="no". Everything else is left to Google.
+// The header and menus are marked translate="no" and use these labels directly.
 const UI: Record<string, { hi: string; gu: string }> = {
   'Home': { hi: 'होम', gu: 'હોમ' },
   'Products': { hi: 'उत्पाद', gu: 'ઉત્પાદનો' },
@@ -144,14 +225,11 @@ const UI: Record<string, { hi: string; gu: string }> = {
   'Explore the complete portfolio': { hi: 'पूरी उत्पाद श्रृंखला देखें', gu: 'સંપૂર્ણ ઉત્પાદન શ્રેણી જુઓ' },
   'or call': { hi: 'या कॉल करें', gu: 'અથવા કૉલ કરો' },
   'Language': { hi: 'भाषा', gu: 'ભાષા' },
-  'Organic Fertilizer': { hi: 'जैविक उर्वरक', gu: 'સેન્દ્રિય ખાતર' },
-  'Biofertilizer': { hi: 'जैव उर्वरक', gu: 'જૈવિક ખાતર' },
-  'Biostimulants': { hi: 'बायोस्टिमुलेंट', gu: 'બાયોસ્ટિમ્યુલન્ટ' },
-  'Speciality Liquid Fertilizer': { hi: 'विशेष तरल उर्वरक', gu: 'વિશેષ પ્રવાહી ખાતર' },
+  ...Object.fromEntries(categories.map(c => [c.name, DICT[c.name]])),
 }
 
 /** Hand-translated labels for the header and menus. */
 export function useT() {
-  const lang = useLang()
-  return (text: string) => (lang === 'en' ? text : UI[text]?.[lang] ?? text)
+  const l = useLang()
+  return (text: string) => (l === 'en' ? text : UI[text]?.[l] ?? text)
 }

@@ -189,12 +189,14 @@ What's in place:
 ## Languages (English, हिन्दी, ગુજરાતી)
 
 - A language switch sits in the header (desktop) and in the mobile menu. The choice is saved in the visitor's browser (`localStorage`), so the site opens in that language next time too.
-- Hindi and Gujarati come from **Google Translate**, loaded only for visitors who pick them. English visitors never download it.
-- So translations stay meaningful:
-  - Product and brand names (Powerzone, Ontop, INVICTUS…) are marked `translate="no"` and never turned into ordinary words.
-  - Menu labels and category names use hand-written Hindi/Gujarati (`src/lib/i18n.ts` → `UI`) instead of Google's literal versions. Add or correct labels there.
-  - Animated word-by-word text switches to whole sentences when translated, so Google translates complete sentences.
-  - The loader shows its stage labels in the saved language from its own built-in text.
+- With no saved choice, the site follows the phone's language: Hindi or Gujarati if the device is set to it, English otherwise.
+- Hindi and Gujarati are **hand-written**, in `src/lib/translations.ts` (no Google Translate). Each English text on screen is listed with its Hindi and Gujarati, and the translator in `src/lib/i18n.ts` swaps it in as pages render. Switching language is instant, with no reload.
+  - Product names, INVICTUS formulation names, "Krishivam", numbers, phone and email stay in English.
+  - **When you add or change English text**, add the same text (exactly as shown on screen) to `translations.ts`. Anything missing simply stays in English; while running `npm run dev`, open the browser console and type `__klMissing` to list it.
+  - Sentences with a product name inside ("Why Floxi") use `TEMPLATES` and `components/Fill.tsx`, because Hindi and Gujarati put the name in a different place.
+  - Menu labels use `UI` in `src/lib/i18n.ts`.
+  - Animated word-by-word text switches to whole sentences when translated, so each sentence matches its translation.
+  - The loader shows its tagline in the saved language from its own built-in text.
 - Hindi/Gujarati headings get extra line height and no letter-spacing so the scripts render correctly.
 
 ---

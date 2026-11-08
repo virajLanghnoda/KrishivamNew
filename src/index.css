@@ -58,12 +58,6 @@ html.lenis, html.lenis body { height: auto; }
 /* A slow sweep of light across gradient text. */
 @keyframes sheen { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
 
-/* Google Translate: keep its machinery, hide its toolbar, tooltips and highlights. */
-body > .skiptranslate, iframe.skiptranslate, .goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame, .VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }
-body { top: 0 !important; position: static !important; }
-.goog-text-highlight { background: none !important; box-shadow: none !important; }
-font { background: transparent !important; box-shadow: none !important; }
-
 /* Exhaust from the little tractor that tracks the INVICTUS rail. */
 @keyframes mini-puff { 0% { transform: translate(0, 0) scale(.5); opacity: .8; } 100% { transform: translate(-7px, -9px) scale(1.6); opacity: 0; } }
 .mini-puff { transform-box: fill-box; transform-origin: center; animation: mini-puff 1.8s ease-out infinite; }

@@ -73,7 +73,7 @@ function ScrollStatement() {
   )
 }
 
-/** Translated pages get the statement as whole sentences, so Google can translate them properly. */
+/** Translated pages get the statement as whole sentences, to match their translations. */
 function PlainStatement() {
   return (
     <div>

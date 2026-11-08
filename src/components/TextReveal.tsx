@@ -6,7 +6,7 @@ import { useLang } from '../lib/i18n'
 /** `play` holds the reveal back (e.g. until the loader lifts); `inView` waits for scroll instead. */
 export default function TextReveal({ text, className, delay = 0, as: Tag = 'span', inView = false, play = true }: { text: string; className?: string; delay?: number; as?: 'span' | 'h1' | 'h2' | 'p'; inView?: boolean; play?: boolean }) {
   const reduce = useReducedMotion()
-  // Translated, the sentence stays whole so Google translates it as one phrase.
+  // Translated, the sentence stays whole so it matches its hand-written translation.
   const lang = useLang()
   if (lang !== 'en') return <Tag className={cn('block', className)}>{text}</Tag>
   const words = text.split(' ')

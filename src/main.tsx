@@ -14,8 +14,8 @@ import { loaderDone } from './lib/loader'
 import { initLang } from './lib/i18n'
 import Home from './pages/Home'
 
-// Google Translate swaps text nodes for its own <font> wrappers. When React later
-// removes or moves a node Google already replaced, the browser throws and the page
+// A browser's own "Translate this page" swaps text nodes for its own <font> wrappers.
+// When React later removes or moves a node it already replaced, the browser throws and the page
 // breaks; these two guards make React skip nodes that are no longer where it left them.
 const removeChild = Node.prototype.removeChild
 Node.prototype.removeChild = function <T extends Node>(this: Node, child: T): T {

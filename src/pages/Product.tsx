@@ -5,6 +5,7 @@ import { ArrowUpRight, Check, Phone } from 'lucide-react'
 import ProductVisual from '../components/ProductVisual'
 import Reveal from '../components/Reveal'
 import TextReveal from '../components/TextReveal'
+import Fill from '../components/Fill'
 import { company, findProduct, productHref, products } from '../data/site'
 import NotFound from './NotFound'
 import { notFoundSeo, productSeo } from '../data/seo'
@@ -55,7 +56,7 @@ export default function Product() {
         <section className="py-20 lg:py-28">
           <div className="container-page grid gap-14 lg:grid-cols-[.8fr_1.2fr]">
             <Reveal>
-              <p className="eyebrow">Why <span translate="no" className="notranslate">{p.name}</span></p>
+              <p className="eyebrow"><Fill text="Why {name}" name={p.name} /></p>
               <h2 className="section-title">Made to do one job well.</h2>
             </Reveal>
             <div>
@@ -104,7 +105,7 @@ export default function Product() {
         <section className="bg-sand py-20 lg:py-28">
           <div className="container-page">
             <Reveal>
-              <p className="eyebrow">The <span translate="no" className="notranslate">{p.name}</span> family</p>
+              <p className="eyebrow"><Fill text="The {name} family" name={p.name} /></p>
               <h2 className="section-title">Pick the formulation your crop needs.</h2>
             </Reveal>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -148,7 +149,7 @@ export default function Product() {
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
                 <p className="eyebrow !text-lime">Interested in this product?</p>
-                <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl">Let’s talk about <span translate="no" className="notranslate">{p.name}</span>.</h2>
+                <h2 className="mt-4 font-display text-5xl leading-none sm:text-6xl"><Fill text="Let’s talk about {name}." name={p.name} /></h2>
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link className="btn-lime" to={`/contact?product=${encodeURIComponent(p.name)}`}>Enquire now <ArrowUpRight size={15} /></Link>

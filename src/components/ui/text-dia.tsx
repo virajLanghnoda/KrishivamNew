@@ -20,7 +20,7 @@ export function DiaText({ words, duration = 2400, colors = ['#c5e86c', '#f3d57c'
   const [index, setIndex] = useState(0)
   const reduce = useReducedMotion()
   const lang = useLang()
-  // Translated pages keep the first word still, so Google translates one stable phrase.
+  // Translated pages keep the first word still, so it matches its translation.
   const still = reduce || lang !== 'en'
 
   useEffect(() => {

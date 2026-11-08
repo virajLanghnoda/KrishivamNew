@@ -19,7 +19,7 @@ function Seal() {
   const text = 'KRISHIVAM AGRISCIENCE • CULTIVATING TOMORROW • '
   return (
     <div className="relative aspect-square w-full">
-      <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full animate-spin-slow motion-reduce:animate-none" aria-hidden="true">
+      <svg viewBox="0 0 200 200" className="notranslate absolute inset-0 h-full w-full animate-spin-slow motion-reduce:animate-none" aria-hidden="true">
         <defs><path id="seal-ring" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
         <text fill="currentColor" fontSize="11.2" fontWeight="700" letterSpacing="4.1"><textPath href="#seal-ring">{text}</textPath></text>
       </svg>
