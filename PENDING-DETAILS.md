@@ -77,8 +77,8 @@ A:
 **Q10. Social media profile links (full URLs)**
 `[details.ts → social]`
 
-- Instagram:
-- Facebook:
+- Instagram: **https://www.instagram.com/krishivamm/** - live
+- Facebook: **https://www.facebook.com/share/19idPoZniR/** - live
 - LinkedIn:
 - YouTube:
 

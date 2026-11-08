@@ -5,6 +5,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import Logo from './Logo'
 import { categories, company, productByName, productHref } from '../data/site'
 import { LangMenu, LangTabs } from './LangSwitch'
+import SocialLinks from './SocialLinks'
 import { useT } from '../lib/i18n'
 import { useLenis } from './SmoothScroll'
 import { cn } from '../lib/utils'
@@ -151,6 +152,7 @@ export default function Navbar() {
               <div className="mt-auto pt-8">
                 <Link to="/contact" className="btn-primary w-full">{t('Get in Touch')} <ArrowUpRight size={15} /></Link>
                 <a href={`tel:${company.phone}`} className="mt-3 block text-center text-sm text-night/55">{t('or call')} {company.phone}</a>
+                <SocialLinks tone="light" className="mt-5 justify-center" />
               </div>
             </nav>
           </motion.div>

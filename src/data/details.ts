@@ -56,8 +56,8 @@ export const details = {
   // WhatsApp number with country code and no spaces, e.g. '919924489348'.
   whatsapp: '',
   social: {
-    instagram: '', // full profile URL
-    facebook: '',
+    instagram: 'https://www.instagram.com/krishivamm/', // full profile URL
+    facebook: 'https://www.facebook.com/share/19idPoZniR/',
     linkedin: '',
     youtube: '',
   },

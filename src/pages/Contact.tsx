@@ -8,6 +8,7 @@ import { categories, company, productByName } from '../data/site'
 import { details, filled } from '../data/details'
 import { cn } from '../lib/utils'
 import { track } from '../components/Analytics'
+import { socials } from '../components/SocialLinks'
 import { seoFor } from '../data/seo'
 import { useSeo } from '../lib/useSeo'
 
@@ -136,6 +137,25 @@ export default function Contact() {
                 )
               })}
             </ul>
+            {socials.length > 0 && (
+              <div className="mt-10">
+                <p className="text-[11px] font-semibold uppercase tracking-[.18em] text-night/45">Follow us</p>
+                <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {socials.map(({ key, label, handle, icon: Icon, href }) => (
+                    <li key={key}>
+                      <a href={href} target="_blank" rel="noreferrer" aria-label={`Krishivam on ${label}`} className="group flex items-center gap-4 rounded-2xl border border-night/10 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-soft">
+                        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-sand text-forest transition group-hover:bg-forest group-hover:text-cream"><Icon size={19} strokeWidth={1.8} /></span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block font-display text-base font-bold text-night sm:text-lg">{label}</span>
+                          <span className="block text-sm text-night/55">{handle}</span>
+                        </span>
+                        <ArrowUpRight size={16} className="shrink-0 text-night/30 transition group-hover:text-forest" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Reveal>
 
           <Reveal delay={0.08}>

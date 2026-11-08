@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
-import { details } from '../data/details'
 import Logo from './Logo'
+import SocialLinks, { socials } from './SocialLinks'
 import { categories, company, productHref, products } from '../data/site'
 
 export default function Footer() {
@@ -14,11 +14,10 @@ export default function Footer() {
             <Logo light className="h-16" />
             <p className="mt-6 max-w-sm text-sm leading-7 text-cream/60">{company.tagline}<br />Science-driven agricultural solutions for modern farming needs.</p>
             <Link to="/contact" className="btn-lime mt-7">Start a conversation <ArrowUpRight size={15} /></Link>
-            {Object.values(details.social).some(Boolean) && (
-              <div className="mt-7 flex flex-wrap gap-2">
-                {Object.entries(details.social).filter(([, url]) => url).map(([name, url]) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="rounded-full border border-cream/15 px-4 py-2 text-xs font-semibold capitalize text-cream/70 transition hover:border-lime hover:text-lime">{name}</a>
-                ))}
+            {socials.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-[11px] font-bold uppercase tracking-[.24em] text-cream/40">Follow us</h3>
+                <SocialLinks className="mt-4" />
               </div>
             )}
           </div>
